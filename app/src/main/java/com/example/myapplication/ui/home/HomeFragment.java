@@ -23,5 +23,6 @@ public class HomeFragment extends Fragment {
         final TextView textView = root.findViewById(R.id.text_home);
         textView.setText("This is home fragment");
         return root;
+        //comment
     }
 }
