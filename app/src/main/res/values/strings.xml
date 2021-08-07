@@ -7,9 +7,12 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_home">Upcoming Trips</string>
     <string name="up_coming">UPCOMING</string>
     <string name="history">HISTORY</string>
+    <string name="menu_history">History</string>
+    <string name="account">Account details</string>
+    <string name="sync">SYNC</string>
+    <string name="log_out">Log Out</string>
+    <string name="account_setting">Account Setting</string>
 </resources>
