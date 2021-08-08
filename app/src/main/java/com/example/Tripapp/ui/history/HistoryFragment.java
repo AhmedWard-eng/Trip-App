@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.history;
+package com.example.Tripapp.ui.history;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.myapplication.R;
+import com.example.Tripapp.R;
 
 public class HistoryFragment extends Fragment {
 
