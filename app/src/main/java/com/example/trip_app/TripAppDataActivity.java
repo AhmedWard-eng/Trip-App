@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.trip_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
