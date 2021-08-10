@@ -15,4 +15,20 @@
     <string name="sync">SYNC</string>
     <string name="log_out">Log Out</string>
     <string name="account_setting">Account Setting</string>
+    <string name="start">start</string>
+    <string name="start_point">Start Point</string>
+    <string name="end_point">End Point</string>
+    <string name="todo">TODO</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="desc">Desc</string>
+    <string name="app_logo">Logo</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="categories" />
+    <string name="work">Work</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="shopping">Shopping</string>
+    <string name="all_trips">All Trips</string>
 </resources>
