@@ -31,4 +31,31 @@
     <string name="entertainment">Entertainment</string>
     <string name="shopping">Shopping</string>
     <string name="all_trips">All Trips</string>
+    <string name="notes">Add Notes</string>
+    <string name="reuse">Reuse</string>
+    <string name="confirm_reuse">Reuse this trip again?</string>
+    <string name="confirm_delete">Delete this trip permanently?</string>
+
+
+    <string name="where_to_go">Where to go</string>
+    <string name="title">Add title to your trip here</string>
+    <string name="your_location">Your location</string>
+    <string name="your_destination">Your Destination</string>
+    <string name="due_date">Due Date</string>
+    <string name="no_due_date">No Due Date</string>
+    <string name="time_not_set">Time Not Set</string>
+    <string name="where">Where are you going ?</string>
+    <string name="kind">Kind of trip</string>
+    <string name="add_notes">Add Notes</string>
+    <string-array name="kind_trip">
+        <item> One Way Trip</item>
+        <item> Round</item>
+    </string-array>
+    <string-array name="repeatition">
+        <item>No Repeat</item>
+        <item>Repeat Daily</item>
+        <item>Repeat Weekly</item>
+        <item>Repeat Monthly</item>
+    </string-array>
+
 </resources>
