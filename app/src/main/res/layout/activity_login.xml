@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.createAcount.LoginActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:src="@drawable/road"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        ></de.hdodenhof.circleimageview.CircleImageView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log in"
+        android:layout_gravity="center"
+        android:textSize="25dp"
+        android:textColor="#f54251"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+
+        ></TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please Login to continue using our app"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        ></TextView>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/shape_edit"
+        android:paddingLeft="20dp"
+        android:hint="Enter Email"
+
+        android:id="@+id/edit_email_Login"
+        android:textColorHint="#B9B8B8"
+
+        >
+
+
+    </EditText>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="#B9B8B8"
+     android:layout_marginTop="10dp"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/edit_pass_login"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+       android:textColor="#000"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            android:background="@drawable/shape_edit"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="50dp"
+        android:background="#f54251"
+        android:text="Log in"
+        android:textSize="18dp"
+        android:textColor="@color/white"
+        android:id="@+id/btn_login"
+        >
+    </Button>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:text="Dont have an account? "
+
+            ></TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textColor="#f54251"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/text_signUp_activity_SignUp"
+            android:textStyle="bold"
+
+            ></TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/fac"
+            android:id="@+id/image_fac"
+
+            ></de.hdodenhof.circleimageview.CircleImageView>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/twi"
+            android:id="@+id/image_twitter"
+
+            ></de.hdodenhof.circleimageview.CircleImageView>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/google"
+            android:id="@+id/image_google"
+
+            ></de.hdodenhof.circleimageview.CircleImageView>
+
+
+    </LinearLayout>
+</LinearLayout>
+
+</ScrollView>
