@@ -131,7 +131,7 @@ class BestAdapter extends ArrayAdapter<Trip>
         int color = ContextCompat.getColor(getContext(), backgroundColor);
         parent.setBackgroundColor(color);
 
-        SimpleDateFormat sdFormat = new SimpleDateFormat("dd-MMM-yyy", Locale.getDefault());
+        SimpleDateFormat sdFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm", Locale.getDefault());
         String date = sdFormat.format(currentItem.getDate());
 
         viewHolder.getTxtTitle().setText(currentItem.getTitle());
