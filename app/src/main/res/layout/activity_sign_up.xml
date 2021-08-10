@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".ui.createAcount.SignUpActivity"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:src="@drawable/road"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        ></de.hdodenhof.circleimageview.CircleImageView>
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Sign Up Now"
+    android:layout_gravity="center"
+    android:textSize="22dp"
+    android:textColor="#f54251"
+    android:layout_marginTop="20dp"
+    android:textStyle="bold"
+
+    ></TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please fill the details and create account"
+        android:layout_gravity="center"
+
+        android:layout_marginTop="10dp"
+        ></TextView>
+
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/shape_edit"
+            android:hint="Full Name"
+            android:textSize="18sp"
+            android:paddingLeft="20dp"
+            android:textColorHint="#B9B8B8"
+
+           >
+
+
+        </EditText>
+
+        <EditText
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/shape_edit"
+        android:paddingLeft="20dp"
+        android:hint="Enter Email"
+
+        android:id="@+id/edit_email"
+            android:textSize="18sp"
+            android:textColorHint="#B9B8B8"
+
+
+            >
+
+
+    </EditText>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="#B9B8B8"
+
+
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/edit_pass_Signup"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColorHint="#B9B8B8"
+
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingLeft="18dp"
+            android:background="@drawable/shape_edit"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_signUp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="10dp"
+            android:background="#f54251"
+            android:text="Sign Up"
+            android:textColor="@color/white"
+            android:textSize="18dp"></Button>
+
+        <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:text="Already have an account? "
+
+            ></TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textColor="#f54251"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:id="@+id/text_login_activity_signUp"
+            ></TextView>
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="center"
+android:layout_marginTop="20dp"
+    >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/fac"
+        android:id="@+id/image_fac"
+
+        ></de.hdodenhof.circleimageview.CircleImageView>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/twi"
+        android:id="@+id/image_twitter"
+
+        ></de.hdodenhof.circleimageview.CircleImageView>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/google"
+        android:id="@+id/image_google"
+
+        ></de.hdodenhof.circleimageview.CircleImageView>
+
+
+</LinearLayout>
+</LinearLayout>
+    </ScrollView>

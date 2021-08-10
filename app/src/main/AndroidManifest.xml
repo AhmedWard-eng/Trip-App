@@ -10,15 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity android:name="com.example.Tripapp.TripAppDataActivity"></activity>
-        <activity
-            android:name="com.example.Tripapp.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.MyApplication.NoActionBar">
+
+        <activity android:name=".ui.createAcount.LoginActivity"></activity>
+        <activity android:name=".ui.createAcount.SignUpActivity" />
+        <activity android:name=".ui.createAcount.MainActivity2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.Tripapp.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+
+
         </activity>
     </application>
 
