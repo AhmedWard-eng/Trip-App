@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -61,15 +62,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.action_settings) {//code of setting
+        if (itemId == R.id.action_settings) {
+            Toast.makeText(this,"setting",Toast.LENGTH_SHORT).show();
             return true;
         } else if (itemId == R.id.item_entertainment) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     public boolean onSupportNavigateUp() {

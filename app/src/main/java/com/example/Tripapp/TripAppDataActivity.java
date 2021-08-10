@@ -51,7 +51,7 @@ public class TripAppDataActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Trip trip = saveData();
                 Intent intentToMainActivity = new Intent(TripAppDataActivity.this,MainActivity.class);
-//                intentToMainActivity.putExtra("Trip",trip);
+                intentToMainActivity.putExtra("Trip",trip);
                 startActivity(intentToMainActivity);
             }
         });

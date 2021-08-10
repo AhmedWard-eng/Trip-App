@@ -1,9 +1,12 @@
 package com.example.Tripapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Trip {
+public class Trip implements Parcelable {
     private String title, startPoint, endPoint, status, repetition;
     private Date date;
     private Date time;
@@ -125,5 +128,15 @@ public class Trip {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }
