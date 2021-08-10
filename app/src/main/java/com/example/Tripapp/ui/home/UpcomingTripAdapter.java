@@ -1,6 +1,5 @@
 package com.example.Tripapp.ui.home;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,23 +17,31 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 
 import com.example.Tripapp.R;
+import com.example.Tripapp.Trip;
 import com.example.Tripapp.TripAppDataActivity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UpcomingTripAdapter extends ArrayAdapter {
     Context context;
-    ArrayList<UpcomingTripData> upcomingTripData;
-
-    public UpcomingTripAdapter(Context context, ArrayList<UpcomingTripData> upcomingTripData) {
-        super(context, R.layout.upcoming_trip_design, upcomingTripData);
+    ArrayList<Trip> trips;
+    public UpcomingTripAdapter(Context context, ArrayList<Trip> trips) {
+        super(context, R.layout.upcoming_trip_design, trips);
         this.context = context;
-        this.upcomingTripData = upcomingTripData;
+        this.trips = trips;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+        SimpleDateFormat timeFormat;
+        timeFormat = new SimpleDateFormat("kk:mm aa");
+        Date date = trips.get(position).getDate();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         View view = null;
         ViewHolder viewHolder;
         if (view == null) {
@@ -45,15 +52,15 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.getTxtTripName().setText(upcomingTripData.get(position).tripName);
-        viewHolder.getTxtDate().setText(upcomingTripData.get(position).date);
-        viewHolder.getTxtTime().setText(upcomingTripData.get(position).time);
-        viewHolder.getTxtStartPoint().setText(upcomingTripData.get(position).startPoint);
-        viewHolder.getTxtEndPoint().setText(upcomingTripData.get(position).endPoint);
+        viewHolder.getTxtTripName().setText(trips.get(position).getTitle());
+        viewHolder.getTxtDate().setText(dateFormat.format(date));
+        viewHolder.getTxtTime().setText(timeFormat.format(trips.get(position).getTime()));
+        viewHolder.getTxtStartPoint().setText(trips.get(position).getStartPoint());
+        viewHolder.getTxtEndPoint().setText(trips.get(position).getEndPoint());
         viewHolder.getButtonStart().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "button start"+upcomingTripData.get(position).tripName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "button start"+trips.get(position).getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -88,7 +95,7 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         viewHolder.getButtonNotes().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "button notes of " +upcomingTripData.get(position).tripName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "button notes of " +trips.get(position).getTitle(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -104,7 +111,7 @@ public class UpcomingTripAdapter extends ArrayAdapter {
             public void onClick(DialogInterface dialog, int which) {
                 // continue with cancel
 
-                upcomingTripData.remove(position);
+                trips.remove(position);
                 notifyDataSetChanged();
             }
         });
@@ -126,7 +133,7 @@ public class UpcomingTripAdapter extends ArrayAdapter {
 
             public void onClick(DialogInterface dialog, int which) {
                 // continue with delete
-                upcomingTripData.remove(position);
+                trips.remove(position);
                 notifyDataSetChanged();
             }
         });

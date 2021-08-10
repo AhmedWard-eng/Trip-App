@@ -136,8 +136,8 @@ class BestAdapter extends ArrayAdapter<Trip>
         String date = sdFormat.format(currentItem.getDate());
 
         viewHolder.getTxtTitle().setText(currentItem.getTitle());
-        viewHolder.getTxtStart().setText(currentItem.getStart());
-        viewHolder.getTxtEnd().setText(currentItem.getEnd());
+        viewHolder.getTxtStart().setText(currentItem.getStartPoint());
+        viewHolder.getTxtEnd().setText(currentItem.getEndPoint());
         viewHolder.getTxtDate().setText(date);
         viewHolder.getTxtStatus().setText(currentItem.getStatus());
         viewHolder.getBtnDelete().setOnClickListener(view -> new AlertDialog.Builder(BestAdapter.super.getContext())

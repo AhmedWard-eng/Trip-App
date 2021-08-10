@@ -9,27 +9,28 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.Tripapp.MainActivity;
 import com.example.Tripapp.R;
+import com.example.Tripapp.Trip;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UpcomingTripsFrag extends Fragment {
     ListView upcomingListView;
-    private ArrayList<UpcomingTripData> upcomingTripData;
+    private ArrayList<Trip> trips;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        upcomingTripData = new ArrayList<UpcomingTripData>();
-        upcomingTripData.add(new UpcomingTripData("Trip Name", "The Start Point", "The Trip End Point", "26-10-2021", "00:00"));
-        upcomingTripData.add(new UpcomingTripData("Aswan Trip", "Cairo", "Aswan", "20-08-2021", "00:00"));
-        upcomingTripData.add(new UpcomingTripData("university", "Cairo", "Zagazig", "21-09-2021", "08:00"));
+        trips = new ArrayList<Trip>();
+        trips.add(new Trip("Trip Name", "The Start Point", "The Trip End Point", new Date(), new Date()));
+        trips.add(new Trip("Aswan Trip", "Cairo", "Aswan",  new Date(),  new Date()));
+        trips.add(new Trip("university", "Cairo", "Zagazig",  new Date(),  new Date()));
 
 
 
         upcomingListView = view.findViewById(R.id.upcomin_frag_listview);
-        UpcomingTripAdapter simpleArrayAdapter = new UpcomingTripAdapter(view.getContext(), upcomingTripData);
+        UpcomingTripAdapter simpleArrayAdapter = new UpcomingTripAdapter(view.getContext(), trips);
         upcomingListView.setAdapter(simpleArrayAdapter);
 
         
