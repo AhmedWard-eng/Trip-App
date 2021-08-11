@@ -118,38 +118,20 @@
 
             ></TextView>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        >
+
+
+
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/fac"
-            android:id="@+id/image_fac"
-
-            ></de.hdodenhof.circleimageview.CircleImageView>
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/twi"
-            android:id="@+id/image_twitter"
-
-            ></de.hdodenhof.circleimageview.CircleImageView>
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/google"
             android:id="@+id/image_google"
-
+ android:layout_gravity="center"
             ></de.hdodenhof.circleimageview.CircleImageView>
 
 
-    </LinearLayout>
 </LinearLayout>
 
 </ScrollView>

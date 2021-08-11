@@ -8,16 +8,37 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.Tripapp.MainActivity;
 import com.example.Tripapp.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity2 extends AppCompatActivity {
     Button btn_start;
     TextView textLog;
+    FirebaseAuth auth;
+    FirebaseUser firebaseUser;
+    @Override
+    public void onBackPressed(){
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R
                 .layout.activity_main2);
+
+auth=FirebaseAuth.getInstance();
+firebaseUser=auth.getCurrentUser();
+if (firebaseUser!=null){
+    Intent intent=new Intent(MainActivity2.this,MainActivity.class);
+    startActivity(intent);
+
+}
 
 
         btn_start=findViewById(R.id.btn_start);
