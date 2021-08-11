@@ -2,9 +2,11 @@ package com.example.Tripapp.ui.createAcount;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.Tripapp.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -28,6 +35,9 @@ public class SignUpActivity extends AppCompatActivity {
   Button btn_signUp;
     DatabaseReference databaseReference;
     TextView text_Login;
+    ImageView SignUpGoogle;
+    GoogleSignInClient mGoogleSignInAcount;
+    public static int  RC_SIGN_IN=100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +49,17 @@ public class SignUpActivity extends AppCompatActivity {
         btn_signUp=findViewById(R.id.btn_signUp);
 
         text_Login=findViewById(R.id.text_login_activity_signUp);
-
+       SignUpGoogle=findViewById(R.id.image_google_signUp);
         databaseReference= FirebaseDatabase.getInstance().getReference().child("Users");
 
        FirebaseAuth auth=FirebaseAuth.getInstance();
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInAcount= GoogleSignIn.getClient(this, gso);
 
 
         btn_signUp.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +121,13 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         });
-
+SignUpGoogle.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent signInIntent = mGoogleSignInAcount.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+});
 text_Login.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
@@ -115,5 +137,31 @@ text_Login.setOnClickListener(new View.OnClickListener() {
     }
 });
 }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            if (task.isSuccessful()){
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    Log.d("LoginActivity", ":" + account.getId());
+                    edit_email.setText(account.getEmail());
+                    edit_name.setText(account.getDisplayName());
+
+                } catch (ApiException e) {
+                    // Google Sign In failed, update UI appropriately
+                    Log.w("LoginActivity", "firebaseAuthWithGoogle", e);
+                }
+            }else {
+                Log.d("LoginActivity","dd"+task.getException().toString());
+            }
+
+        }
+    }
 
 }
