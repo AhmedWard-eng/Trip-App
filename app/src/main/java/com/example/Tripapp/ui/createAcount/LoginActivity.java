@@ -71,13 +71,24 @@ imageView.setOnClickListener(new View.OnClickListener() {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String email=edit_email.getText().toString();
                 String pass=edit_pass.getText().toString();
+                if (email.equals("") && pass.equals("") || email.equals("") ||pass.equals("") ) {
+                    Toast.makeText(LoginActivity.this, "Please Complete Login Information", Toast.LENGTH_SHORT).show();
+
+
+                }
 
                 auth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (email.equals("") && pass.equals("")) {
+                            Toast.makeText(LoginActivity.this, "Please Complete Login Information", Toast.LENGTH_SHORT).show();
+
+
+                        }
+                        else if(task.isSuccessful()){
                             Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
                             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
@@ -90,8 +101,40 @@ imageView.setOnClickListener(new View.OnClickListener() {
                     }
                 });
 
-            }
+                  }
+
+
+
         });
+                //////////////////////////
+
+/*
+                String email = edit_email.getText().toString();
+                String pass = edit_pass.getText().toString();
+                if (email.equals("") && pass.equals("")) {
+                    Toast.makeText(LoginActivity.this, "Please Complete Login Information", Toast.LENGTH_SHORT).show();
+
+
+                } else {
+                    auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(LoginActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
+
+            }
+        });*/
         text_signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,5 +167,6 @@ imageView.setOnClickListener(new View.OnClickListener() {
             }
 
         }
+
     }
 }

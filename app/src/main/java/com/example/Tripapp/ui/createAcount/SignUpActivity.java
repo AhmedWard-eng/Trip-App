@@ -107,7 +107,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             }else {
                                 Toast.makeText(
-                                        SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                        SignUpActivity.this, ""+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                             }
                         }
