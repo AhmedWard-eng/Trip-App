@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.Tripapp.ui.createAcount.LoginActivity;
+import com.example.Tripapp.ui.createAcount.MainActivity2;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -69,8 +70,9 @@ public class MainActivity extends AppCompatActivity {
                 if (item.getItemId()==R.id.log_out){
                     FirebaseAuth auth=FirebaseAuth.getInstance();
                     auth.signOut();
-                    Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                    Intent intent=new Intent(MainActivity.this, MainActivity2.class);
                     startActivity(intent);
+                    finish();
                 }
 
 
