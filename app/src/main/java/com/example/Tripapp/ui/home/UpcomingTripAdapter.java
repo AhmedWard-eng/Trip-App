@@ -3,7 +3,6 @@ package com.example.Tripapp.ui.home;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -17,15 +16,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 
+import com.example.Tripapp.Notes.AddNotes;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
 import com.example.Tripapp.TripAppDataActivity;
+import com.example.Tripapp.TripMap.TripMap;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class UpcomingTripAdapter extends ArrayAdapter {
     private Context context;
@@ -63,6 +62,8 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         viewHolder.getButtonStart().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Intent intent = new Intent(context, TripMap.class);
+//                context.startActivity(intent);
                 Toast.makeText(getContext(), "button start" + trips.get(position).getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -85,6 +86,10 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                     } else if (itemId == R.id.item_edit) {
                         EditTrip(position);
                         return true;
+                    } else if (itemId == R.id.item_Notes) {
+                        AddNotes addNotes = new AddNotes();
+//                      FragmentTransaction fragmentTransaction ;
+                        return true;
                     }
                     return false;
                 });
@@ -103,12 +108,12 @@ public class UpcomingTripAdapter extends ArrayAdapter {
 
     private void EditTrip(int position) {
         Intent intent = new Intent(context, TripAppDataActivity.class);
-        intent.putExtra(TripAppDataActivity.TRIP_TITLE,trips.get(position).getTitle());
-        intent.putExtra(TripAppDataActivity.TRIP_SET_TIME,trips.get(position).getTheSetTime());
-        intent.putExtra(TripAppDataActivity.TRIP_START_POINT,trips.get(position).getStartPoint());
-        intent.putExtra(TripAppDataActivity.TRIP_END_POINT,trips.get(position).getEndPoint());
-        intent.putExtra(TripAppDataActivity.TRIP_UNIQUE_ID,"102");
-        intent.putExtra(TripAppDataActivity.TRIP_POSITION,position);
+        intent.putExtra(TripAppDataActivity.TRIP_TITLE, trips.get(position).getTitle());
+        intent.putExtra(TripAppDataActivity.TRIP_SET_TIME, trips.get(position).getTheSetTime());
+        intent.putExtra(TripAppDataActivity.TRIP_START_POINT, trips.get(position).getStartPoint());
+        intent.putExtra(TripAppDataActivity.TRIP_END_POINT, trips.get(position).getEndPoint());
+        intent.putExtra(TripAppDataActivity.TRIP_UNIQUE_ID, "102");
+        intent.putExtra(TripAppDataActivity.TRIP_POSITION, position);
         context.startActivity(intent);
     }
 
@@ -200,7 +205,6 @@ class ViewHolder {
 
     public TextView getTxtStartPoint() {
         if (txtStartPoint == null) {
-
             txtStartPoint = convertView.findViewById(R.id.txt_start_point);
         }
         return txtStartPoint;

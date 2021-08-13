@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -36,8 +36,8 @@ public class TripAppDataActivity extends AppCompatActivity {
     FloatingActionButton btn_add;
     Button btn_notes;
     TextView txt_notes, view_notes, txt_date, txt_time;
+    AutoCompleteTextView txt_StartPoint, txt_endPoint;
     EditText txt_title;
-    SearchView txt_StartPoint, txt_endPoint;
     Spinner txt_repeat, txt_kind;
     Calendar calendarDate;
     Calendar calendarTime;
@@ -59,7 +59,6 @@ public class TripAppDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_trip_app_data);
 
 
-
         intiComponent();
 
         getEditData();
@@ -77,7 +76,7 @@ public class TripAppDataActivity extends AppCompatActivity {
                 intentToMainActivity.putExtra(TRIP_START_POINT, trip.getStartPoint());
                 intentToMainActivity.putExtra(TRIP_END_POINT, trip.getEndPoint());
                 intentToMainActivity.putExtra(TRIP_SET_TIME, trip.getTheSetTime());
-                intentToMainActivity.putExtra(TRIP_POSITION,position);
+                intentToMainActivity.putExtra(TRIP_POSITION, position);
                 TripAppDataActivity.this.startActivity(intentToMainActivity);
             }
         });
@@ -122,14 +121,14 @@ public class TripAppDataActivity extends AppCompatActivity {
             Log.i("receiving_from_intent", String.valueOf(intent.getStringExtra(TripAppDataActivity.TRIP_UNIQUE_ID)));
             if (s != null) {
                 txt_title.setText(intent.getStringExtra(TRIP_TITLE));
-                txt_StartPoint.setQuery(intent.getStringExtra(TRIP_START_POINT), false);
-                txt_endPoint.setQuery(intent.getStringExtra(TRIP_END_POINT), false);
+                txt_StartPoint.setText(intent.getStringExtra(TRIP_START_POINT), false);
+                txt_endPoint.setText(intent.getStringExtra(TRIP_END_POINT), false);
                 theSetTime = (Calendar) intent.getSerializableExtra(TRIP_SET_TIME);
                 SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.US);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd /MM /yyyy", Locale.US);
                 txt_date.setText(dateFormat.format(theSetTime.getTime()));
                 txt_time.setText(timeFormat.format(theSetTime.getTime()));
-                position = intent.getIntExtra(TRIP_POSITION,0);
+                position = intent.getIntExtra(TRIP_POSITION, 0);
 
             }
         }
@@ -174,10 +173,14 @@ public class TripAppDataActivity extends AppCompatActivity {
         txt_time = findViewById(R.id.set_time);
         txt_title = findViewById(R.id.title);
         txt_StartPoint = findViewById(R.id.your_location);
-        txt_endPoint = findViewById(R.id.your_distenation);
+
+        txt_endPoint = findViewById(R.id.your_destination);
         txt_repeat = findViewById(R.id.repeatation);
         txt_kind = findViewById(R.id.kind_of_trip);
         view_notes = findViewById(R.id.notes);
+        txt_StartPoint.setAdapter(new PlaceAutocomplete(this, android.R.layout.simple_list_item_1 ));
+
+        txt_endPoint.setAdapter(new PlaceAutocomplete(this, android.R.layout.simple_list_item_1));
     }
 
     private Trip saveData() {
@@ -198,8 +201,8 @@ public class TripAppDataActivity extends AppCompatActivity {
         data.setTimeText(txt_time.getText().toString());
         data.setRound("Round".equals(String.valueOf(txt_repeat.getSelectedItem())));
         data.setRepetition(String.valueOf(txt_kind.getSelectedItem()));
-        data.setStartPoint(String.valueOf(txt_StartPoint.getQuery()));
-        data.setEndPoint(String.valueOf(txt_endPoint.getQuery()));
+        data.setStartPoint(String.valueOf(txt_StartPoint.getText()));
+        data.setEndPoint(String.valueOf(txt_endPoint.getText()));
         data.setNotes(notes);
         return data;
 

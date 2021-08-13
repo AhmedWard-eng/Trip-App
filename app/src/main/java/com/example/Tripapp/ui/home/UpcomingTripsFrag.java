@@ -1,10 +1,12 @@
 package com.example.Tripapp.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
+import com.example.Tripapp.TripMap.TripMap;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +49,13 @@ public class UpcomingTripsFrag extends Fragment {
         });
 
         upcomingListView = view.findViewById(R.id.upcomin_frag_listview);
+        upcomingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), TripMap.class);
+                startActivity(intent);
+            }
+        });
         UpcomingTripAdapter simpleArrayAdapter = new UpcomingTripAdapter(view.getContext(), trips);
         upcomingListView.setAdapter(simpleArrayAdapter);
         return view;
