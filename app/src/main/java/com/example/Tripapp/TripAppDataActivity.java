@@ -33,6 +33,7 @@ public class TripAppDataActivity extends AppCompatActivity {
     public static final String TRIP_END_POINT = "End Point";
     public static final String TRIP_SET_TIME = "Trip Set Time";
 
+    //commit update
     FloatingActionButton btn_add;
     Button btn_notes;
     TextView txt_notes, view_notes, txt_date, txt_time;
