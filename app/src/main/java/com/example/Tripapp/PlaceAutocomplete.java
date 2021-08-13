@@ -1,14 +1,14 @@
 package com.example.Tripapp;
 
-
 import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-
+import com.example.Tripapp.PlaceApi;
 
 import java.util.ArrayList;
+
 public class PlaceAutocomplete extends ArrayAdapter implements Filterable {
 
     ArrayList<String> results;

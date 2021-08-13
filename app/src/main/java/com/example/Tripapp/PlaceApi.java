@@ -37,7 +37,7 @@ public class PlaceApi {
 
             Log.d("JSon",jsonResult.toString());
         }
-        catch (MalformedURLException e){
+           catch (MalformedURLException e){
             e.printStackTrace();
         }
         catch (IOException e){
@@ -65,3 +65,6 @@ public class PlaceApi {
 
 
 }
+
+
+
