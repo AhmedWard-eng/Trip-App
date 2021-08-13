@@ -4,20 +4,40 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
-public class Trip implements Parcelable {
+public class Trip{
     private String title, startPoint, endPoint, status, repetition;
-    private Date date;
-    private Date time;
     private ArrayList<String> notes;
     private Boolean isRound;
-
-
+    private Calendar theSetTime;
+    private String dateText;
+    private String timeText;
+    private Date date;
     private int colorId;
 
-    public Trip(String title) {
-        this.title = title;
+
+
+    public String getDateText() {
+        return dateText;
+    }
+
+    public void setDateText(String dateText) {
+        this.dateText = dateText;
+    }
+
+    public String getTimeText() {
+        return timeText;
+    }
+
+    public void setTimeText(String timeText) {
+        this.timeText = timeText;
+    }
+
+
+    public Date getDate() {
+        return date;
     }
 
     public Trip(String title, String startPoint, String endPoint, String status, Date date, int colorId) {
@@ -29,21 +49,33 @@ public class Trip implements Parcelable {
         this.colorId = colorId;
     }
 
-    public Trip(String title, String startPoint, String endPoint, Date date, ArrayList<String> notes, Boolean isRound) {
+    public Trip(String title, String startPoint, String endPoint, String date, ArrayList<String> notes, Boolean isRound) {
         this.title = title;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
-        this.date = date;
+        this.dateText = date;
         this.notes = notes;
         this.isRound = isRound;
     }
 
-    public Trip(String title, String startPoint, String endPoint, Date date, Date time) {
+
+
+
+    public Calendar getTheSetTime() {
+        return theSetTime;
+    }
+
+    public void setTheSetTime(Calendar theSetTime) {
+        this.theSetTime = theSetTime;
+    }
+
+    public Trip(String title, String startPoint, String endPoint, String date, String time, Calendar theSetTime) {
         this.title = title;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
-        this.date = date;
-        this.time = time;
+        this.dateText = date;
+        this.timeText = time;
+        this.theSetTime = theSetTime;
     }
 
     Trip() {}
@@ -80,15 +112,6 @@ public class Trip implements Parcelable {
     public void setEndPoint(String endPoint) {
         this.endPoint = endPoint;
     }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public ArrayList<String> getNotes() {
         return notes;
     }
@@ -96,12 +119,9 @@ public class Trip implements Parcelable {
     public void setNotes(ArrayList<String> notes) {
         this.notes = notes;
     }
-
-
     public Boolean getRound() {
         return isRound;
     }
-
     public void setRound(Boolean round) {
         isRound = round;
     }
@@ -122,21 +142,4 @@ public class Trip implements Parcelable {
         this.colorId = colorId;
     }
 
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
 }

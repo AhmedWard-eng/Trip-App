@@ -3,6 +3,7 @@ package com.example.Tripapp.ui.home;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -24,10 +25,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class UpcomingTripAdapter extends ArrayAdapter {
-    Context context;
-    ArrayList<Trip> trips;
+    private Context context;
+    private ArrayList<Trip> trips;
+
+
     public UpcomingTripAdapter(Context context, ArrayList<Trip> trips) {
         super(context, R.layout.upcoming_trip_design, trips);
         this.context = context;
@@ -37,13 +41,10 @@ public class UpcomingTripAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        SimpleDateFormat timeFormat;
-        timeFormat = new SimpleDateFormat("kk:mm aa");
-        Date date = trips.get(position).getDate();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         View view = null;
         ViewHolder viewHolder;
+        SimpleDateFormat timeFormat;
+        DateFormat dateFormat;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.upcoming_trip_design, parent, false);
@@ -51,16 +52,18 @@ public class UpcomingTripAdapter extends ArrayAdapter {
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
+
+
         }
         viewHolder.getTxtTripName().setText(trips.get(position).getTitle());
-        viewHolder.getTxtDate().setText(dateFormat.format(date));
-        viewHolder.getTxtTime().setText(timeFormat.format(trips.get(position).getTime()));
+        viewHolder.getTxtDate().setText(trips.get(position).getDateText());
+        viewHolder.getTxtTime().setText(trips.get(position).getTimeText());
         viewHolder.getTxtStartPoint().setText(trips.get(position).getStartPoint());
         viewHolder.getTxtEndPoint().setText(trips.get(position).getEndPoint());
         viewHolder.getButtonStart().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "button start"+trips.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "button start" + trips.get(position).getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -80,11 +83,7 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                         deleteTrip(position);
                         return true;
                     } else if (itemId == R.id.item_edit) {
-                        Intent intent = new Intent(context, TripAppDataActivity.class);
-//                            intent.putExtra("ArrayList",  upcomingTripData);
-//                            intent.putExtra("position",position);
-
-                        context.startActivity(intent);
+                        EditTrip(position);
                         return true;
                     }
                     return false;
@@ -95,11 +94,22 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         viewHolder.getButtonNotes().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "button notes of " +trips.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "button notes of " + trips.get(position).getTitle(), Toast.LENGTH_SHORT).show();
 
             }
         });
         return view;
+    }
+
+    private void EditTrip(int position) {
+        Intent intent = new Intent(context, TripAppDataActivity.class);
+        intent.putExtra(TripAppDataActivity.TRIP_TITLE,trips.get(position).getTitle());
+        intent.putExtra(TripAppDataActivity.TRIP_SET_TIME,trips.get(position).getTheSetTime());
+        intent.putExtra(TripAppDataActivity.TRIP_START_POINT,trips.get(position).getStartPoint());
+        intent.putExtra(TripAppDataActivity.TRIP_END_POINT,trips.get(position).getEndPoint());
+        intent.putExtra(TripAppDataActivity.TRIP_UNIQUE_ID,"102");
+        intent.putExtra(TripAppDataActivity.TRIP_POSITION,position);
+        context.startActivity(intent);
     }
 
     private void cancelTrip(int position) {
