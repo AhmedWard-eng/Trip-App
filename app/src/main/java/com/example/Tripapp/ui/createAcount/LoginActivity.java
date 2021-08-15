@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import papaya.in.sendmail.SendMail;
+
 public class LoginActivity extends AppCompatActivity {
     EditText edit_email,edit_pass;
     TextView text_signUp;
@@ -90,6 +92,11 @@ imageView.setOnClickListener(new View.OnClickListener() {
                         }
                         else if(task.isSuccessful()){
                             Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                            SendMail mail = new SendMail("salahamany076@gmail.com", "AS1572000",
+                                    email,
+                                    "Sign Up Successful in Trip App",
+                                    "Yes, it's working well\nI will use it always.");
+                            mail.execute();
                             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                         }
