@@ -1,4 +1,4 @@
-package com.example.Tripapp.TripMap;
+package com.example.Tripapp.trip_map;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,26 +8,29 @@ import com.example.Tripapp.R;
 
 import android.widget.Button;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class TripMap extends AppCompatActivity implements TaskLoadedCallback {
+public class TripMapActivity extends AppCompatActivity implements TaskLoadedCallback {
     private Polyline currentPolyline;
-    static MarkerOptions place1 = new MarkerOptions().position(new LatLng(30.7406, 31.5764)).title("Location 1");
-    static MarkerOptions place2 = new MarkerOptions().position(new LatLng(30.0225, 31.5714)).title("Location 2");
+    static MarkerOptions place1 = new MarkerOptions().position(new LatLng(30.7255, 31.5710)).title("Location 1");
+    static MarkerOptions place2 = new MarkerOptions().position(new LatLng(30.0225, 31.3014)).title("Location 2");
     private Button btnStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_trip_map);
 
-//        btnStart = findViewById(R.id.btn_barTripMap_start);
-//        btnStart.setOnClickListener(view -> {
-//            new FetchURL(TripMap.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"), "driving");
-//        });
+        btnStart = findViewById(R.id.btn_barTripMap_start);
+        btnStart.setOnClickListener(view -> {
+            MapsFragment.tripMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(30.7255, 31.5710)));
+            MapsFragment.tripMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(30.7255, 31.5710), 8f));
+            //new FetchURL(TripMapActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"), "driving");
+        });
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {

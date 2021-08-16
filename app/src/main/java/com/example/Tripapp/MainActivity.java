@@ -4,22 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.Tripapp.ui.createAcount.LoginActivity;
 import com.example.Tripapp.ui.createAcount.MainActivity2;
-import com.example.Tripapp.ui.home.UpcomingTripsFrag;
 import com.example.Tripapp.ui.home.UpcomingViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -157,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
                 trip.setTitle(intent.getStringExtra(TripAppDataActivity.TRIP_TITLE));
                 trip.setTimeText(intent.getStringExtra(TripAppDataActivity.TRIP_TIME));
                 trip.setDateText(intent.getStringExtra(TripAppDataActivity.TRIP_DATE));
-                trip.setStartPoint(intent.getStringExtra(TripAppDataActivity.TRIP_START_POINT));
-                trip.setEndPoint(intent.getStringExtra(TripAppDataActivity.TRIP_END_POINT));
+                trip.setStartPoint(new Trip.Place(intent.getStringExtra(TripAppDataActivity.TRIP_START_POINT)));
+                trip.setEndPoint(new Trip.Place(intent.getStringExtra(TripAppDataActivity.TRIP_END_POINT)));
                 trip.setTheSetTime((Calendar) intent.getSerializableExtra(TripAppDataActivity.TRIP_SET_TIME));
                 int position = intent.getIntExtra(TripAppDataActivity.TRIP_POSITION,-1);
                 addTrip(trip,position);

@@ -1,4 +1,4 @@
-package com.example.Tripapp.TripMap;
+package com.example.Tripapp.trip_map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.Tripapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,11 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapsFragment extends Fragment
 {
@@ -48,9 +43,11 @@ public class MapsFragment extends Fragment
         public void onMapReady(GoogleMap googleMap)
         {
             tripMap = googleMap;
-            //LatLng sydney = new LatLng(-34, 151);
-            //googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            //googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            tripMap.clear();
+            tripMap.addMarker(TripMapActivity.place1);
+            tripMap.addMarker(TripMapActivity.place2);
+            MapsFragment.tripMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(30.7255, 31.5710)));
+            MapsFragment.tripMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(30.7255, 31.5710), 2f));
 
             /*googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
@@ -79,18 +76,6 @@ public class MapsFragment extends Fragment
                     .position(new LatLng(37.3092293,-122.1136845))
                     .title("Captain America"));*/
             Log.d("mylog", "Added Markers");
-            tripMap.addMarker(TripMap.place1);
-            tripMap.addMarker(TripMap.place2);
-
-            CameraPosition googlePlex = CameraPosition.builder()
-                    .target(new LatLng(30.7406,31.5764))
-                    .zoom(7)
-                    .bearing(0)
-                    .tilt(45)
-                    .build();
-
-            tripMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 5000, null);
-
         }
     };
 

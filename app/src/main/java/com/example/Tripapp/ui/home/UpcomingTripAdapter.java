@@ -3,6 +3,7 @@ package com.example.Tripapp.ui.home;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -20,7 +21,6 @@ import com.example.Tripapp.Notes.AddNotes;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
 import com.example.Tripapp.TripAppDataActivity;
-import com.example.Tripapp.TripMap.TripMap;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,20 +51,28 @@ public class UpcomingTripAdapter extends ArrayAdapter {
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
-
-
         }
+
         viewHolder.getTxtTripName().setText(trips.get(position).getTitle());
         viewHolder.getTxtDate().setText(trips.get(position).getDateText());
         viewHolder.getTxtTime().setText(trips.get(position).getTimeText());
-        viewHolder.getTxtStartPoint().setText(trips.get(position).getStartPoint());
-        viewHolder.getTxtEndPoint().setText(trips.get(position).getEndPoint());
+        viewHolder.getTxtStartPoint().setText(trips.get(position).getStartPoint().getName());
+        viewHolder.getTxtEndPoint().setText(trips.get(position).getEndPoint().getName());
+
         viewHolder.getButtonStart().setOnClickListener(new View.OnClickListener() {
+
+            final double longitude = trips.get(position).getEndPoint().getLatLng().longitude;
+            final double latitude = trips.get(position).getEndPoint().getLatLng().latitude;
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, TripMap.class);
-//                context.startActivity(intent);
-                Toast.makeText(getContext(), "button start" + trips.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                Uri intentUri = Uri.parse("google.navigation:q=" + longitude + "," + latitude);
+                Intent intent = new Intent(Intent.ACTION_VIEW, intentUri);
+                intent.setPackage("com.google.android.apps.maps");
+                if(intent.resolveActivity(context.getPackageManager()) != null){
+                    context.startActivity(intent);
+                }else{
+                    Toast.makeText(getContext(), "There's no app that can respond. Please, Install Google Maps", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -110,8 +118,8 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         Intent intent = new Intent(context, TripAppDataActivity.class);
         intent.putExtra(TripAppDataActivity.TRIP_TITLE, trips.get(position).getTitle());
         intent.putExtra(TripAppDataActivity.TRIP_SET_TIME, trips.get(position).getTheSetTime());
-        intent.putExtra(TripAppDataActivity.TRIP_START_POINT, trips.get(position).getStartPoint());
-        intent.putExtra(TripAppDataActivity.TRIP_END_POINT, trips.get(position).getEndPoint());
+        intent.putExtra(TripAppDataActivity.TRIP_START_POINT, trips.get(position).getStartPoint().getName());
+        intent.putExtra(TripAppDataActivity.TRIP_END_POINT, trips.get(position).getEndPoint().getName());
         intent.putExtra(TripAppDataActivity.TRIP_UNIQUE_ID, "102");
         intent.putExtra(TripAppDataActivity.TRIP_POSITION, position);
         context.startActivity(intent);
