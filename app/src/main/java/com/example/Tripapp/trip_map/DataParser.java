@@ -1,4 +1,4 @@
-package com.example.Tripapp.TripMap;
+package com.example.Tripapp.trip_map;
 import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;

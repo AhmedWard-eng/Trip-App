@@ -1,4 +1,4 @@
-package com.example.Tripapp.TripMap;
+package com.example.Tripapp.trip_map;
 
 import android.content.Context;
 import android.graphics.Color;

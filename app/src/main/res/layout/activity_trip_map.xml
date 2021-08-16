@@ -17,10 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@color/white"
+        android:background="#4D4D4D"
         android:text="Add Note"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/edt_add_note"
@@ -66,7 +64,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment"
-            android:name="com.example.tripmap.MapsFragment"
+            android:name="com.example.Tripapp.trip_map.MapsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>

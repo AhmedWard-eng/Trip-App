@@ -2,7 +2,6 @@ package com.example.Tripapp.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
-import com.example.Tripapp.TripMap.TripMap;
+import com.example.Tripapp.trip_map.TripMapActivity;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,9 +38,18 @@ public class UpcomingTripsFrag extends Fragment {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.US);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd /MM /yyyy", Locale.US);
-        trips.add(new Trip("Trip Name", "The Start Point", "The Trip End Point", dateFormat.format(calendar.getTime()), timeFormat.format(calendar.getTime()), calendar));
-        trips.add(new Trip("Aswan Trip", "Cairo", "Aswan", dateFormat.format(calendar.getTime()), timeFormat.format(calendar.getTime()), calendar));
-        trips.add(new Trip("university", "Cairo", "Zagazig", dateFormat.format(calendar.getTime()), timeFormat.format(calendar.getTime()), calendar));
+        trips.add(new Trip("Trip Name",
+                new Trip.Place("The Start Point", new LatLng(30.5,30.5)),
+                new Trip.Place("The Trip End Point", new LatLng(31.5,31.5)),
+                dateFormat.format(calendar.getTime()), timeFormat.format(calendar.getTime()), calendar));
+        trips.add(new Trip("Aswan Trip",
+                new Trip.Place("Cairo", new LatLng(30.5,30.5)),
+                new Trip.Place("Aswan", new LatLng(31.5,31.5)),
+                dateFormat.format(calendar.getTime()), timeFormat.format(calendar.getTime()), calendar));
+        trips.add(new Trip("university",
+                new Trip.Place("Cairo", new LatLng(30.5,30.5)),
+                new Trip.Place("Zagazig", new LatLng(31.5,31.5)),
+                dateFormat.format(calendar.getTime()), timeFormat.format(calendar.getTime()), calendar));
         upcomingViewModel.getTrip().observe(getViewLifecycleOwner(), new Observer<Trip>() {
             @Override
             public void onChanged(Trip trip) {
@@ -52,7 +61,7 @@ public class UpcomingTripsFrag extends Fragment {
         upcomingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), TripMap.class);
+                Intent intent = new Intent(getContext(), TripMapActivity.class);
                 startActivity(intent);
             }
         });

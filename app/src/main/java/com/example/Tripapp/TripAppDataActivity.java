@@ -74,8 +74,8 @@ public class TripAppDataActivity extends AppCompatActivity {
                 intentToMainActivity.putExtra(TRIP_UNIQUE_ID, "from_TripDataActivity");
                 intentToMainActivity.putExtra(TRIP_DATE, trip.getDateText());
                 intentToMainActivity.putExtra(TRIP_TIME, trip.getTimeText());
-                intentToMainActivity.putExtra(TRIP_START_POINT, trip.getStartPoint());
-                intentToMainActivity.putExtra(TRIP_END_POINT, trip.getEndPoint());
+                intentToMainActivity.putExtra(TRIP_START_POINT, trip.getStartPoint().getName());
+                intentToMainActivity.putExtra(TRIP_END_POINT, trip.getEndPoint().getName());
                 intentToMainActivity.putExtra(TRIP_SET_TIME, trip.getTheSetTime());
                 intentToMainActivity.putExtra(TRIP_POSITION, position);
                 TripAppDataActivity.this.startActivity(intentToMainActivity);
@@ -202,8 +202,8 @@ public class TripAppDataActivity extends AppCompatActivity {
         data.setTimeText(txt_time.getText().toString());
         data.setRound("Round".equals(String.valueOf(txt_repeat.getSelectedItem())));
         data.setRepetition(String.valueOf(txt_kind.getSelectedItem()));
-        data.setStartPoint(String.valueOf(txt_StartPoint.getText()));
-        data.setEndPoint(String.valueOf(txt_endPoint.getText()));
+        data.setStartPoint(new Trip.Place(String.valueOf(txt_StartPoint.getText())));
+        data.setEndPoint(new Trip.Place(String.valueOf(txt_endPoint.getText())));
         data.setNotes(notes);
         return data;
 
