@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -45,18 +46,20 @@ public class HistoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // TODO load trips from Storage instead
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.US);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd /MM /yyyy", Locale.US);
         ArrayList<Trip> trips = new ArrayList<>(Arrays.asList(
-                new Trip("Title",
-                        new Trip.Place("Location", new LatLng(30.7255, 31.5710)),
-                        new Trip.Place("Location", new LatLng(30.7255, 31.5710)),
-                        "finished", new Date(), R.color.temp_green),
-                new Trip("Title", new Trip.Place("Location",
-                        new LatLng(30.7255, 31.5710)),
-                        new Trip.Place("Location", new LatLng(30.7255, 31.5710)),
-                        "finished", new Date(), R.color.temp_blue),
-                new Trip("Title", new Trip.Place("Location", new LatLng(30.7255, 31.5710)),
-                        new Trip.Place("Location", new LatLng(30.7255, 31.5710)),
-                        "cancelled", new Date(), R.color.temp_orange)));
+                new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+                        dateFormat.format(calendar.getTime()),
+                        timeFormat.format(calendar.getTime()),
+                        calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)),
+        new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+                dateFormat.format(calendar.getTime()),
+                timeFormat.format(calendar.getTime()),
+                calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE))));
         ListView lstView = view.findViewById(R.id.best_list);
         lstView.setAdapter(new BestAdapter (getActivity(), trips, R.color.white));
     }
@@ -106,12 +109,12 @@ class BestAdapter extends ArrayAdapter<Trip>
         parent.setBackgroundColor(color);
 
         SimpleDateFormat sdFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm", Locale.getDefault());
-        String date = sdFormat.format(currentItem.getDate());
+//        String date = sdFormat.format(currentItem.getDate());
 
         viewHolder.getTxtTitle().setText(currentItem.getTitle());
-        viewHolder.getTxtStart().setText(currentItem.getStartPoint().getName());
-        viewHolder.getTxtEnd().setText(currentItem.getEndPoint().getName());
-        viewHolder.getTxtDate().setText(date);
+        viewHolder.getTxtStart().setText(currentItem.getStartPoint());
+        viewHolder.getTxtEnd().setText(currentItem.getEndPoint());
+//        viewHolder.getTxtDate().setText(date);
         viewHolder.getTxtStatus().setText(currentItem.getStatus());
 
         viewHolder.getCard().setOnClickListener(view -> {

@@ -56,21 +56,23 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         viewHolder.getTxtTripName().setText(trips.get(position).getTitle());
         viewHolder.getTxtDate().setText(trips.get(position).getDateText());
         viewHolder.getTxtTime().setText(trips.get(position).getTimeText());
-        viewHolder.getTxtStartPoint().setText(trips.get(position).getStartPoint().getName());
-        viewHolder.getTxtEndPoint().setText(trips.get(position).getEndPoint().getName());
+        viewHolder.getTxtStartPoint().setText(trips.get(position).getStartPoint());
+        viewHolder.getTxtEndPoint().setText(trips.get(position).getEndPoint());
 
         viewHolder.getButtonStart().setOnClickListener(new View.OnClickListener() {
 
-            final double longitude = trips.get(position).getEndPoint().getLatLng().longitude;
-            final double latitude = trips.get(position).getEndPoint().getLatLng().latitude;
+            final double longitude = trips.get(position).getLongitude();
+            final double latitude = trips.get(position).getLatitude();
+
             @Override
             public void onClick(View v) {
                 Uri intentUri = Uri.parse("google.navigation:q=" + longitude + "," + latitude);
+//                Uri intentUri = Uri.parse("google.navigation:q=" + address);
                 Intent intent = new Intent(Intent.ACTION_VIEW, intentUri);
                 intent.setPackage("com.google.android.apps.maps");
-                if(intent.resolveActivity(context.getPackageManager()) != null){
+                if (intent.resolveActivity(context.getPackageManager()) != null) {
                     context.startActivity(intent);
-                }else{
+                } else {
                     Toast.makeText(getContext(), "There's no app that can respond. Please, Install Google Maps", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -118,8 +120,8 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         Intent intent = new Intent(context, TripAppDataActivity.class);
         intent.putExtra(TripAppDataActivity.TRIP_TITLE, trips.get(position).getTitle());
         intent.putExtra(TripAppDataActivity.TRIP_SET_TIME, trips.get(position).getTheSetTime());
-        intent.putExtra(TripAppDataActivity.TRIP_START_POINT, trips.get(position).getStartPoint().getName());
-        intent.putExtra(TripAppDataActivity.TRIP_END_POINT, trips.get(position).getEndPoint().getName());
+        intent.putExtra(TripAppDataActivity.TRIP_START_POINT, trips.get(position).getStartPoint());
+        intent.putExtra(TripAppDataActivity.TRIP_END_POINT, trips.get(position).getEndPoint());
         intent.putExtra(TripAppDataActivity.TRIP_UNIQUE_ID, "102");
         intent.putExtra(TripAppDataActivity.TRIP_POSITION, position);
         context.startActivity(intent);

@@ -38,18 +38,21 @@ public class UpcomingTripsFrag extends Fragment {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.US);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd /MM /yyyy", Locale.US);
-        trips.add(new Trip("Trip Name",
-                new Trip.Place("The Start Point", new LatLng(30.5,30.5)),
-                new Trip.Place("The Trip End Point", new LatLng(31.5,31.5)),
-                dateFormat.format(calendar.getTime()), timeFormat.format(calendar.getTime()), calendar));
-        trips.add(new Trip("Aswan Trip",
-                new Trip.Place("Cairo", new LatLng(30.5,30.5)),
-                new Trip.Place("Aswan", new LatLng(31.5,31.5)),
-                dateFormat.format(calendar.getTime()), timeFormat.format(calendar.getTime()), calendar));
-        trips.add(new Trip("university",
-                new Trip.Place("Cairo", new LatLng(30.5,30.5)),
-                new Trip.Place("Zagazig", new LatLng(31.5,31.5)),
-                dateFormat.format(calendar.getTime()), timeFormat.format(calendar.getTime()), calendar));
+        trips.add(new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+                dateFormat.format(calendar.getTime()),
+                timeFormat.format(calendar.getTime()),
+                calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
+        trips.add(new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+                dateFormat.format(calendar.getTime()),
+                timeFormat.format(calendar.getTime()),
+                calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
+        trips.add(new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+                dateFormat.format(calendar.getTime()),
+                timeFormat.format(calendar.getTime()),
+                calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
         upcomingViewModel.getTrip().observe(getViewLifecycleOwner(), new Observer<Trip>() {
             @Override
             public void onChanged(Trip trip) {

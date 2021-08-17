@@ -6,16 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ui.history.HistoryFragment">
 
+
+    <fragment
+        android:id="@+id/fragment2"
+        android:name="com.example.Tripapp.trip_map.MapsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="296dp"
+        app:layout_constraintBottom_toTopOf="@+id/best_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ListView
         android:id="@+id/best_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="500dp"
         android:divider="@null"
         android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:context=".ui.history.HistoryFragment">
 
     </ListView>

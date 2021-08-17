@@ -12,16 +12,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.Tripapp.Data.Alarm;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class TripAppDataActivity extends AppCompatActivity {
     public static final String TRIP_POSITION = "Trip Position";
@@ -33,7 +34,7 @@ public class TripAppDataActivity extends AppCompatActivity {
     public static final String TRIP_END_POINT = "End Point";
     public static final String TRIP_SET_TIME = "Trip Set Time";
 
-    //commit update
+
     FloatingActionButton btn_add;
     Button btn_notes;
     TextView txt_notes, view_notes, txt_date, txt_time;
@@ -41,18 +42,19 @@ public class TripAppDataActivity extends AppCompatActivity {
     EditText txt_title;
     Spinner txt_repeat, txt_kind;
     Calendar calendarDate;
-    Calendar calendarTime;
     Calendar theSetTime;
     String date;
     String time;
-    int position;
+    int anHour;
+    int aMinute;
+    int aYear;
+    int aMonth;
+    int aDay;
 
 
     int i = 0;
     ArrayList<String> notes = new ArrayList<>();
     DatePickerDialog.OnDateSetListener onDateSetListener;
-
-    int year, month, day, hours, minutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,21 +65,24 @@ public class TripAppDataActivity extends AppCompatActivity {
         intiComponent();
 
         getEditData();
-        position = -1;
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Trip trip = saveData();
+
+                Alarm alarm = new Alarm(0,trip.getHour(),trip.getMinute(),trip.getDay(),trip.getMonth(),trip.getYear(),System.currentTimeMillis(),true,trip.getTitle());
+                alarm.schedule(getApplicationContext());
+
+
                 Intent intentToMainActivity = new Intent(TripAppDataActivity.this, MainActivity.class);
                 intentToMainActivity.putExtra(TRIP_TITLE, trip.getTitle());
                 intentToMainActivity.putExtra(TRIP_UNIQUE_ID, "from_TripDataActivity");
                 intentToMainActivity.putExtra(TRIP_DATE, trip.getDateText());
                 intentToMainActivity.putExtra(TRIP_TIME, trip.getTimeText());
-                intentToMainActivity.putExtra(TRIP_START_POINT, trip.getStartPoint().getName());
-                intentToMainActivity.putExtra(TRIP_END_POINT, trip.getEndPoint().getName());
+                intentToMainActivity.putExtra(TRIP_START_POINT, trip.getStartPoint());
+                intentToMainActivity.putExtra(TRIP_END_POINT, trip.getEndPoint());
                 intentToMainActivity.putExtra(TRIP_SET_TIME, trip.getTheSetTime());
-                intentToMainActivity.putExtra(TRIP_POSITION, position);
                 TripAppDataActivity.this.startActivity(intentToMainActivity);
             }
         });
@@ -92,10 +97,8 @@ public class TripAppDataActivity extends AppCompatActivity {
             }
         });
 
-        Calendar calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
+
+
 
         txt_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,25 +132,29 @@ public class TripAppDataActivity extends AppCompatActivity {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd /MM /yyyy", Locale.US);
                 txt_date.setText(dateFormat.format(theSetTime.getTime()));
                 txt_time.setText(timeFormat.format(theSetTime.getTime()));
-                position = intent.getIntExtra(TRIP_POSITION, 0);
 
             }
         }
     }
 
     private void showTime() {
+        Calendar calendar = Calendar.getInstance();
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, R.style.Theme_AppCompat_DayNight_Dialog_MinWidth, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                calendarTime = Calendar.getInstance();
-                calendarTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                calendarTime.set(Calendar.MINUTE, minute);
-                calendarTime.setTimeZone(TimeZone.getDefault());
+                anHour = hourOfDay;
+                aMinute = minute;
+                Calendar calendarTime = Calendar.getInstance();
+                calendarTime.set(Calendar.MINUTE,aMinute);
+                calendarTime.set(Calendar.HOUR_OF_DAY,anHour);
+                anHour = calendarTime.get(Calendar.HOUR_OF_DAY);
+                Toast.makeText(TripAppDataActivity.this,String.valueOf(anHour),Toast.LENGTH_SHORT).show();
+                aMinute = calendarTime.get(Calendar.MINUTE);
                 SimpleDateFormat format = new SimpleDateFormat("hh:mm aa", Locale.US);
                 time = format.format(calendarTime.getTime());
                 txt_time.setText(time);
             }
-        }, hours, minutes, false);
+        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
         timePickerDialog.show();
     }
 
@@ -156,12 +163,18 @@ public class TripAppDataActivity extends AppCompatActivity {
             month = month + 1;
             date = dayOfMonth + "/" + month + "/" + year;
             txt_date.setText(date);
-
+            aYear = year;
+            aMonth = month;
+            aDay = dayOfMonth;
             calendarDate = Calendar.getInstance();
             calendarDate.set(year, month, dayOfMonth);
 
         };
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, onDateSetListener, year, month, day);
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, onDateSetListener,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
 
@@ -188,24 +201,41 @@ public class TripAppDataActivity extends AppCompatActivity {
         Trip data = new Trip();
         if (theSetTime == null) {
             theSetTime = Calendar.getInstance();
-            theSetTime.set(Calendar.HOUR, calendarTime.get(Calendar.HOUR));
-            theSetTime.set(Calendar.MINUTE, calendarTime.get(Calendar.MINUTE));
-            theSetTime.set(Calendar.MINUTE, calendarTime.get(Calendar.MINUTE));
-            theSetTime.set(Calendar.AM_PM, calendarTime.get(Calendar.AM_PM));
-            theSetTime.set(Calendar.DAY_OF_MONTH, calendarDate.get(Calendar.MINUTE));
-            theSetTime.set(Calendar.MONTH, calendarDate.get(Calendar.MONTH));
-            theSetTime.set(Calendar.YEAR, calendarDate.get(Calendar.YEAR));
+            theSetTime.set(Calendar.HOUR, anHour);
+            theSetTime.set(Calendar.MINUTE,aMinute);
+            theSetTime.set(Calendar.DAY_OF_MONTH, aDay);
+            theSetTime.set(Calendar.MONTH, aMonth);
+            theSetTime.set(Calendar.YEAR, aYear);
         }
+        data.setTheSetTime(theSetTime);
+
+        int minute = theSetTime.get(Calendar.MINUTE);
+        int hour = theSetTime.get(Calendar.HOUR_OF_DAY);
+        int day = theSetTime.get(Calendar.DAY_OF_MONTH);;
+        int year = theSetTime.get(Calendar.YEAR);
+        int month = theSetTime.get(Calendar.MONTH);
+
+//        theSetTime.get(Calendar.HOUR);
+
+
+        data.setMinute(aMinute);
+        data.setHour(anHour);
+        data.setYear(aYear);
+        data.setMonth(aMonth);
+        data.setDay(aDay);
         data.setTheSetTime(theSetTime);
         data.setTitle(txt_title.getText().toString());
         data.setDateText(txt_date.getText().toString());
         data.setTimeText(txt_time.getText().toString());
         data.setRound("Round".equals(String.valueOf(txt_repeat.getSelectedItem())));
         data.setRepetition(String.valueOf(txt_kind.getSelectedItem()));
-        data.setStartPoint(new Trip.Place(String.valueOf(txt_StartPoint.getText())));
-        data.setEndPoint(new Trip.Place(String.valueOf(txt_endPoint.getText())));
+        data.setStartPoint(String.valueOf(txt_StartPoint));
+        data.setEndPoint(String.valueOf(txt_endPoint));
+        data.setLatitude(29.924526);
+        data.setLongitude(31.205753);
         data.setNotes(notes);
         return data;
+//        31.205753, 29.924526
 
     }
 
