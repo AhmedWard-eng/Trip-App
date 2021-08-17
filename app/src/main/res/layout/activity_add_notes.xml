@@ -3,15 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Notes.AddNotes">
+    tools:context=".Notes.Add_Notes">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <TextView
-        android:id="@+id/fragment_notes"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#EDE9E9" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -46,7 +40,7 @@
             <ListView
                 android:id="@+id/list_notes"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="853dp"
                 android:layout_marginTop="50dp">
 
             </ListView>
