@@ -52,11 +52,11 @@ public class NoteAdapter extends ArrayAdapter<String> {
         viewHolder.getNew().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (position == 10){
+                if (Add_Notes.notes.size() == 10){
                     Toast.makeText(getContext(), "Notes Should be Ten Only", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    AddNotes.notes.add("Empty");
+                    Add_Notes.notes.add("");
                     notifyDataSetChanged();
                 }
             }
@@ -65,7 +65,7 @@ public class NoteAdapter extends ArrayAdapter<String> {
                 .setTitle(R.string.delete)
                 .setMessage("You Want to Delete This Note")
                 .setPositiveButton(R.string.delete, (dialogInterface, i) -> {
-                    AddNotes.notes.remove(position);
+                    Add_Notes.notes.remove(position);
                     notifyDataSetChanged();
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
