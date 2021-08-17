@@ -1,107 +1,171 @@
 package com.example.Tripapp;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
-public class Trip
-{
-    private String title, start, end, status;
-    private Date date;
-    private ArrayList<String> notes;
+public class Trip {
+    private int tripId;
+    private String title;
+    private String startPoint, endPoint;
+    double latitude, longitude;
+    private String[] notes;
     private Boolean isRound;
+    private String dateText;
+    private String timeText;
     private int colorId;
+    private int day;
+    private int month;
+    private int year;
+    private int hour;
+    private int minute;
 
-    public Trip(String title){ this.title = title; }
-
-    public Trip(String title, String start, String end, String status, Date date, int colorId)
-    {
-        this.title = title;
-        this.start = start;
-        this.end = end;
-        this.status = status;
-        this.date = date;
-        this.colorId = colorId;
+    public int getDay() {
+        return day;
     }
 
-    public Trip(String title, String start, String end, Date date, ArrayList<String> notes, Boolean isRound)
-    {
-        this.title = title;
-        this.start = start;
-        this.end = end;
-        this.date = date;
-        this.notes = notes;
-        this.isRound = isRound;
+    public void setDay(int day) {
+        this.day = day;
     }
 
-    public String getTitle()
-    {
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public Trip() {
+    }
+
+
+    public Trip(String title, String startPoint, String endPoint, double latitude, double longitude, String dateText, String timeText, int day, int month, int year, int hour, int minute) {
+        this.title = title;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.dateText = dateText;
+        this.timeText = timeText;
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.hour = hour;
+        this.minute = minute;
+    }
+
+    public String getDateText() {
+        return dateText;
+    }
+
+    public void setDateText(String dateText) {
+        this.dateText = dateText;
+    }
+
+    public String getTimeText() {
+        return timeText;
+    }
+
+    public void setTimeText(String timeText) {
+        this.timeText = timeText;
+    }
+
+
+    public String getTitle() {
         return title;
     }
-    public void setTitle(String title)
-    {
+
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getStart()
-    {
-        return start;
-    }
-    public void setStart(String start)
-    {
-        this.start = start;
-    }
-
-    public String getEnd()
-    {
-        return end;
-    }
-    public void setEnd(String end)
-    {
-        this.end = end;
-    }
-
-    public Date getDate()
-    {
-        return date;
-    }
-    public void setDate(Date date)
-    {
-        this.date = date;
-    }
-
-    public ArrayList<String> getNotes()
-    {
+    public String[] getNotes() {
         return notes;
     }
-    public void setNotes(ArrayList<String> notes)
-    {
+
+    public void setNotes(String[] notes) {
         this.notes = notes;
     }
 
-    public Boolean isRound()
-    {
+    public Boolean getRound() {
         return isRound;
     }
-    public void isRound(Boolean round)
-    {
+
+    public void setRound(Boolean round) {
         isRound = round;
     }
 
-    public String getStatus()
-    {
-        return status;
-    }
-    public void setStatus(String status)
-    {
-        this.status = status;
-    }
 
-    public int getColorId()
-    {
+    public int getColorId() {
         return colorId;
     }
-    public void setColorId(int colorId)
-    {
+
+    public void setColorId(int colorId) {
         this.colorId = colorId;
     }
+
+    public String getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(String startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public String getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(String endPoint) {
+        this.endPoint = endPoint;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+
 }
+
+
+
+

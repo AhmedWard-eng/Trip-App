@@ -48,8 +48,8 @@
     <string name="kind">Kind of trip</string>
     <string name="add_notes">Add Notes</string>
     <string-array name="kind_trip">
-        <item> One Way Trip</item>
-        <item> Round</item>
+        <item>One Way Trip</item>
+        <item>Round</item>
     </string-array>
     <string-array name="repeatition">
         <item>No Repeat</item>
@@ -57,5 +57,8 @@
         <item>Repeat Weekly</item>
         <item>Repeat Monthly</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="snooze">Snooze</string>
 
 </resources>

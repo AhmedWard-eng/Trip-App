@@ -1,9 +1,10 @@
 package com.example.Tripapp.ui.home;
 
-import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -17,19 +18,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 
+import com.example.Tripapp.Notes.Add_Notes;
 import com.example.Tripapp.R;
+import com.example.Tripapp.Trip;
 import com.example.Tripapp.TripAppDataActivity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class UpcomingTripAdapter extends ArrayAdapter {
-    Context context;
-    ArrayList<UpcomingTripData> upcomingTripData;
+    private Context context;
+    private ArrayList<Trip> trips;
 
-    public UpcomingTripAdapter(Context context, ArrayList<UpcomingTripData> upcomingTripData) {
-        super(context, R.layout.upcoming_trip_design, upcomingTripData);
+
+    public UpcomingTripAdapter(Context context, ArrayList<Trip> trips) {
+        super(context, R.layout.upcoming_trip_design, trips);
         this.context = context;
-        this.upcomingTripData = upcomingTripData;
+        this.trips = trips;
     }
 
     @NonNull
@@ -37,6 +43,8 @@ public class UpcomingTripAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = null;
         ViewHolder viewHolder;
+        SimpleDateFormat timeFormat;
+        DateFormat dateFormat;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.upcoming_trip_design, parent, false);
@@ -45,15 +53,29 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.getTxtTripName().setText(upcomingTripData.get(position).tripName);
-        viewHolder.getTxtDate().setText(upcomingTripData.get(position).date);
-        viewHolder.getTxtTime().setText(upcomingTripData.get(position).time);
-        viewHolder.getTxtStartPoint().setText(upcomingTripData.get(position).startPoint);
-        viewHolder.getTxtEndPoint().setText(upcomingTripData.get(position).endPoint);
+
+        viewHolder.getTxtTripName().setText(trips.get(position).getTitle());
+        viewHolder.getTxtDate().setText(trips.get(position).getDateText());
+        viewHolder.getTxtTime().setText(trips.get(position).getTimeText());
+        viewHolder.getTxtStartPoint().setText(trips.get(position).getStartPoint());
+        viewHolder.getTxtEndPoint().setText(trips.get(position).getEndPoint());
+
         viewHolder.getButtonStart().setOnClickListener(new View.OnClickListener() {
+
+            final double longitude = trips.get(position).getLongitude();
+            final double latitude = trips.get(position).getLatitude();
+
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "button start"+upcomingTripData.get(position).tripName, Toast.LENGTH_SHORT).show();
+                Uri intentUri = Uri.parse("google.navigation:q=" + longitude + "," + latitude);
+//                Uri intentUri = Uri.parse("google.navigation:q=" + address);
+                Intent intent = new Intent(Intent.ACTION_VIEW, intentUri);
+                intent.setPackage("com.google.android.apps.maps");
+                if (intent.resolveActivity(context.getPackageManager()) != null) {
+                    context.startActivity(intent);
+                } else {
+                    Toast.makeText(getContext(), "There's no app that can respond. Please, Install Google Maps", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -73,26 +95,42 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                         deleteTrip(position);
                         return true;
                     } else if (itemId == R.id.item_edit) {
-                        Intent intent = new Intent(context, TripAppDataActivity.class);
-//                            intent.putExtra("ArrayList",  upcomingTripData);
-//                            intent.putExtra("position",position);
-
-                        context.startActivity(intent);
+                        EditTrip(position);
+                        return true;
+                    } else if (itemId == R.id.item_Notes) {
+                       Intent intent = new Intent(context,Add_Notes.class);
+                       context.startActivity(intent);
                         return true;
                     }
                     return false;
                 });
-
             }
         });
         viewHolder.getButtonNotes().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "button notes of " +upcomingTripData.get(position).tripName, Toast.LENGTH_SHORT).show();
-
+                 showAlartDialog();
             }
         });
         return view;
+    }
+
+    private void showAlartDialog() {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.activity_show_all_notes);
+        dialog.show();
+
+    }
+
+    private void EditTrip(int position) {
+        Intent intent = new Intent(context, TripAppDataActivity.class);
+        intent.putExtra(TripAppDataActivity.TRIP_TITLE, trips.get(position).getTitle());
+//        intent.putExtra(TripAppDataActivity.TRIP_SET_TIME, trips.get(position).getTheSetTime());
+        intent.putExtra(TripAppDataActivity.TRIP_START_POINT, trips.get(position).getStartPoint());
+        intent.putExtra(TripAppDataActivity.TRIP_END_POINT, trips.get(position).getEndPoint());
+        intent.putExtra(TripAppDataActivity.TRIP_UNIQUE_ID, "102");
+        intent.putExtra(TripAppDataActivity.TRIP_POSITION, position);
+        context.startActivity(intent);
     }
 
     private void cancelTrip(int position) {
@@ -104,7 +142,7 @@ public class UpcomingTripAdapter extends ArrayAdapter {
             public void onClick(DialogInterface dialog, int which) {
                 // continue with cancel
 
-                upcomingTripData.remove(position);
+                trips.remove(position);
                 notifyDataSetChanged();
             }
         });
@@ -126,10 +164,11 @@ public class UpcomingTripAdapter extends ArrayAdapter {
 
             public void onClick(DialogInterface dialog, int which) {
                 // continue with delete
-                upcomingTripData.remove(position);
+                trips.remove(position);
                 notifyDataSetChanged();
             }
         });
+
         alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // close dialog
@@ -183,7 +222,6 @@ class ViewHolder {
 
     public TextView getTxtStartPoint() {
         if (txtStartPoint == null) {
-
             txtStartPoint = convertView.findViewById(R.id.txt_start_point);
         }
         return txtStartPoint;

@@ -2,6 +2,8 @@ package com.example.Tripapp.ui.history;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +23,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
+import com.example.Tripapp.trip_map.TripMapActivity;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -41,51 +46,20 @@ public class HistoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // TODO load trips from Storage instead
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.US);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd /MM /yyyy", Locale.US);
         ArrayList<Trip> trips = new ArrayList<>(Arrays.asList(
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_green),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_orange),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_purple),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_green),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_orange),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(),R.color.temp_purple),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_green),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_orange),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_purple),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_green),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_purple),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_orange),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_green),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_orange),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_purple),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_green),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_green),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_orange),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_purple),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_green),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_purple),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_orange),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_green),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_orange),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_purple),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_green),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_purple),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_orange),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_green),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_orange),
-                new Trip("Title", "Location", "Destination", "finished", new Date(), R.color.temp_purple),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_blue),
-                new Trip("Title", "Location", "Destination", "cancelled", new Date(), R.color.temp_green)));
+                new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+                        dateFormat.format(calendar.getTime()),
+                        timeFormat.format(calendar.getTime()),
+                        calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)),
+        new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+                dateFormat.format(calendar.getTime()),
+                timeFormat.format(calendar.getTime()),
+                calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE))));
         ListView lstView = view.findViewById(R.id.best_list);
         lstView.setAdapter(new BestAdapter (getActivity(), trips, R.color.white));
     }
@@ -93,10 +67,12 @@ public class HistoryFragment extends Fragment {
 
 class BestAdapter extends ArrayAdapter<Trip>
 {
+    private Context context;
     private int backgroundColor;
 
     BestAdapter(Activity context, ArrayList<Trip> items, int backgroundColor) {
         super(context, 0, items);
+        this.context = context;
         this.backgroundColor = backgroundColor;
     }
 
@@ -133,13 +109,19 @@ class BestAdapter extends ArrayAdapter<Trip>
         parent.setBackgroundColor(color);
 
         SimpleDateFormat sdFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm", Locale.getDefault());
-        String date = sdFormat.format(currentItem.getDate());
+//        String date = sdFormat.format(currentItem.getDate());
 
         viewHolder.getTxtTitle().setText(currentItem.getTitle());
-        viewHolder.getTxtStart().setText(currentItem.getStart());
-        viewHolder.getTxtEnd().setText(currentItem.getEnd());
-        viewHolder.getTxtDate().setText(date);
-        viewHolder.getTxtStatus().setText(currentItem.getStatus());
+        viewHolder.getTxtStart().setText(currentItem.getStartPoint());
+        viewHolder.getTxtEnd().setText(currentItem.getEndPoint());
+//        viewHolder.getTxtDate().setText(date);
+//        viewHolder.getTxtStatus().setText(currentItem.getStatus());
+
+        viewHolder.getCard().setOnClickListener(view -> {
+            Intent intent = new Intent(getContext(), TripMapActivity.class);
+            context.startActivity(intent);
+        });
+
         viewHolder.getBtnDelete().setOnClickListener(view -> new AlertDialog.Builder(BestAdapter.super.getContext())
                 .setTitle(R.string.delete)
                 .setMessage(R.string.confirm_delete)
@@ -147,17 +129,20 @@ class BestAdapter extends ArrayAdapter<Trip>
                     // TODO delete trip
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
-                    // TODO remove dialog
+                    // TODO cancel dialog
                 })
                 .show());
+
         viewHolder.getBtnReuse().setOnClickListener(view -> new AlertDialog.Builder(BestAdapter.super.getContext())
                 .setTitle(R.string.reuse)
                 .setMessage(R.string.confirm_reuse)
                 .setPositiveButton(R.string.reuse, (dialogInterface, i) -> {
-                    // TODO delete trip
+                    // TODO resuse trip
+                    Intent intent = new Intent(getContext(), TripMapActivity.class);
+                    context.startActivity(intent);
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
-                    // TODO remove dialog
+                    // TODO cancel dialog
                 })
                 .show());
 
@@ -174,13 +159,13 @@ class BestAdapter extends ArrayAdapter<Trip>
             view = convertView;
         }
 
-        /* TODO in case we implemented categories then each category should have its own color
+        // TODO in case we implemented categories then each category should have its own color
         public CardView getCard(){
             if(card == null){
                 card = view.findViewById(R.id.item_card);
             }
             return card;
-        }*/
+        }
 
         public TextView getTxtTitle(){
             if(txtTitle == null){

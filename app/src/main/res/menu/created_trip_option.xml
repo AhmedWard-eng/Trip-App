@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/item_Notes"
+        android:title="Notes" />
+    <item
         android:id="@+id/item_edit"
         android:icon="@drawable/ic_baseline_edit_24"
         android:title="@string/edit" />
@@ -12,4 +15,5 @@
         android:id="@+id/item_cancel"
         android:icon="@drawable/ic_baseline_cancel_24"
         android:title="@string/cancel" />
+
 </menu>
