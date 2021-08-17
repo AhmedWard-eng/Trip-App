@@ -1,5 +1,6 @@
 package com.example.Tripapp.ui.home;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 
-import com.example.Tripapp.Notes.AddNotes;
+import com.example.Tripapp.Notes.Add_Notes;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
 import com.example.Tripapp.TripAppDataActivity;
@@ -97,23 +98,28 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                         EditTrip(position);
                         return true;
                     } else if (itemId == R.id.item_Notes) {
-                        AddNotes addNotes = new AddNotes();
-//                      FragmentTransaction fragmentTransaction ;
+                       Intent intent = new Intent(context,Add_Notes.class);
+                       context.startActivity(intent);
                         return true;
                     }
                     return false;
                 });
-
             }
         });
         viewHolder.getButtonNotes().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "button notes of " + trips.get(position).getTitle(), Toast.LENGTH_SHORT).show();
-
+                 showAlartDialog();
             }
         });
         return view;
+    }
+
+    private void showAlartDialog() {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.activity_show_all_notes);
+        dialog.show();
+
     }
 
     private void EditTrip(int position) {
@@ -162,6 +168,7 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                 notifyDataSetChanged();
             }
         });
+
         alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // close dialog
