@@ -11,7 +11,7 @@ public class Trip {
     private String status, repetition;
     private String startPoint, endPoint;
     double latitude, longitude;
-    private ArrayList<String> notes;
+    private String[] notes;
     private Boolean isRound;
     private Calendar theSetTime;
     private String dateText;
@@ -122,11 +122,11 @@ public class Trip {
         this.title = title;
     }
 
-    public ArrayList<String> getNotes() {
+    public String[] getNotes() {
         return notes;
     }
 
-    public void setNotes(ArrayList<String> notes) {
+    public void setNotes(String[] notes) {
         this.notes = notes;
     }
 

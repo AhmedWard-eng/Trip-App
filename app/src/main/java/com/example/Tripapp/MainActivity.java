@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void addTrip(Trip trip,int position) {
+    private void addTrip(Trip trip) {
         upcomingViewModel = new ViewModelProvider(this).get(UpcomingViewModel.class);
         upcomingViewModel.addTrip(trip);
     }
@@ -154,9 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 trip.setDateText(intent.getStringExtra(TripAppDataActivity.TRIP_DATE));
                 trip.setStartPoint(intent.getStringExtra(TripAppDataActivity.TRIP_START_POINT));
                 trip.setEndPoint(intent.getStringExtra(TripAppDataActivity.TRIP_END_POINT));
-//                trip.setTheSetTime((Calendar) intent.getSerializableExtra(TripAppDataActivity.TRIP_SET_TIME));
-                int position = intent.getIntExtra(TripAppDataActivity.TRIP_POSITION,-1);
-                addTrip(trip,position);
+                addTrip(trip);
             }
         }
     }

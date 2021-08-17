@@ -36,8 +36,7 @@ public class TripAppDataActivity extends AppCompatActivity {
 
 
     FloatingActionButton btn_add;
-    Button btn_notes;
-    TextView txt_notes, view_notes, txt_date, txt_time;
+    TextView  txt_date, txt_time;
     AutoCompleteTextView txt_StartPoint, txt_endPoint;
     EditText txt_title;
     Spinner txt_repeat, txt_kind;
@@ -52,8 +51,6 @@ public class TripAppDataActivity extends AppCompatActivity {
     int aDay;
 
 
-    int i = 0;
-    ArrayList<String> notes = new ArrayList<>();
     DatePickerDialog.OnDateSetListener onDateSetListener;
 
     @Override
@@ -87,15 +84,7 @@ public class TripAppDataActivity extends AppCompatActivity {
             }
         });
 
-        btn_notes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notes.add(txt_notes.getText().toString());
-                view_notes.append(txt_notes.getText() + "\n");
-                txt_notes.setText(" ");
-                i++;
-            }
-        });
+
 
 
 
@@ -181,17 +170,13 @@ public class TripAppDataActivity extends AppCompatActivity {
 
     private void intiComponent() {
         btn_add = findViewById(R.id.add);
-        btn_notes = findViewById(R.id.Notes);
         txt_date = findViewById(R.id.due_date);
-        txt_notes = findViewById(R.id.txt_notes);
         txt_time = findViewById(R.id.set_time);
         txt_title = findViewById(R.id.title);
         txt_StartPoint = findViewById(R.id.your_location);
-
         txt_endPoint = findViewById(R.id.your_destination);
         txt_repeat = findViewById(R.id.repeatation);
         txt_kind = findViewById(R.id.kind_of_trip);
-        view_notes = findViewById(R.id.notes);
         txt_StartPoint.setAdapter(new PlaceAutocomplete(this, android.R.layout.simple_list_item_1 ));
 
         txt_endPoint.setAdapter(new PlaceAutocomplete(this, android.R.layout.simple_list_item_1));
@@ -233,9 +218,7 @@ public class TripAppDataActivity extends AppCompatActivity {
         data.setEndPoint(String.valueOf(txt_endPoint));
         data.setLatitude(29.924526);
         data.setLongitude(31.205753);
-        data.setNotes(notes);
         return data;
-//        31.205753, 29.924526
 
     }
 
