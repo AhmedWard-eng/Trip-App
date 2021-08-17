@@ -119,7 +119,7 @@ public class UpcomingTripAdapter extends ArrayAdapter {
     private void EditTrip(int position) {
         Intent intent = new Intent(context, TripAppDataActivity.class);
         intent.putExtra(TripAppDataActivity.TRIP_TITLE, trips.get(position).getTitle());
-        intent.putExtra(TripAppDataActivity.TRIP_SET_TIME, trips.get(position).getTheSetTime());
+//        intent.putExtra(TripAppDataActivity.TRIP_SET_TIME, trips.get(position).getTheSetTime());
         intent.putExtra(TripAppDataActivity.TRIP_START_POINT, trips.get(position).getStartPoint());
         intent.putExtra(TripAppDataActivity.TRIP_END_POINT, trips.get(position).getEndPoint());
         intent.putExtra(TripAppDataActivity.TRIP_UNIQUE_ID, "102");

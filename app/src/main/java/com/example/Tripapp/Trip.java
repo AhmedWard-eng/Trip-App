@@ -7,13 +7,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Trip {
+    private int tripId;
     private String title;
-    private String status, repetition;
     private String startPoint, endPoint;
     double latitude, longitude;
     private String[] notes;
     private Boolean isRound;
-    private Calendar theSetTime;
     private String dateText;
     private String timeText;
     private int colorId;
@@ -98,21 +97,6 @@ public class Trip {
         this.timeText = timeText;
     }
 
-    public Calendar getTheSetTime() {
-        return theSetTime;
-    }
-
-    public void setTheSetTime(Calendar theSetTime) {
-        this.theSetTime = theSetTime;
-    }
-
-    public String getRepetition() {
-        return repetition;
-    }
-
-    public void setRepetition(String repetition) {
-        this.repetition = repetition;
-    }
 
     public String getTitle() {
         return title;
@@ -138,13 +122,6 @@ public class Trip {
         isRound = round;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public int getColorId() {
         return colorId;

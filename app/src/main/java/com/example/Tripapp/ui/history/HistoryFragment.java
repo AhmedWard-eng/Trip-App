@@ -115,7 +115,7 @@ class BestAdapter extends ArrayAdapter<Trip>
         viewHolder.getTxtStart().setText(currentItem.getStartPoint());
         viewHolder.getTxtEnd().setText(currentItem.getEndPoint());
 //        viewHolder.getTxtDate().setText(date);
-        viewHolder.getTxtStatus().setText(currentItem.getStatus());
+//        viewHolder.getTxtStatus().setText(currentItem.getStatus());
 
         viewHolder.getCard().setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), TripMapActivity.class);

@@ -73,13 +73,13 @@ public class TripAppDataActivity extends AppCompatActivity {
 
 
                 Intent intentToMainActivity = new Intent(TripAppDataActivity.this, MainActivity.class);
-                intentToMainActivity.putExtra(TRIP_TITLE, trip.getTitle());
-                intentToMainActivity.putExtra(TRIP_UNIQUE_ID, "from_TripDataActivity");
-                intentToMainActivity.putExtra(TRIP_DATE, trip.getDateText());
-                intentToMainActivity.putExtra(TRIP_TIME, trip.getTimeText());
-                intentToMainActivity.putExtra(TRIP_START_POINT, trip.getStartPoint());
-                intentToMainActivity.putExtra(TRIP_END_POINT, trip.getEndPoint());
-                intentToMainActivity.putExtra(TRIP_SET_TIME, trip.getTheSetTime());
+//                intentToMainActivity.putExtra(TRIP_TITLE, trip.getTitle());
+//                intentToMainActivity.putExtra(TRIP_UNIQUE_ID, "from_TripDataActivity");
+//                intentToMainActivity.putExtra(TRIP_DATE, trip.getDateText());
+//                intentToMainActivity.putExtra(TRIP_TIME, trip.getTimeText());
+//                intentToMainActivity.putExtra(TRIP_START_POINT, trip.getStartPoint());
+//                intentToMainActivity.putExtra(TRIP_END_POINT, trip.getEndPoint());
+//                intentToMainActivity.putExtra(TRIP_SET_TIME, trip.getTheSetTime());
                 TripAppDataActivity.this.startActivity(intentToMainActivity);
             }
         });
@@ -192,7 +192,7 @@ public class TripAppDataActivity extends AppCompatActivity {
             theSetTime.set(Calendar.MONTH, aMonth);
             theSetTime.set(Calendar.YEAR, aYear);
         }
-        data.setTheSetTime(theSetTime);
+//        data.setTheSetTime(theSetTime);
 
         int minute = theSetTime.get(Calendar.MINUTE);
         int hour = theSetTime.get(Calendar.HOUR_OF_DAY);
@@ -208,12 +208,10 @@ public class TripAppDataActivity extends AppCompatActivity {
         data.setYear(aYear);
         data.setMonth(aMonth);
         data.setDay(aDay);
-        data.setTheSetTime(theSetTime);
         data.setTitle(txt_title.getText().toString());
         data.setDateText(txt_date.getText().toString());
         data.setTimeText(txt_time.getText().toString());
         data.setRound("Round".equals(String.valueOf(txt_repeat.getSelectedItem())));
-        data.setRepetition(String.valueOf(txt_kind.getSelectedItem()));
         data.setStartPoint(String.valueOf(txt_StartPoint));
         data.setEndPoint(String.valueOf(txt_endPoint));
         data.setLatitude(29.924526);
