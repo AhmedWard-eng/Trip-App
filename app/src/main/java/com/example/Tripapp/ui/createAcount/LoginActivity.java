@@ -180,8 +180,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
 
-            }
-        });
+
+
         text_signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

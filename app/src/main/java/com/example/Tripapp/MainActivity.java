@@ -24,8 +24,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.Calendar;
-
 // commit 1 anything
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton fabStartTripDataActivity;
     UpcomingViewModel upcomingViewModel;
+//    private IntentFilter intentFilter;
+//    RingReceiver receiver;
+
 
     Trip trip;
 
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        intentFilter = new IntentFilter("com.example.SendReceiver");
+//        receiver = new RingReceiver();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         fabStartTripDataActivity = findViewById(R.id.fab);
