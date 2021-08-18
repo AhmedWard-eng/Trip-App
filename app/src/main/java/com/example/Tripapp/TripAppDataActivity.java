@@ -3,6 +3,7 @@ package com.example.Tripapp;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +26,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class TripAppDataActivity extends AppCompatActivity {
-    private static int tripId = 0;
+    private static int tripId ;
     public static final String TRIP_ID = "Trip Id";
     public static final String TRIP_TITLE = "sending the object";
     public static final String TRIP_UNIQUE_ID = "UniqueId";
@@ -39,7 +40,8 @@ public class TripAppDataActivity extends AppCompatActivity {
     public static final String HOUR = "hour";
     public static final String MINUTE = "minute";
 
-
+    SharedPreferences sh;
+    SharedPreferences.Editor editor;
     FloatingActionButton btn_add;
     TextView txt_date, txt_time;
     AutoCompleteTextView txt_StartPoint, txt_endPoint;
@@ -55,7 +57,6 @@ public class TripAppDataActivity extends AppCompatActivity {
     int aMonth;
     int aDay;
 
-
     DatePickerDialog.OnDateSetListener onDateSetListener;
 
     @Override
@@ -63,7 +64,9 @@ public class TripAppDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_app_data);
 
+        sh = getSharedPreferences(TRIP_ID,MODE_PRIVATE);
 
+        editor = sh.edit();
         intiComponent();
 
         getEditData();
@@ -224,7 +227,11 @@ public class TripAppDataActivity extends AppCompatActivity {
                 || txt_endPoint.getText().toString().isEmpty()) {
             return null;
         } else {
-            tripId++;
+            boolean isExist = sh.contains(TRIP_ID);
+            Toast.makeText(this,String.valueOf(isExist),Toast.LENGTH_SHORT).show();
+            tripId =sh.getInt(TRIP_ID,0) + 1 ;
+            editor.putInt(TRIP_ID, tripId);
+            editor.commit();
             data.setMinute(aMinute);
             data.setHour(anHour);
             data.setYear(aYear);
