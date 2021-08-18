@@ -80,7 +80,7 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                 }
             }
         });
-
+        //
         viewHolder.getButtonMenu().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
