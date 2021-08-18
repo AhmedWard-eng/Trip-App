@@ -18,6 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.Tripapp.Data.Alarm;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,7 +36,9 @@ public class TripAppDataActivity extends AppCompatActivity {
     public static final String TRIP_START_POINT = "Start Point";
     public static final String TRIP_END_POINT = "End Point";
     public static final String TRIP_SET_TIME = "Trip Set Time";
+    public static DatabaseReference reference = null;
 
+    ArrayList<Trip> arrayList = null ;
 
     FloatingActionButton btn_add;
     TextView  txt_date, txt_time;
@@ -63,6 +68,9 @@ public class TripAppDataActivity extends AppCompatActivity {
 
         getEditData();
 
+        FirebaseDatabase data = FirebaseDatabase.getInstance();
+        reference = data.getReference("Trip_Data");
+
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +89,28 @@ public class TripAppDataActivity extends AppCompatActivity {
 //                intentToMainActivity.putExtra(TRIP_END_POINT, trip.getEndPoint());
 //                intentToMainActivity.putExtra(TRIP_SET_TIME, trip.getTheSetTime());
                 TripAppDataActivity.this.startActivity(intentToMainActivity);
+
+                if ((txt_title.getText().toString().isEmpty()) && (txt_StartPoint.getText().toString().isEmpty()) && (txt_endPoint.getText().toString().isEmpty())){
+                    Toast.makeText(TripAppDataActivity.this,"You should Enter information",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    String id = reference.push().getKey();
+                    Trip data_trip = new Trip( id , txt_title.getText().toString(), txt_StartPoint.getText().toString()
+                            , txt_endPoint.getText().toString(),txt_date.getText().toString()
+                            , txt_time.getText().toString(),txt_kind.getSelectedItem().toString()
+                            ,txt_repeat.getSelectedItem().toString()
+                    ,trip.getHour(),trip.getMinute(),trip.getDay(),trip.getMonth(),trip.getYear());
+
+                    reference.child(id).setValue(data_trip);
+                    txt_title.setText("");
+                    txt_StartPoint.setText("");
+                    txt_endPoint.setText("");
+                    txt_date.setText("");
+                    txt_time.setText("");
+                    txt_kind.setSelection(0);
+                    txt_repeat.setSelection(0);
+
+                }
             }
         });
 

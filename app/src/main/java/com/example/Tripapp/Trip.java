@@ -8,8 +8,9 @@ import java.util.Date;
 
 public class Trip {
     private int tripId;
+    private String Id ;
     private String title;
-    private String startPoint, endPoint;
+    private String startPoint, endPoint , trip_kind , repeatation;
     double latitude, longitude;
     private String[] notes;
     private Boolean isRound;
@@ -22,49 +23,6 @@ public class Trip {
     private int hour;
     private int minute;
 
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public void setMinute(int minute) {
-        this.minute = minute;
-    }
-
-    public Trip() {
-    }
-
 
     public Trip(String title, String startPoint, String endPoint, double latitude, double longitude, String dateText, String timeText, int day, int month, int year, int hour, int minute) {
         this.title = title;
@@ -74,6 +32,27 @@ public class Trip {
         this.longitude = longitude;
         this.dateText = dateText;
         this.timeText = timeText;
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.hour = hour;
+        this.minute = minute;
+    }
+
+    public Trip() {
+    }
+
+    public Trip (String Id, String title, String startPoint, String endPoint
+            , String dateText, String timeText , String trip_kind , String repeatation
+            ,int hour ,int minute , int day ,int month , int year) {
+        this.Id = Id;
+        this.title = title;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.dateText = dateText;
+        this.timeText = timeText;
+        this.trip_kind = trip_kind;
+        this.repeatation = repeatation;
         this.day = day;
         this.month = month;
         this.year = year;
@@ -161,6 +140,46 @@ public class Trip {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
     }
 
 
