@@ -20,17 +20,17 @@ import com.example.Tripapp.RingActivity;
 
 public class AlarmService extends Service {
     public static final String CHANNEL_ID = "ALARM_SERVICE_CHANNEL";
-    private MediaPlayer mediaPlayer;
-    private Vibrator vibrator;
+    static MediaPlayer mediaPlayer;
+    static Vibrator vibrator;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-//        mediaPlayer = MediaPlayer.create(this, R.raw.alarm);
-//        mediaPlayer.setLooping(true);
-//
-//        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        mediaPlayer = MediaPlayer.create(this, R.raw.alarm);
+        mediaPlayer.setLooping(true);
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
     }
 
@@ -58,12 +58,13 @@ public class AlarmService extends Service {
                 .setSmallIcon(R.drawable.ic_baseline_alarm_add_24)
                 .setOngoing(true)
                 .setContentIntent(pendingIntent)
+                .setFullScreenIntent(pendingIntent,true)
                 .addAction(R.drawable.ic_baseline_alarm_add_24, "See Details", pendingIntent);
 
-//        mediaPlayer.start();
-//
-//        long[] pattern = {0, 100, 1000};
-//        vibrator.vibrate(pattern, 0);
+        mediaPlayer.start();
+
+        long[] pattern = {0, 100, 1000};
+        vibrator.vibrate(pattern, 0);
         Notification incomingCallNotification = notification.build();
         startForeground(1, incomingCallNotification);
 
@@ -73,14 +74,18 @@ public class AlarmService extends Service {
 
     @Override
     public void onDestroy() {
-//        super.onDestroy();
-//        mediaPlayer.stop();
-//        vibrator.cancel();
+        super.onDestroy();
+        mediaPlayer.stop();
+        vibrator.cancel();
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+    public static void closeRingTone(){
+        mediaPlayer.stop();
+        vibrator.cancel();
     }
 }

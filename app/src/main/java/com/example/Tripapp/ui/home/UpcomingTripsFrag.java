@@ -38,17 +38,17 @@ public class UpcomingTripsFrag extends Fragment {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.US);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd /MM /yyyy", Locale.US);
-        trips.add(new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+        trips.add(new Trip("Trip", "start Point", "end point", 29.924526, 31.205753,
                 dateFormat.format(calendar.getTime()),
                 timeFormat.format(calendar.getTime()),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
-        trips.add(new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+        trips.add(new Trip("Trip", "start Point", "end point", 29.924526, 31.205753,
                 dateFormat.format(calendar.getTime()),
                 timeFormat.format(calendar.getTime()),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
-        trips.add(new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+        trips.add(new Trip("Trip", "start Point", "end point", 29.924526, 31.205753,
                 dateFormat.format(calendar.getTime()),
                 timeFormat.format(calendar.getTime()),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
@@ -61,13 +61,13 @@ public class UpcomingTripsFrag extends Fragment {
         });
 
         upcomingListView = view.findViewById(R.id.upcomin_frag_listview);
-        upcomingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), TripMapActivity.class);
-                startActivity(intent);
-            }
-        });
+//        upcomingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(getContext(), TripMapActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         UpcomingTripAdapter simpleArrayAdapter = new UpcomingTripAdapter(view.getContext(), trips);
         upcomingListView.setAdapter(simpleArrayAdapter);
         return view;

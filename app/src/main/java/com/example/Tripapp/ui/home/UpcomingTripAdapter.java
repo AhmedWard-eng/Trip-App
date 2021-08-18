@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 
+import com.example.Tripapp.Data.Alarm;
 import com.example.Tripapp.Notes.Add_Notes;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
@@ -109,16 +111,22 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         viewHolder.getButtonNotes().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 showAlartDialog();
+                 showAlertDialog();
             }
         });
         return view;
     }
 
-    private void showAlartDialog() {
+    private void showAlertDialog() {
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.activity_show_all_notes);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.FIRST_SUB_WINDOW;
+        lp.height = WindowManager.LayoutParams.FIRST_SUB_WINDOW;
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
+        dialog.getWindow().setAttributes(lp);
 
     }
 
@@ -129,7 +137,6 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         intent.putExtra(TripAppDataActivity.TRIP_START_POINT, trips.get(position).getStartPoint());
         intent.putExtra(TripAppDataActivity.TRIP_END_POINT, trips.get(position).getEndPoint());
         intent.putExtra(TripAppDataActivity.TRIP_UNIQUE_ID, "102");
-        intent.putExtra(TripAppDataActivity.TRIP_POSITION, position);
         context.startActivity(intent);
     }
 
@@ -137,16 +144,25 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
         alert.setTitle("Cancel Trip");
         alert.setMessage("Are you sure you want to cancel this Trip?");
-        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
                 // continue with cancel
-
+                Alarm alarm = new Alarm(trips.get(position).getTripId(),
+                        trips.get(position).getHour(),
+                        trips.get(position).getMinute(),
+                        trips.get(position).getDay(),
+                        trips.get(position).getMonth(),
+                        trips.get(position).getYear(),
+                        System.currentTimeMillis(),
+                        false,
+                        trips.get(position).getTitle());
+                alarm.cancelAlarm(context);
                 trips.remove(position);
                 notifyDataSetChanged();
             }
         });
-        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // close dialog
                 dialog.cancel();
@@ -164,6 +180,16 @@ public class UpcomingTripAdapter extends ArrayAdapter {
 
             public void onClick(DialogInterface dialog, int which) {
                 // continue with delete
+                Alarm alarm = new Alarm(trips.get(position).getTripId(),
+                        trips.get(position).getHour(),
+                        trips.get(position).getMinute(),
+                        trips.get(position).getDay(),
+                        trips.get(position).getMonth(),
+                        trips.get(position).getYear(),
+                        System.currentTimeMillis(),
+                        false,
+                        trips.get(position).getTitle());
+                alarm.cancelAlarm(context);
                 trips.remove(position);
                 notifyDataSetChanged();
             }

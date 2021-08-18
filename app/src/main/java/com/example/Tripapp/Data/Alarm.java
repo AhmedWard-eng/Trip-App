@@ -21,7 +21,7 @@ public class Alarm {
 
     private int alarmId;
 
-    private int hour, minute, day, month, year, AM_PM;
+    private int hour, minute, day, month, year;
     private boolean started;
 
     private long created;
@@ -38,6 +38,10 @@ public class Alarm {
         this.year = year;
         this.created = created;
         this.title = title;
+    }
+
+    public Alarm(int alarmId) {
+        this.alarmId = alarmId;
     }
 
     public int getHour() {

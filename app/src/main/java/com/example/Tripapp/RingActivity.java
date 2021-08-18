@@ -6,7 +6,6 @@ import androidx.core.app.NotificationManagerCompat;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -28,12 +27,13 @@ import java.util.Random;
 
 public class RingActivity extends AppCompatActivity {
 
-    Button dismiss;
+    Button cancel;
     Button snooze;
     Button start;
     ImageView clock;
     private MediaPlayer mediaPlayer;
     private Vibrator vibrator;
+    final int notificationID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +45,16 @@ public class RingActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, R.raw.alarm);
         mediaPlayer.setLooping(true);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        AlarmService.closeRingTone();
 
-        dismiss.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentService = new Intent(getApplicationContext(), AlarmService.class);
                 getApplicationContext().stopService(intentService);
                 finish();
+                NotificationManagerCompat mNotificationManager = NotificationManagerCompat.from(RingActivity.this);
+                mNotificationManager.cancelAll();
             }
         });
 
@@ -60,7 +63,7 @@ public class RingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(System.currentTimeMillis());
-                calendar.add(Calendar.MINUTE, 10);
+                calendar.add(Calendar.MINUTE, 1);
 
                 Alarm alarm = new Alarm(
                         new Random().nextInt(Integer.MAX_VALUE),
@@ -79,9 +82,7 @@ public class RingActivity extends AppCompatActivity {
                 Intent intentService = new Intent(getApplicationContext(), AlarmService.class);
                 getApplicationContext().stopService(intentService);
 
-                Intent intent = new Intent(getApplicationContext(),AlarmService.class);
-
-                PendingIntent pendingIntent = PendingIntent.getActivity(RingActivity.this, 0, intent, 0);
+                PendingIntent pendingIntent = PendingIntent.getActivity(RingActivity.this, 0, intentService, 0);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel channel = new NotificationChannel(AlarmService.CHANNEL_ID, "CHANNEL DISPLAY NAME", NotificationManager.IMPORTANCE_HIGH);
@@ -92,14 +93,23 @@ public class RingActivity extends AppCompatActivity {
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), AlarmService.CHANNEL_ID);
                 builder.setContentTitle("alarmTitle");
-                builder.setContentText("Ring Ring .. Ring Ring").setPriority(NotificationCompat.PRIORITY_HIGH);
+                builder.setContentText("Ring Ring .. Ring Ring");
+                builder.setPriority(NotificationCompat.PRIORITY_HIGH);
                 builder.setSmallIcon(R.drawable.ic_baseline_alarm_add_24);
                 builder.setContentIntent(pendingIntent);
                 builder.setOngoing(true);
+                builder.setContentIntent(PendingIntent.getActivity(RingActivity.this, 1, new Intent(RingActivity.this, RingActivity.class), 0));
 
                 NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(RingActivity.this);
-                notificationManagerCompat.notify(1,builder.build());
+                notificationManagerCompat.notify(notificationID, builder.build());
                 finish();
+            }
+        });
+
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
         mediaPlayer.start();
@@ -111,7 +121,7 @@ public class RingActivity extends AppCompatActivity {
     }
 
     private void initComponent() {
-        dismiss = findViewById(R.id.activity_ring_dismiss);
+        cancel = findViewById(R.id.activity_ring_dismiss);
         snooze = findViewById(R.id.activity_ring_snooze);
         start = findViewById(R.id.activity_ring_start);
         clock = findViewById(R.id.activity_ring_clock);

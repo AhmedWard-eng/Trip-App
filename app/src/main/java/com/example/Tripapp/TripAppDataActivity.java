@@ -25,18 +25,23 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class TripAppDataActivity extends AppCompatActivity {
-    public static final String TRIP_POSITION = "Trip Position";
+    private static int tripId = 0;
+    public static final String TRIP_ID = "Trip Id";
     public static final String TRIP_TITLE = "sending the object";
     public static final String TRIP_UNIQUE_ID = "UniqueId";
     public static final String TRIP_DATE = "Trip date";
     public static final String TRIP_TIME = "Trip time";
     public static final String TRIP_START_POINT = "Start Point";
     public static final String TRIP_END_POINT = "End Point";
-    public static final String TRIP_SET_TIME = "Trip Set Time";
+    public static final String DAY = "day";
+    public static final String MONTH = "month";
+    public static final String YEAR = "year";
+    public static final String HOUR = "hour";
+    public static final String MINUTE = "minute";
 
 
     FloatingActionButton btn_add;
-    TextView  txt_date, txt_time;
+    TextView txt_date, txt_time;
     AutoCompleteTextView txt_StartPoint, txt_endPoint;
     EditText txt_title;
     Spinner txt_repeat, txt_kind;
@@ -66,27 +71,36 @@ public class TripAppDataActivity extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 Trip trip = saveData();
+                if (trip == null) {
 
-                Alarm alarm = new Alarm(0,trip.getHour(),trip.getMinute(),trip.getDay(),trip.getMonth(),trip.getYear(),System.currentTimeMillis(),true,trip.getTitle());
-                alarm.schedule(getApplicationContext());
+                    Toast.makeText(TripAppDataActivity.this, "Please complete the all fields", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    Alarm alarm = new Alarm(tripId, trip.getHour(), trip.getMinute(), trip.getDay(), trip.getMonth(), trip.getYear(), System.currentTimeMillis(), true, trip.getTitle());
+                    alarm.schedule(getApplicationContext());
 
 
-                Intent intentToMainActivity = new Intent(TripAppDataActivity.this, MainActivity.class);
-//                intentToMainActivity.putExtra(TRIP_TITLE, trip.getTitle());
-//                intentToMainActivity.putExtra(TRIP_UNIQUE_ID, "from_TripDataActivity");
-//                intentToMainActivity.putExtra(TRIP_DATE, trip.getDateText());
-//                intentToMainActivity.putExtra(TRIP_TIME, trip.getTimeText());
-//                intentToMainActivity.putExtra(TRIP_START_POINT, trip.getStartPoint());
-//                intentToMainActivity.putExtra(TRIP_END_POINT, trip.getEndPoint());
-//                intentToMainActivity.putExtra(TRIP_SET_TIME, trip.getTheSetTime());
-                TripAppDataActivity.this.startActivity(intentToMainActivity);
+                    Intent intentToMainActivity = new Intent(TripAppDataActivity.this, MainActivity.class);
+
+                    intentToMainActivity.putExtra(TRIP_TITLE, trip.getTitle());
+                    intentToMainActivity.putExtra(TRIP_ID, trip.getTripId());
+                    intentToMainActivity.putExtra(TRIP_UNIQUE_ID, "from_TripDataActivity");
+                    intentToMainActivity.putExtra(TRIP_DATE, trip.getDateText());
+                    intentToMainActivity.putExtra(TRIP_TIME, trip.getTimeText());
+                    intentToMainActivity.putExtra(TRIP_START_POINT, trip.getStartPoint());
+                    intentToMainActivity.putExtra(TRIP_END_POINT, trip.getEndPoint());
+                    intentToMainActivity.putExtra(DAY, trip.getDay());
+                    intentToMainActivity.putExtra(MONTH, trip.getMonth());
+                    intentToMainActivity.putExtra(YEAR, trip.getYear());
+                    intentToMainActivity.putExtra(HOUR, trip.getHour());
+                    intentToMainActivity.putExtra(MINUTE, trip.getMinute());
+                    TripAppDataActivity.this.startActivity(intentToMainActivity);
+                }
             }
         });
-
-
-
-
 
 
         txt_date.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +130,7 @@ public class TripAppDataActivity extends AppCompatActivity {
                 txt_title.setText(intent.getStringExtra(TRIP_TITLE));
                 txt_StartPoint.setText(intent.getStringExtra(TRIP_START_POINT), false);
                 txt_endPoint.setText(intent.getStringExtra(TRIP_END_POINT), false);
-                theSetTime = (Calendar) intent.getSerializableExtra(TRIP_SET_TIME);
+
                 SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.US);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd /MM /yyyy", Locale.US);
                 txt_date.setText(dateFormat.format(theSetTime.getTime()));
@@ -134,10 +148,10 @@ public class TripAppDataActivity extends AppCompatActivity {
                 anHour = hourOfDay;
                 aMinute = minute;
                 Calendar calendarTime = Calendar.getInstance();
-                calendarTime.set(Calendar.MINUTE,aMinute);
-                calendarTime.set(Calendar.HOUR_OF_DAY,anHour);
+                calendarTime.set(Calendar.MINUTE, aMinute);
+                calendarTime.set(Calendar.HOUR_OF_DAY, anHour);
                 anHour = calendarTime.get(Calendar.HOUR_OF_DAY);
-                Toast.makeText(TripAppDataActivity.this,String.valueOf(anHour),Toast.LENGTH_SHORT).show();
+                Toast.makeText(TripAppDataActivity.this, String.valueOf(anHour), Toast.LENGTH_SHORT).show();
                 aMinute = calendarTime.get(Calendar.MINUTE);
                 SimpleDateFormat format = new SimpleDateFormat("hh:mm aa", Locale.US);
                 time = format.format(calendarTime.getTime());
@@ -177,7 +191,7 @@ public class TripAppDataActivity extends AppCompatActivity {
         txt_endPoint = findViewById(R.id.your_destination);
         txt_repeat = findViewById(R.id.repeatation);
         txt_kind = findViewById(R.id.kind_of_trip);
-        txt_StartPoint.setAdapter(new PlaceAutocomplete(this, android.R.layout.simple_list_item_1 ));
+        txt_StartPoint.setAdapter(new PlaceAutocomplete(this, android.R.layout.simple_list_item_1));
 
         txt_endPoint.setAdapter(new PlaceAutocomplete(this, android.R.layout.simple_list_item_1));
     }
@@ -187,37 +201,47 @@ public class TripAppDataActivity extends AppCompatActivity {
         if (theSetTime == null) {
             theSetTime = Calendar.getInstance();
             theSetTime.set(Calendar.HOUR, anHour);
-            theSetTime.set(Calendar.MINUTE,aMinute);
+            theSetTime.set(Calendar.MINUTE, aMinute);
             theSetTime.set(Calendar.DAY_OF_MONTH, aDay);
             theSetTime.set(Calendar.MONTH, aMonth);
             theSetTime.set(Calendar.YEAR, aYear);
         }
-//        data.setTheSetTime(theSetTime);
-
-        int minute = theSetTime.get(Calendar.MINUTE);
-        int hour = theSetTime.get(Calendar.HOUR_OF_DAY);
-        int day = theSetTime.get(Calendar.DAY_OF_MONTH);;
-        int year = theSetTime.get(Calendar.YEAR);
-        int month = theSetTime.get(Calendar.MONTH);
+////        data.setTheSetTime(theSetTime);
+//
+//        int minute = theSetTime.get(Calendar.MINUTE);
+//        int hour = theSetTime.get(Calendar.HOUR_OF_DAY);
+//        int day = theSetTime.get(Calendar.DAY_OF_MONTH);
+//        ;
+//        int year = theSetTime.get(Calendar.YEAR);
+//        int month = theSetTime.get(Calendar.MONTH);
 
 //        theSetTime.get(Calendar.HOUR);
 
+        if (txt_date.getText().toString().isEmpty()
+                || txt_title.getText().toString().isEmpty()
+                || txt_time.getText().toString().isEmpty()
+                || txt_StartPoint.getText().toString().isEmpty()
+                || txt_endPoint.getText().toString().isEmpty()) {
+            return null;
+        } else {
+            tripId++;
+            data.setMinute(aMinute);
+            data.setHour(anHour);
+            data.setYear(aYear);
+            data.setMonth(aMonth);
+            data.setDay(aDay);
+            data.setTitle(txt_title.getText().toString());
+            data.setDateText(txt_date.getText().toString());
+            data.setTimeText(txt_time.getText().toString());
+            data.setRound("Round".equals(String.valueOf(txt_repeat.getSelectedItem())));
+            data.setStartPoint(String.valueOf(txt_StartPoint.getText()));
+            data.setEndPoint(String.valueOf(txt_endPoint.getText()));
+            data.setLatitude(29.924526);
+            data.setLongitude(31.205753);
+            data.setTripId(tripId);
 
-        data.setMinute(aMinute);
-        data.setHour(anHour);
-        data.setYear(aYear);
-        data.setMonth(aMonth);
-        data.setDay(aDay);
-        data.setTitle(txt_title.getText().toString());
-        data.setDateText(txt_date.getText().toString());
-        data.setTimeText(txt_time.getText().toString());
-        data.setRound("Round".equals(String.valueOf(txt_repeat.getSelectedItem())));
-        data.setStartPoint(String.valueOf(txt_StartPoint));
-        data.setEndPoint(String.valueOf(txt_endPoint));
-        data.setLatitude(29.924526);
-        data.setLongitude(31.205753);
-        return data;
-
+            return data;
+        }
     }
 
 }

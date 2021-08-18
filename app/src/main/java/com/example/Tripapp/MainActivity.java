@@ -157,6 +157,14 @@ public class MainActivity extends AppCompatActivity {
                 trip.setDateText(intent.getStringExtra(TripAppDataActivity.TRIP_DATE));
                 trip.setStartPoint(intent.getStringExtra(TripAppDataActivity.TRIP_START_POINT));
                 trip.setEndPoint(intent.getStringExtra(TripAppDataActivity.TRIP_END_POINT));
+                trip.setMinute(intent.getIntExtra(TripAppDataActivity.MINUTE,0));
+                trip.setHour(intent.getIntExtra(TripAppDataActivity.HOUR,0));
+                trip.setYear(intent.getIntExtra(TripAppDataActivity.YEAR,0));
+                trip.setMonth(intent.getIntExtra(TripAppDataActivity.MONTH,0));
+                trip.setDay(intent.getIntExtra(TripAppDataActivity.DAY,0));
+                trip.setLatitude(29.924526);
+                trip.setLongitude(31.205753);
+                trip.setTripId(intent.getIntExtra(TripAppDataActivity.TRIP_ID,0));
                 addTrip(trip);
             }
         }
