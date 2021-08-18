@@ -77,10 +77,10 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                 if (intent.resolveActivity(context.getPackageManager()) != null) {
                     context.startActivity(intent);
                 } else {
-                    Toast.makeText(getContext(), "There's no app that can respond. Please, Install Google Maps", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "There's no app that can respond. Please, install Google Maps", Toast.LENGTH_SHORT).show();
                 }
 
-                if(MainActivity.drawOverAppsAllowed){
+                if(MainActivity.drawOverAppsAllowed && trips.get(position).getNotes() != null){
                     Intent serviceIntent = new Intent(context, FloatingWidgetService.class);
                     serviceIntent.putExtra("notes", trips.get(position).getNotes());
                     context.startService(serviceIntent);

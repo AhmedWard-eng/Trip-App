@@ -68,7 +68,7 @@ public class Trip {
     }
 
 
-    public Trip(String title, String startPoint, String endPoint, double latitude, double longitude, String dateText, String timeText, int day, int month, int year, int hour, int minute) {
+    public Trip(String title, String startPoint, String endPoint, double latitude, double longitude, String dateText, String timeText, int day, int month, int year, int hour, int minute, String[] notes) {
         this.title = title;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -81,6 +81,7 @@ public class Trip {
         this.year = year;
         this.hour = hour;
         this.minute = minute;
+        this.notes = notes;
     }
 
     public String getDateText() {

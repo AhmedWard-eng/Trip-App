@@ -32,6 +32,13 @@ public class UpcomingTripsFrag extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        String[] notes1 = {"Don't forget to turn off the lights before you go",
+                "Feed the cat -_-!",
+                "We are going to have fun XD",
+                "Take care of thr kids",
+                "Phew, Things went easy :)",
+                "We are finally home, that was a great day"};
+
         trips = new ArrayList<Trip>();
         upcomingViewModel =
                 new ViewModelProvider(getActivity()).get(UpcomingViewModel.class);
@@ -42,17 +49,17 @@ public class UpcomingTripsFrag extends Fragment {
                 dateFormat.format(calendar.getTime()),
                 timeFormat.format(calendar.getTime()),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), notes1));
         trips.add(new Trip("Trip", "start Point", "end point", 29.924526, 31.205753,
                 dateFormat.format(calendar.getTime()),
                 timeFormat.format(calendar.getTime()),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null));
         trips.add(new Trip("Trip", "start Point", "end point", 29.924526, 31.205753,
                 dateFormat.format(calendar.getTime()),
                 timeFormat.format(calendar.getTime()),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null));
         upcomingViewModel.getTrip().observe(getViewLifecycleOwner(), new Observer<Trip>() {
             @Override
             public void onChanged(Trip trip) {

@@ -56,12 +56,12 @@ public class HistoryFragment extends Fragment {
                 dateFormat.format(calendar.getTime()),
                 timeFormat.format(calendar.getTime()),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)),
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null),
             new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
                 dateFormat.format(calendar.getTime()),
                 timeFormat.format(calendar.getTime()),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE))));
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null)));
         ListView lstView = view.findViewById(R.id.best_list);
         lstView.setAdapter(new BestAdapter (getActivity(), trips, R.color.white));
     }
