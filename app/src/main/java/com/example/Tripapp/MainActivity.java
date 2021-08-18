@@ -1,12 +1,17 @@
 package com.example.Tripapp;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.example.Tripapp.services.FloatingWidgetService;
 import com.example.Tripapp.ui.createAcount.MainActivity2;
 import com.example.Tripapp.ui.home.UpcomingViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,15 +29,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.Calendar;
-
 // commit 1 anything
 public class MainActivity extends AppCompatActivity {
 
+    public static Boolean drawOverAppsAllowed = false;
+    private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
     private AppBarConfiguration mAppBarConfiguration;
     Toolbar toolbar;
     FloatingActionButton fabStartTripDataActivity;
     UpcomingViewModel upcomingViewModel;
+//    private IntentFilter intentFilter;
+//    RingReceiver receiver;
+
 
     Trip trip;
 
@@ -48,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        intentFilter = new IntentFilter("com.example.SendReceiver");
+//        receiver = new RingReceiver();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         fabStartTripDataActivity = findViewById(R.id.fab);
@@ -102,7 +112,37 @@ public class MainActivity extends AppCompatActivity {
         }*/
         // );
 
+        //Check if the application has draw over other apps permission or not?
+        //This permission is by default available for API<23. But for API > 23
+        //you have to ask for the permission in runtime.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            //If the draw over permission is not available open the settings screen
+            //to grant the permission.
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE);
+        } else {
+            //If permission is granted start floating widget service
+            drawOverAppsAllowed = true;
+        }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE) {
+            //Check if the permission is granted or not.
+            if (resultCode == RESULT_OK)
+                //If permission granted start floating widget service
+                drawOverAppsAllowed = true;
+            else
+                //Permission is not available then display toast
+                Toast.makeText(this,
+                        getResources().getString(R.string.draw_other_app_permission_denied),
+                        Toast.LENGTH_SHORT).show();
+
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void addTrip(Trip trip) {
@@ -154,6 +194,14 @@ public class MainActivity extends AppCompatActivity {
                 trip.setDateText(intent.getStringExtra(TripAppDataActivity.TRIP_DATE));
                 trip.setStartPoint(intent.getStringExtra(TripAppDataActivity.TRIP_START_POINT));
                 trip.setEndPoint(intent.getStringExtra(TripAppDataActivity.TRIP_END_POINT));
+                trip.setMinute(intent.getIntExtra(TripAppDataActivity.MINUTE,0));
+                trip.setHour(intent.getIntExtra(TripAppDataActivity.HOUR,0));
+                trip.setYear(intent.getIntExtra(TripAppDataActivity.YEAR,0));
+                trip.setMonth(intent.getIntExtra(TripAppDataActivity.MONTH,0));
+                trip.setDay(intent.getIntExtra(TripAppDataActivity.DAY,0));
+                trip.setLatitude(29.924526);
+                trip.setLongitude(31.205753);
+                trip.setTripId(intent.getIntExtra(TripAppDataActivity.TRIP_ID,0));
                 addTrip(trip);
             }
         }

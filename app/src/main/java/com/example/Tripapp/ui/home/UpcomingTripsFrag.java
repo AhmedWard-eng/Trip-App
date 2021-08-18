@@ -40,12 +40,17 @@ public class UpcomingTripsFrag extends Fragment  {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         trips = new ArrayList<Trip>();
+
         FirebaseDatabase data = FirebaseDatabase.getInstance();
         reference = data.getReference("Trip_Data");
 
         reference.keepSynced(true);
 
         upcomingViewModel = new ViewModelProvider(getActivity()).get(UpcomingViewModel.class);
+
+
+        upcomingViewModel =
+                new ViewModelProvider(getActivity()).get(UpcomingViewModel.class);
 
         upcomingViewModel.getTrip().observe(getViewLifecycleOwner(), new Observer<Trip>() {
             @Override
@@ -55,13 +60,13 @@ public class UpcomingTripsFrag extends Fragment  {
         });
 
         upcomingListView = view.findViewById(R.id.upcomin_frag_listview);
-        upcomingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), TripMapActivity.class);
-                startActivity(intent);
-            }
-        });
+//        upcomingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(getContext(), TripMapActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         UpcomingTripAdapter simpleArrayAdapter = new UpcomingTripAdapter(view.getContext(), trips);
         upcomingListView.setAdapter(simpleArrayAdapter);
         return view;

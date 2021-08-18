@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Trip {
+
+
     private int tripId;
     private String Id ;
     private String title;
@@ -140,6 +142,13 @@ public class Trip {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+    public int getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(int tripId) {
+        this.tripId = tripId;
     }
 
     public int getDay() {

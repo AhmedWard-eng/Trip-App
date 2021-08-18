@@ -26,12 +26,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import papaya.in.sendmail.SendMail;
+
 public class LoginActivity extends AppCompatActivity {
     EditText edit_email, edit_pass;
     TextView text_signUp;
     Button btn_login;
     ImageView imageView;
-    GoogleSignInClient mGoogleSignInAcount;
+    GoogleSignInClient mGoogleSignInAccount;
     public static int RC_SIGN_IN = 100;
 
     @Override
@@ -59,11 +61,11 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        mGoogleSignInAcount = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInAccount = GoogleSignIn.getClient(this, gso);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signInIntent = mGoogleSignInAcount.getSignInIntent();
+                Intent signInIntent = mGoogleSignInAccount.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
@@ -71,6 +73,47 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                String email=edit_email.getText().toString();
+                String pass=edit_pass.getText().toString();
+                if (email.equals("") && pass.equals("") || email.equals("") ||pass.equals("") ) {
+                    Toast.makeText(LoginActivity.this, "Please Complete Login Information", Toast.LENGTH_SHORT).show();
+
+
+                }
+
+                auth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (email.equals("") && pass.equals("")) {
+                            Toast.makeText(LoginActivity.this, "Please Complete Login Information", Toast.LENGTH_SHORT).show();
+
+
+                        }
+                        else if(task.isSuccessful()){
+                            Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                            SendMail mail = new SendMail("salahamany076@gmail.com", "AS1572000",
+                                    email,
+                                    "Sign Up Successful in Trip App",
+                                    "Yes, it's working well\nI will use it always.");
+                            mail.execute();
+                            Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(LoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                  }
+
+
+
+        });
 
 ////                String email=edit_email.getText().toString();
 ////                String pass=edit_pass.getText().toString();
@@ -106,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
 //
 //
 //        });
+
                 //////////////////////////
 
 
@@ -136,8 +180,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
 
-            }
-        });
+
+
         text_signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

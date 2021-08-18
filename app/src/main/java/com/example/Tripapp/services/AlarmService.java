@@ -20,8 +20,8 @@ import com.example.Tripapp.RingActivity;
 
 public class AlarmService extends Service {
     public static final String CHANNEL_ID = "ALARM_SERVICE_CHANNEL";
-    private MediaPlayer mediaPlayer;
-    private Vibrator vibrator;
+    static MediaPlayer mediaPlayer;
+    static Vibrator vibrator;
 
     @Override
     public void onCreate() {
@@ -37,7 +37,11 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Intent notificationIntent = new Intent(this, RingActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(notificationIntent);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "CHANNEL DISPLAY NAME", NotificationManager.IMPORTANCE_HIGH);
@@ -46,28 +50,31 @@ public class AlarmService extends Service {
             nm.createNotificationChannel(channel);
         }
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("alarmTitle")
                 .setContentText("Ring Ring .. Ring Ring")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSmallIcon(R.drawable.ic_baseline_alarm_add_24)
-                .setContentIntent(pendingIntent)
                 .setOngoing(true)
-                .build();
+                .setContentIntent(pendingIntent)
+                .setFullScreenIntent(pendingIntent,true)
+                .addAction(R.drawable.ic_baseline_alarm_add_24, "See Details", pendingIntent);
 
         mediaPlayer.start();
 
-        long[] pattern = { 0, 100, 1000 };
+        long[] pattern = {0, 100, 1000};
         vibrator.vibrate(pattern, 0);
-
-        startForeground(1, notification);
+        Notification incomingCallNotification = notification.build();
+        startForeground(1, incomingCallNotification);
 
         return START_STICKY;
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         mediaPlayer.stop();
         vibrator.cancel();
     }
@@ -76,5 +83,9 @@ public class AlarmService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+    public static void closeRingTone(){
+        mediaPlayer.stop();
+        vibrator.cancel();
     }
 }
