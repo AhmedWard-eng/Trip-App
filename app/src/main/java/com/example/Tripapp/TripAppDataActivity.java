@@ -88,18 +88,17 @@ public class TripAppDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                
 
-
-                Intent intentToMainActivity = new Intent(TripAppDataActivity.this, MainActivity.class);
-
-                TripAppDataActivity.this.startActivity(intentToMainActivity);
                 
                 Trip trip = saveData();
                 if (trip == null) {
 
                     Toast.makeText(TripAppDataActivity.this, "Please complete the all fields", Toast.LENGTH_SHORT).show();
                 } else {
+                    Intent intentToMainActivity = new Intent(TripAppDataActivity.this, MainActivity.class);
+                    TripAppDataActivity.this.startActivity(intentToMainActivity);
+                    Alarm alarm = new Alarm(tripId, trip.getHour(), trip.getMinute(), trip.getDay(), trip.getMonth(), trip.getYear(), System.currentTimeMillis(), true, trip.getTitle());
+                    alarm.schedule(getApplicationContext());
                     String id = reference.push().getKey();
                     Trip data_trip = trip;
 

@@ -40,7 +40,7 @@ public class MainActivity2 extends AppCompatActivity {
         if (firebaseUser != null) {
             Intent intent = new Intent(MainActivity2.this, MainActivity.class);
             startActivity(intent);
-            scroll.setVisibility(View.INVISIBLE);
+//            scroll.setVisibility(View.INVISIBLE);
         }
 
 
