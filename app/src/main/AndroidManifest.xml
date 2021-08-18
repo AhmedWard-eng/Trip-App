@@ -29,6 +29,10 @@
         <activity android:name=".Notes.Add_Notes" />
 
         <service
+            android:name=".services.FloatingWidgetService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
             android:name=".services.RescheduleAlarmsService"
             android:enabled="true"
             android:exported="true" />

@@ -20,10 +20,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 
 import com.example.Tripapp.Data.Alarm;
+import com.example.Tripapp.MainActivity;
 import com.example.Tripapp.Notes.Add_Notes;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
 import com.example.Tripapp.TripAppDataActivity;
+import com.example.Tripapp.services.FloatingWidgetService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -70,7 +72,6 @@ public class UpcomingTripAdapter extends ArrayAdapter {
             @Override
             public void onClick(View v) {
                 Uri intentUri = Uri.parse("google.navigation:q=" + longitude + "," + latitude);
-//                Uri intentUri = Uri.parse("google.navigation:q=" + address);
                 Intent intent = new Intent(Intent.ACTION_VIEW, intentUri);
                 intent.setPackage("com.google.android.apps.maps");
                 if (intent.resolveActivity(context.getPackageManager()) != null) {
@@ -78,6 +79,13 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                 } else {
                     Toast.makeText(getContext(), "There's no app that can respond. Please, Install Google Maps", Toast.LENGTH_SHORT).show();
                 }
+
+                if(MainActivity.drawOverAppsAllowed){
+                    Intent serviceIntent = new Intent(context, FloatingWidgetService.class);
+                    serviceIntent.putExtra("notes", trips.get(position).getNotes());
+                    context.startService(serviceIntent);
+                }
+
             }
         });
         //

@@ -36,6 +36,10 @@
     <string name="confirm_reuse">Reuse this trip again?</string>
     <string name="confirm_delete">Delete this trip permanently?</string>
 
+    <string name="create_floating_widget">Create Floating Widget</string>
+    <string name="floating_widget_label">Notes</string>
+    <string name="floating_widget_details">Check your trip notes</string>
+    <string name="draw_other_app_permission_denied">Draw over other app permission not available. App won\'t work without permission. Please try again.</string>
 
     <string name="where_to_go">Where to go</string>
     <string name="title">Add title to your trip here</string>
