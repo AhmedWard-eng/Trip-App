@@ -23,7 +23,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
+import com.example.Tripapp.trip_map.MapsFragment;
 import com.example.Tripapp.trip_map.TripMapActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
@@ -50,12 +52,12 @@ public class HistoryFragment extends Fragment {
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.US);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd /MM /yyyy", Locale.US);
         ArrayList<Trip> trips = new ArrayList<>(Arrays.asList(
-                new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
-                        dateFormat.format(calendar.getTime()),
-                        timeFormat.format(calendar.getTime()),
-                        calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)),
-        new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+            new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
+                dateFormat.format(calendar.getTime()),
+                timeFormat.format(calendar.getTime()),
+                calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)),
+            new Trip("Trip", "start Point", "end point", 31.205753, 29.924526,
                 dateFormat.format(calendar.getTime()),
                 timeFormat.format(calendar.getTime()),
                 calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
@@ -117,9 +119,14 @@ class BestAdapter extends ArrayAdapter<Trip>
 //        viewHolder.getTxtDate().setText(date);
 //        viewHolder.getTxtStatus().setText(currentItem.getStatus());
 
+        final double longitude = currentItem.getLongitude();
+        final double latitude = currentItem.getLatitude();
+
         viewHolder.getCard().setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), TripMapActivity.class);
-            context.startActivity(intent);
+            MapsFragment.tripMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(longitude, latitude)));
+            MapsFragment.tripMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitude, latitude), 8f));
+            /*Intent intent = new Intent(getContext(), TripMapActivity.class);
+            context.startActivity(intent);*/
         });
 
         viewHolder.getBtnDelete().setOnClickListener(view -> new AlertDialog.Builder(BestAdapter.super.getContext())
@@ -138,8 +145,6 @@ class BestAdapter extends ArrayAdapter<Trip>
                 .setMessage(R.string.confirm_reuse)
                 .setPositiveButton(R.string.reuse, (dialogInterface, i) -> {
                     // TODO resuse trip
-                    Intent intent = new Intent(getContext(), TripMapActivity.class);
-                    context.startActivity(intent);
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
                     // TODO cancel dialog

@@ -25,11 +25,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class MapsFragment extends Fragment
 {
-    static GoogleMap tripMap;
+    public static GoogleMap tripMap;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback()
     {
-
         /**
          * Manipulates the map once available.
          * This callback is triggered when the map is ready to be used.
