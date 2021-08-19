@@ -26,8 +26,10 @@ public class NoteAdapter extends ArrayAdapter<String> {
     private Context _context ;
     private ArrayList<String> _note ;
 
+
+
     public NoteAdapter(@NonNull Context context, ArrayList<String> note) {
-        super(context, R.layout.notes_list, R.id.note, (List<String>) (note));
+        super(context, R.layout.notes_list, R.id.note, (ArrayList<String>) note);
         _context = context ;
         _note = note ;
     }
@@ -52,10 +54,13 @@ public class NoteAdapter extends ArrayAdapter<String> {
         viewHolder.getNew().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 if (Add_Notes.notes.size() == 10){
                     Toast.makeText(getContext(), "Notes Should be Ten Only", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    Add_Notes.notes.set(position,viewHolder.getNote().getText().toString());
                     Add_Notes.notes.add("");
                     notifyDataSetChanged();
                 }
@@ -65,8 +70,12 @@ public class NoteAdapter extends ArrayAdapter<String> {
                 .setTitle(R.string.delete)
                 .setMessage("You Want to Delete This Note")
                 .setPositiveButton(R.string.delete, (dialogInterface, i) -> {
+                    if (Add_Notes.notes.size() == 1){
+                        Toast.makeText(getContext(), "You Can’t delete this", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
                     Add_Notes.notes.remove(position);
-                    notifyDataSetChanged();
+                    notifyDataSetChanged();}
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
 
@@ -86,11 +95,10 @@ public class NoteAdapter extends ArrayAdapter<String> {
             convertView = view ;
         }
 
-        public TextView getNote() {
+        public EditText getNote() {
             if( note == null)
                 note = (EditText) convertView.findViewById(R.id.note);
             return note;
-
         }
 
         public Button getNew() {

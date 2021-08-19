@@ -9,12 +9,12 @@ import java.util.Date;
 public class Trip {
 
 
-    private int tripId;
-    private String Id ;
+    private static int tripId;
+    private static String Id ;
     private String title;
     private String startPoint, endPoint , trip_kind , repeatation;
     double latitude, longitude;
-    private String[] notes;
+    private static ArrayList notes;
     private Boolean isRound;
     private String dateText;
     private String timeText;
@@ -62,6 +62,18 @@ public class Trip {
         this.minute = minute;
     }
 
+    public Trip(ArrayList notes) {
+        this.notes = notes;
+    }
+
+    public static String getId() {
+        return Id;
+    }
+
+    public static void setId(String id) {
+        Id = id;
+    }
+
     public String getDateText() {
         return dateText;
     }
@@ -87,12 +99,12 @@ public class Trip {
         this.title = title;
     }
 
-    public String[] getNotes() {
+    public static ArrayList getNotes() {
         return notes;
     }
 
-    public void setNotes(String[] notes) {
-        this.notes = notes;
+    public static void setNotes(ArrayList Notes) {
+        notes = Notes;
     }
 
     public Boolean getRound() {

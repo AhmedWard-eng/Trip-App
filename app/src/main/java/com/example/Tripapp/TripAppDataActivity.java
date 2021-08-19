@@ -88,9 +88,6 @@ public class TripAppDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                
-
-
                 Intent intentToMainActivity = new Intent(TripAppDataActivity.this, MainActivity.class);
 
                 TripAppDataActivity.this.startActivity(intentToMainActivity);

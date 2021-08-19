@@ -26,6 +26,12 @@ import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
 import com.example.Tripapp.TripAppDataActivity;
 import com.example.Tripapp.services.FloatingWidgetService;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,7 +40,9 @@ import java.util.ArrayList;
 public class UpcomingTripAdapter extends ArrayAdapter {
     private Context context;
     private ArrayList<Trip> trips;
-
+    DatabaseReference reference = null;
+    FirebaseDatabase data = FirebaseDatabase.getInstance();
+    Trip trip = new Trip();
 
     public UpcomingTripAdapter(Context context, ArrayList<Trip> trips) {
         super(context, R.layout.upcoming_trip_design, trips);
@@ -105,8 +113,9 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                         deleteTrip(position);
                         return true;
                     } else if (itemId == R.id.item_edit) {
-                        EditTrip(position);
+                        EditTrip(trip.getTripId());
                         return true;
+
                     } else if (itemId == R.id.item_Notes) {
                        Intent intent = new Intent(context,Add_Notes.class);
                        context.startActivity(intent);
@@ -138,14 +147,27 @@ public class UpcomingTripAdapter extends ArrayAdapter {
 
     }
 
-    private void EditTrip(int position) {
+    private void EditTrip(int position ) {
         Intent intent = new Intent(context, TripAppDataActivity.class);
-        intent.putExtra(TripAppDataActivity.TRIP_TITLE, trips.get(position).getTitle());
-//        intent.putExtra(TripAppDataActivity.TRIP_SET_TIME, trips.get(position).getTheSetTime());
-        intent.putExtra(TripAppDataActivity.TRIP_START_POINT, trips.get(position).getStartPoint());
-        intent.putExtra(TripAppDataActivity.TRIP_END_POINT, trips.get(position).getEndPoint());
-        intent.putExtra(TripAppDataActivity.TRIP_UNIQUE_ID, "102");
         context.startActivity(intent);
+        reference = data.getReference("Trip_Data");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+
+                for (DataSnapshot datasnapshot : snapshot.getChildren()) {
+                    Trip trip = datasnapshot.getValue(Trip.class);
+                    trips.add(trip);
+                }
+                
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     private void cancelTrip(int position) {
