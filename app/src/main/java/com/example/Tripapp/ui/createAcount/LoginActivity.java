@@ -75,42 +75,38 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                String email=edit_email.getText().toString();
-                String pass=edit_pass.getText().toString();
-                if (email.equals("") && pass.equals("") || email.equals("") ||pass.equals("") ) {
+                String email = edit_email.getText().toString();
+                String pass = edit_pass.getText().toString();
+                if (email.equals("") && pass.equals("") || email.equals("") || pass.equals("")) {
                     Toast.makeText(LoginActivity.this, "Please Complete Login Information", Toast.LENGTH_SHORT).show();
-
-
                 }
 
-                auth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (email.equals("") && pass.equals("")) {
                             Toast.makeText(LoginActivity.this, "Please Complete Login Information", Toast.LENGTH_SHORT).show();
 
 
-                        }
-                        else if(task.isSuccessful()){
+                        } else if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
                             SendMail mail = new SendMail("salahamany076@gmail.com", "AS1572000",
                                     email,
                                     "Sign Up Successful in Trip App",
                                     "Yes, it's working well\nI will use it always.");
                             mail.execute();
-                            Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(LoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
-                  }
-
+            }
 
 
         });
@@ -150,36 +146,34 @@ public class LoginActivity extends AppCompatActivity {
 //
 //        });
 
-                //////////////////////////
+        //////////////////////////
 
 
-                String email = edit_email.getText().toString();
-                String pass = edit_pass.getText().toString();
-                if (email.equals("") && pass.equals("")) {
-                    Toast.makeText(LoginActivity.this, "Please Complete Login Information", Toast.LENGTH_SHORT).show();
+        String email = edit_email.getText().toString();
+        String pass = edit_pass.getText().toString();
+        if (email.equals("") && pass.equals("")) {
+            Toast.makeText(LoginActivity.this, "Please Complete Login Information", Toast.LENGTH_SHORT).show();
 
 
-                } else {
-                    auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
+        } else {
+            auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
 
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(LoginActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
+                    }
                 }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(LoginActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
 
-
+        }
 
 
         text_signUp.setOnClickListener(new View.OnClickListener() {

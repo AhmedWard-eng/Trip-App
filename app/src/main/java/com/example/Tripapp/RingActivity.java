@@ -12,16 +12,26 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.Tripapp.Data.Alarm;
 import com.example.Tripapp.services.AlarmService;
+import com.example.Tripapp.services.FloatingWidgetService;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -31,9 +41,13 @@ public class RingActivity extends AppCompatActivity {
     Button snooze;
     Button start;
     ImageView clock;
+    TextView textTitle;
     private MediaPlayer mediaPlayer;
     private Vibrator vibrator;
     final int notificationID = 1;
+    private String title;
+    private String id;
+    private Trip trip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +55,13 @@ public class RingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ring);
 
         initComponent();
+        trip = getTrip();
+
+        Intent intent = getIntent();
+        title = intent.getStringExtra(Alarm.TRIP_TITLE);
+        id = intent.getStringExtra(Alarm.TRIP_ID);
+        textTitle.setText(title);
+
 
         mediaPlayer = MediaPlayer.create(this, R.raw.alarm);
         mediaPlayer.setLooping(true);
@@ -55,6 +76,11 @@ public class RingActivity extends AppCompatActivity {
                 finish();
                 NotificationManagerCompat mNotificationManager = NotificationManagerCompat.from(RingActivity.this);
                 mNotificationManager.cancelAll();
+
+
+                trip.setTripKind("Canceled");
+                MainActivity.databaseRefHistory.child(trip.getTripId()).setValue(trip);
+                MainActivity.databaseRefUpcoming.child(trip.getTripId()).removeValue();
             }
         });
 
@@ -65,7 +91,7 @@ public class RingActivity extends AppCompatActivity {
                 calendar.setTimeInMillis(System.currentTimeMillis());
                 calendar.add(Calendar.MINUTE, 1);
 
-                Alarm alarm = new Alarm(
+                Alarm alarm = new Alarm("",
                         new Random().nextInt(Integer.MAX_VALUE),
                         calendar.get(Calendar.HOUR_OF_DAY),
                         calendar.get(Calendar.MINUTE),
@@ -74,7 +100,7 @@ public class RingActivity extends AppCompatActivity {
                         calendar.get(Calendar.YEAR),
                         System.currentTimeMillis(),
                         true,
-                        "Snooze"
+                        "Snooze.. " + title
                 );
 
                 alarm.schedule(getApplicationContext());
@@ -92,8 +118,8 @@ public class RingActivity extends AppCompatActivity {
                 }
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), AlarmService.CHANNEL_ID);
-                builder.setContentTitle("alarmTitle");
-                builder.setContentText("Ring Ring .. Ring Ring");
+                builder.setContentTitle(title);
+                builder.setContentText("let's Start Our Trip");
                 builder.setPriority(NotificationCompat.PRIORITY_HIGH);
                 builder.setSmallIcon(R.drawable.ic_baseline_alarm_add_24);
                 builder.setContentIntent(pendingIntent);
@@ -109,6 +135,24 @@ public class RingActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final double longitude = trip.getLongitude();
+                final double latitude = trip.getLatitude();
+
+                Uri intentUri = Uri.parse("google.navigation:q=" + longitude + "," + latitude);
+                Intent intent = new Intent(Intent.ACTION_VIEW, intentUri);
+                intent.setPackage("com.google.android.apps.maps");
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(RingActivity.this, "There's no app that can respond. Please, Install Google Maps", Toast.LENGTH_SHORT).show();
+                }
+
+                if (MainActivity.drawOverAppsAllowed) {
+                    Intent serviceIntent = new Intent(RingActivity.this, FloatingWidgetService.class);
+                    serviceIntent.putExtra("notes", trip.getNotes());
+                    startService(serviceIntent);
+                }
+
 
             }
         });
@@ -120,11 +164,36 @@ public class RingActivity extends AppCompatActivity {
         animateClock();
     }
 
+    private Trip getTrip() {
+        ArrayList<Trip> trips = new ArrayList<>();
+        Toast.makeText(RingActivity.this,"Alarm......... Alarm .....",Toast.LENGTH_LONG).show();
+        MainActivity.databaseRefUpcoming.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NotNull DataSnapshot snapshot) {
+                for (DataSnapshot datasnapshot : snapshot.getChildren()) {
+                    Trip checkedTrip = datasnapshot.getValue(Trip.class);
+                    trips.add(checkedTrip);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NotNull DatabaseError error) {
+            }
+        });
+        for(Trip n:trips){
+            if(n.getTripId() == id){
+                return n;
+            }
+        }
+        return null;
+    }
+
     private void initComponent() {
         cancel = findViewById(R.id.activity_ring_dismiss);
         snooze = findViewById(R.id.activity_ring_snooze);
         start = findViewById(R.id.activity_ring_start);
         clock = findViewById(R.id.activity_ring_clock);
+        textTitle = findViewById(R.id.text_title);
 
     }
 

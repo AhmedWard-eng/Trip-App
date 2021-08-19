@@ -18,6 +18,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
@@ -38,6 +41,21 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton fabStartTripDataActivity;
     UpcomingViewModel upcomingViewModel;
+
+    FirebaseAuth auth;
+    FirebaseUser firebaseUser;
+    public static DatabaseReference databaseRefUsers, USER_ID, databaseRefUpcoming, databaseRefHistory;
+    public static String userId;
+
+    public static final String upcomingId = "UpComing_Trips", historyId = "History_Trips";
+
+//    FirebaseAuth auth;
+//    FirebaseUser firebaseUser;
+//    public static DatabaseReference databaseRefUsers, USER_ID, databaseRefUpcoming, databaseRefHistory;
+////    public static String userId;
+//    public static final String upcomingId = "UpComing_Trips", historyId = "History_Trips";
+
+
 //    private IntentFilter intentFilter;
 //    RingReceiver receiver;
 
@@ -56,8 +74,46 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+
+        if (firebaseUser == null) {
+            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+            startActivity(intent);
+            finish();
+        } else {
+            userId = firebaseUser.getUid();
+        }
+        databaseRefUsers = FirebaseDatabase.getInstance().getReference("Clients");
+        USER_ID = databaseRefUsers.child(userId);
+        databaseRefUsers.keepSynced(true);
+        databaseRefUpcoming = USER_ID.child(upcomingId);
+        databaseRefHistory = USER_ID.child(historyId);
 //        intentFilter = new IntentFilter("com.example.SendReceiver");
 //        receiver = new RingReceiver();
+
+//        auth = FirebaseAuth.getInstance();
+//        firebaseUser = auth.getCurrentUser();
+//        userId = firebaseUser.getUid();
+//        databaseRefUsers = FirebaseDatabase.getInstance().getReference("Clients");
+//        USER_ID = databaseRefUsers.child(userId);
+//        databaseRefUsers.keepSynced(true);
+//        databaseRefUpcoming = USER_ID.child(upcomingId);
+//        databaseRefHistory = USER_ID.child(historyId);
+
+//        MainActivity2.databaseRefUsers = FirebaseDatabase.getInstance().getReference("Clients");
+//        MainActivity2.USER_ID = MainActivity2.databaseRefUsers.child(MainActivity2.userId);
+//        MainActivity2.databaseRefUsers.keepSynced(true);
+//        MainActivity2.databaseRefUpcoming = MainActivity2.USER_ID.child(MainActivity2.upcomingId);
+//        MainActivity2.databaseRefHistory = MainActivity2.USER_ID.child(MainActivity2.historyId);
+
+
+//        Toast.makeText(getApplicationContext(), firebaseUser.getUid(), Toast.LENGTH_LONG).show();
+
+        Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         fabStartTripDataActivity = findViewById(R.id.fab);
@@ -183,27 +239,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Intent intent = getIntent();
-        if (intent != null) {
-            trip = new Trip();
-            String s = intent.getStringExtra(TripAppDataActivity.TRIP_UNIQUE_ID);
-            Log.i("receiving_from_intent", String.valueOf(intent.getStringExtra(TripAppDataActivity.TRIP_UNIQUE_ID)));
-            if (s != null) {
-                trip.setTitle(intent.getStringExtra(TripAppDataActivity.TRIP_TITLE));
-                trip.setTimeText(intent.getStringExtra(TripAppDataActivity.TRIP_TIME));
-                trip.setDateText(intent.getStringExtra(TripAppDataActivity.TRIP_DATE));
-                trip.setStartPoint(intent.getStringExtra(TripAppDataActivity.TRIP_START_POINT));
-                trip.setEndPoint(intent.getStringExtra(TripAppDataActivity.TRIP_END_POINT));
-                trip.setMinute(intent.getIntExtra(TripAppDataActivity.MINUTE,0));
-                trip.setHour(intent.getIntExtra(TripAppDataActivity.HOUR,0));
-                trip.setYear(intent.getIntExtra(TripAppDataActivity.YEAR,0));
-                trip.setMonth(intent.getIntExtra(TripAppDataActivity.MONTH,0));
-                trip.setDay(intent.getIntExtra(TripAppDataActivity.DAY,0));
-                trip.setLatitude(29.924526);
-                trip.setLongitude(31.205753);
-                trip.setTripId(intent.getIntExtra(TripAppDataActivity.TRIP_ID,0));
-                addTrip(trip);
-            }
-        }
+
     }
 }

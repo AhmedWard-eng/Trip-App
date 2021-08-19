@@ -13,16 +13,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.Tripapp.MainActivity;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
 import com.example.Tripapp.trip_map.TripMapActivity;
+import com.example.Tripapp.ui.createAcount.MainActivity2;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.NotNull;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ public class UpcomingTripsFrag extends Fragment  {
     private ArrayList<Trip> trips = null;
     UpcomingViewModel upcomingViewModel;
     DatabaseReference reference = null;
+    UpcomingTripAdapter simpleArrayAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -42,9 +46,8 @@ public class UpcomingTripsFrag extends Fragment  {
         trips = new ArrayList<Trip>();
 
         FirebaseDatabase data = FirebaseDatabase.getInstance();
-        reference = data.getReference("Trip_Data");
+//        reference = data.getReference("Trip_Data");
 
-        reference.keepSynced(true);
 
         upcomingViewModel = new ViewModelProvider(getActivity()).get(UpcomingViewModel.class);
 
@@ -67,7 +70,7 @@ public class UpcomingTripsFrag extends Fragment  {
 //                startActivity(intent);
 //            }
 //        });
-        UpcomingTripAdapter simpleArrayAdapter = new UpcomingTripAdapter(view.getContext(), trips);
+        simpleArrayAdapter = new UpcomingTripAdapter(view.getContext(), trips);
         upcomingListView.setAdapter(simpleArrayAdapter);
         return view;
     }
@@ -75,21 +78,19 @@ public class UpcomingTripsFrag extends Fragment  {
     @Override
     public void onStart() {
         super.onStart();
-        reference.addValueEventListener(new ValueEventListener() {
+        MainActivity.databaseRefUpcoming.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-
+            public void onDataChange(@NotNull DataSnapshot snapshot) {
+                trips.clear();
                 for ( DataSnapshot datasnapshot: snapshot.getChildren()) {
                     Trip trip = datasnapshot.getValue(Trip.class);
                     trips.add(trip);
                 }
-                UpcomingTripAdapter upcomingTripAdapter = new UpcomingTripAdapter(getView().getContext(), trips);
-                upcomingListView.setAdapter(upcomingTripAdapter);
-                upcomingTripAdapter.notifyDataSetChanged();
+                simpleArrayAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+            public void onCancelled(@NotNull DatabaseError error) {
 
             }
         });

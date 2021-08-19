@@ -41,19 +41,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/kind_of_trip"
-        android:layout_width="163dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="16dp"
-        android:entries="@array/kind_trip"
+    <!--    <Spinner-->
+    <!--        android:id="@+id/kind_of_trip"-->
+    <!--        android:layout_width="163dp"-->
+    <!--        android:layout_height="49dp"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:entries="@array/kind_trip"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/repetition"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/clock" />-->
+
+    <RadioGroup
+        android:layout_width="175dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/repeatation"
-        app:layout_constraintTop_toBottomOf="@+id/clock" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/repetition"
+        app:layout_constraintTop_toBottomOf="@+id/clock">
+
+        <RadioButton
+            android:id="@+id/radio_Round"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRBRoundClicked"
+            android:text="@string/round" />
+
+        <RadioButton
+            android:id="@+id/radio_one_way"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRBOneWayClicked"
+
+            android:text="@string/one_way" />
+    </RadioGroup>
 
     <Spinner
-        android:id="@+id/repeatation"
+        android:id="@+id/repetition"
         android:layout_width="188dp"
         android:layout_height="54dp"
         android:entries="@array/repeatition"
