@@ -62,8 +62,14 @@ public class Trip {
         this.minute = minute;
     }
 
+
     Trip() {
+
     }
+
+
+
+    
 
     public int getAlarmId() {
         return alarmId;

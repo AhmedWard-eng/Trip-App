@@ -51,6 +51,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private ImageView remove_image_view;
     private Point szWindow = new Point();
     private View removeFloatingWidgetView;
+    private String[] notes;
 
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
 
@@ -501,6 +502,13 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
 
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+        notes = (String[]) intent.getExtras().get("notes");
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     /*  on Floating widget click show expanded view  */
     private void onFloatingWidgetClick() {
         if (isViewCollapsed()) {
@@ -508,14 +516,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
             //visibility of the collapsed layout will be changed to "View.GONE"
             //and expanded view will become visible.
             collapsedView.setVisibility(View.GONE);
-
-            ArrayList<String> famList = new ArrayList<>(Arrays.asList(
-                    "Don't forget to turn off the lights before you go",
-                    "Feed the cat -_-!",
-                    "We are going to have fun XD",
-                    "Take care of thr kids",
-                    "Phew, Things went easy :)",
-                    "We are finally home, that was a great day"));
+            ArrayList<String> famList = new ArrayList<>(Arrays.asList(notes));
             NotesAdapter notesAdapter = new NotesAdapter (this, famList);
             ListView lstView = expandedView.findViewById(R.id.floating_list_view);
             lstView.setAdapter(notesAdapter);

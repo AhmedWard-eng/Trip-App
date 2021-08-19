@@ -55,11 +55,17 @@ public class HistoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         trips = new ArrayList<>();
         lstView = view.findViewById(R.id.best_list);
         bestAdapter = new BestAdapter(getActivity(), trips, R.color.white);
         lstView.setAdapter(bestAdapter);
+
+        
     }
+
+
+
 
     public void onStart() {
         super.onStart();
