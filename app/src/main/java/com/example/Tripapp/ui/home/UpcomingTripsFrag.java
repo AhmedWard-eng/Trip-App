@@ -39,6 +39,7 @@ public class UpcomingTripsFrag extends Fragment  {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+
         trips = new ArrayList<Trip>();
 
         FirebaseDatabase data = FirebaseDatabase.getInstance();
