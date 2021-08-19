@@ -5,11 +5,10 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -19,29 +18,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.Tripapp.Data.Alarm;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static com.example.Tripapp.MainActivity.databaseRefUsers;
+
 public class TripAppDataActivity extends AppCompatActivity {
-    private static int tripId ;
+    private static int alarmId;
     public static final String TRIP_ID = "Trip Id";
+    public static final String ALARM_ID = "Alarm id";
     public static final String TRIP_TITLE = "sending the object";
-    public static final String TRIP_UNIQUE_ID = "UniqueId";
     public static final String TRIP_DATE = "Trip date";
     public static final String TRIP_TIME = "Trip time";
     public static final String TRIP_START_POINT = "Start Point";
-    public static final String TRIP_END_POINT = "End Point";
+    public static final String TRIP_END_POINT = "000000000";
+    public static final String NOTES = "Notes";
+    public static final String IS_ROUND = "End Point";
 
-    public static final String TRIP_SET_TIME = "Trip Set Time";
-    public static DatabaseReference reference = null;
-
-    ArrayList<Trip> arrayList = null ;
+//    public static DatabaseReference reference = null;
 
     public static final String DAY = "day";
     public static final String MONTH = "month";
@@ -55,17 +54,21 @@ public class TripAppDataActivity extends AppCompatActivity {
     FloatingActionButton btn_add;
     TextView txt_date, txt_time;
     AutoCompleteTextView txt_StartPoint, txt_endPoint;
-    EditText txt_title;
-    Spinner txt_repeat, txt_kind;
-    Calendar calendarDate;
-    Calendar theSetTime;
-    String date;
-    String time;
-    int anHour;
-    int aMinute;
-    int aYear;
-    int aMonth;
-    int aDay;
+    private EditText txt_title;
+    private Spinner txt_repeat;
+    private RadioButton radioButtonRound, radioButtonOneWay;
+    private Calendar calendarDate;
+    private Calendar theSetTime;
+    private String date;
+    private String time;
+    private int anHour;
+    private int aMinute;
+    private int aYear;
+    private int aMonth;
+    private int aDay;
+    private boolean isRound;
+
+    String id = null;
 
     DatePickerDialog.OnDateSetListener onDateSetListener;
 
@@ -74,7 +77,8 @@ public class TripAppDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_app_data);
 
-        sh = getSharedPreferences(TRIP_ID,MODE_PRIVATE);
+        sh = getSharedPreferences(TRIP_ID, MODE_PRIVATE);
+        isRound = false;
 
         editor = sh.edit();
         intiComponent();
@@ -82,32 +86,38 @@ public class TripAppDataActivity extends AppCompatActivity {
         getEditData();
 
         FirebaseDatabase data = FirebaseDatabase.getInstance();
-        reference = data.getReference("Trip_Data");
+//        reference = data.getReference("Trip_Data");
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intentToMainActivity = new Intent(TripAppDataActivity.this, MainActivity.class);
 
-                TripAppDataActivity.this.startActivity(intentToMainActivity);
-                
                 Trip trip = saveData();
                 if (trip == null) {
 
                     Toast.makeText(TripAppDataActivity.this, "Please complete the all fields", Toast.LENGTH_SHORT).show();
+                } else if (theSetTime.getTimeInMillis() < System.currentTimeMillis()) {
+                    DateFormat dateFormat = new SimpleDateFormat("hh:mm aa yy-MM-dd", Locale.US);
+                    String dateCheck;
+                    dateCheck = dateFormat.format(theSetTime.getTime());
+                    Toast.makeText(getApplicationContext(), "Wrong Date... this time(" + dateCheck + ") is in past", Toast.LENGTH_LONG).show();
                 } else {
-                    String id = reference.push().getKey();
-                    Trip data_trip = trip;
+                    Intent intentToMainActivity = new Intent(TripAppDataActivity.this, MainActivity.class);
+                    TripAppDataActivity.this.startActivity(intentToMainActivity);
+                    if (id == null) {
+                        id = MainActivity.databaseRefUpcoming.push().getKey();
+                    }
+                    trip.setTripId(id);
+                    Alarm alarm = new Alarm(id, alarmId, trip.getHour(), trip.getMinute(), trip.getDay(), trip.getMonth(), trip.getYear(), System.currentTimeMillis(), true, trip.getTitle());
+                    alarm.schedule(getApplicationContext());
+                    databaseRefUsers.child(MainActivity.userId).child(MainActivity.upcomingId).child(id).setValue(trip);
 
-                    reference.child(id).setValue(data_trip);
                     txt_title.setText("");
                     txt_StartPoint.setText("");
                     txt_endPoint.setText("");
                     txt_date.setText("");
                     txt_time.setText("");
-                    txt_kind.setSelection(0);
-                    txt_repeat.setSelection(0);
                 }
             }
         });
@@ -132,19 +142,29 @@ public class TripAppDataActivity extends AppCompatActivity {
     private void getEditData() {
         Intent intent = getIntent();
         if (intent != null) {
-            Trip trip = new Trip();
-            String s = intent.getStringExtra(TripAppDataActivity.TRIP_UNIQUE_ID);
+            String s = intent.getStringExtra(TripAppDataActivity.TRIP_ID);
 
-            Log.i("receiving_from_intent", String.valueOf(intent.getStringExtra(TripAppDataActivity.TRIP_UNIQUE_ID)));
             if (s != null) {
                 txt_title.setText(intent.getStringExtra(TRIP_TITLE));
-                txt_StartPoint.setText(intent.getStringExtra(TRIP_START_POINT), false);
-                txt_endPoint.setText(intent.getStringExtra(TRIP_END_POINT), false);
+                id = intent.getStringExtra(TripAppDataActivity.TRIP_ID);
+                alarmId = intent.getIntExtra(TripAppDataActivity.ALARM_ID, 0);
+                txt_date.setText(intent.getStringExtra(TripAppDataActivity.TRIP_DATE));
+                txt_time.setText(intent.getStringExtra(TripAppDataActivity.TRIP_TIME));
+                txt_StartPoint.setText(intent.getStringExtra(TripAppDataActivity.TRIP_START_POINT));
+                txt_endPoint.setText(intent.getStringExtra(TripAppDataActivity.TRIP_END_POINT));
+                intent.getSerializableExtra(TripAppDataActivity.NOTES);
+                if (intent.getBooleanExtra(TripAppDataActivity.IS_ROUND, false)) {
+                    radioButtonRound.setSelected(true);
+                } else {
+                    radioButtonOneWay.setSelected(true);
+                }
+                /////////////////////////////////////////////////////////////////////////////
+                aMonth = intent.getIntExtra(TripAppDataActivity.MONTH, 0);
+                aDay = intent.getIntExtra(TripAppDataActivity.DAY, 0);
+                aYear = intent.getIntExtra(TripAppDataActivity.YEAR, 0);
+                anHour = intent.getIntExtra(TripAppDataActivity.HOUR, 0);
+                aMinute = intent.getIntExtra(TripAppDataActivity.MINUTE, 0);
 
-                SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa", Locale.US);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd /MM /yyyy", Locale.US);
-                txt_date.setText(dateFormat.format(theSetTime.getTime()));
-                txt_time.setText(timeFormat.format(theSetTime.getTime()));
 
             }
         }
@@ -173,8 +193,8 @@ public class TripAppDataActivity extends AppCompatActivity {
 
     private void showDate() {
         onDateSetListener = (view, year, month, dayOfMonth) -> {
-            month = month + 1;
-            date = dayOfMonth + "/" + month + "/" + year;
+//            month = month + 1;
+            date = dayOfMonth + "/" + (month + 1) + "/" + year;
             txt_date.setText(date);
             aYear = year;
             aMonth = month;
@@ -191,6 +211,14 @@ public class TripAppDataActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    public void onRBRoundClicked(View view) {
+        isRound = true;
+    }
+
+    public void onRBOneWayClicked(View view) {
+        isRound = false;
+    }
+
 
     private void intiComponent() {
         btn_add = findViewById(R.id.add);
@@ -199,23 +227,24 @@ public class TripAppDataActivity extends AppCompatActivity {
         txt_title = findViewById(R.id.title);
         txt_StartPoint = findViewById(R.id.your_location);
         txt_endPoint = findViewById(R.id.your_destination);
-        txt_repeat = findViewById(R.id.repeatation);
-        txt_kind = findViewById(R.id.kind_of_trip);
+        txt_repeat = findViewById(R.id.repetition);
         txt_StartPoint.setAdapter(new PlaceAutocomplete(this, android.R.layout.simple_list_item_1));
+        radioButtonRound = findViewById(R.id.radio_Round);
+        radioButtonOneWay = findViewById(R.id.radio_one_way);
 
         txt_endPoint.setAdapter(new PlaceAutocomplete(this, android.R.layout.simple_list_item_1));
     }
 
     private Trip saveData() {
         Trip data = new Trip();
-        if (theSetTime == null) {
-            theSetTime = Calendar.getInstance();
-            theSetTime.set(Calendar.HOUR, anHour);
-            theSetTime.set(Calendar.MINUTE, aMinute);
-            theSetTime.set(Calendar.DAY_OF_MONTH, aDay);
-            theSetTime.set(Calendar.MONTH, aMonth);
-            theSetTime.set(Calendar.YEAR, aYear);
-        }
+        theSetTime = Calendar.getInstance();
+        theSetTime.set(Calendar.HOUR_OF_DAY, anHour);
+        theSetTime.set(Calendar.MINUTE, aMinute);
+        theSetTime.set(Calendar.DAY_OF_MONTH, aDay);
+        theSetTime.set(Calendar.MONTH, aMonth);
+        theSetTime.set(Calendar.YEAR, aYear);
+        theSetTime.set(Calendar.SECOND, 0);
+        theSetTime.set(Calendar.MILLISECOND, 0);
 
 
         if (txt_date.getText().toString().isEmpty()
@@ -225,10 +254,11 @@ public class TripAppDataActivity extends AppCompatActivity {
                 || txt_endPoint.getText().toString().isEmpty()) {
             return null;
         } else {
-            
-            tripId =sh.getInt(TRIP_ID,0) + 1 ;
-            editor.putInt(TRIP_ID, tripId);
-            editor.commit();
+            if (alarmId < 0) {
+                alarmId = sh.getInt(TRIP_ID, 0) + 1;
+                editor.putInt(TRIP_ID, alarmId);
+                editor.commit();
+            }
             data.setMinute(aMinute);
             data.setHour(anHour);
             data.setYear(aYear);
@@ -242,9 +272,13 @@ public class TripAppDataActivity extends AppCompatActivity {
             data.setEndPoint(String.valueOf(txt_endPoint.getText()));
             data.setLatitude(29.924526);
             data.setLongitude(31.205753);
-            data.setTripId(tripId);
+            data.setAlarmId(alarmId);
+            data.setRound(isRound);
+            data.setTripKind("created");
+            data.setNotes(new ArrayList<>());
             return data;
         }
     }
+
 
 }

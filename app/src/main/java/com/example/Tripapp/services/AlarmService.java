@@ -15,6 +15,7 @@ import android.os.Vibrator;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.example.Tripapp.Data.Alarm;
 import com.example.Tripapp.R;
 import com.example.Tripapp.RingActivity;
 
@@ -22,6 +23,7 @@ public class AlarmService extends Service {
     public static final String CHANNEL_ID = "ALARM_SERVICE_CHANNEL";
     static MediaPlayer mediaPlayer;
     static Vibrator vibrator;
+    private String title;
 
     @Override
     public void onCreate() {
@@ -37,6 +39,9 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Intent notificationIntent = new Intent(this, RingActivity.class);
+        notificationIntent.putExtra(Alarm.TRIP_TITLE,intent.getStringExtra(Alarm.TRIP_TITLE));
+        title = intent.getStringExtra(Alarm.TRIP_TITLE);
+        notificationIntent.putExtra(Alarm.TRIP_ID,title);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(notificationIntent);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -52,14 +57,14 @@ public class AlarmService extends Service {
 
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("alarmTitle")
-                .setContentText("Ring Ring .. Ring Ring")
+                .setContentTitle(title)
+                .setContentText("let's Start Our Trip")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSmallIcon(R.drawable.ic_baseline_alarm_add_24)
+                .setSmallIcon(R.drawable.ic_baseline_directions_bus_24)
                 .setOngoing(true)
                 .setContentIntent(pendingIntent)
                 .setFullScreenIntent(pendingIntent,true)
-                .addAction(R.drawable.ic_baseline_alarm_add_24, "See Details", pendingIntent);
+                .addAction(R.drawable.ic_baseline_expand_more_24, "More Details", pendingIntent);
 
         mediaPlayer.start();
 

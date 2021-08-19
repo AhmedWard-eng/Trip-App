@@ -1,95 +1,91 @@
 package com.example.Tripapp;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 
 public class Trip {
 
 
-    private static int tripId;
-    private static String Id ;
-    private String title;
-    private String startPoint, endPoint , trip_kind , repeatation;
-    double latitude, longitude;
-    private static ArrayList notes;
-    private Boolean isRound;
-    private String dateText;
-    private String timeText;
-    private int colorId;
-    private int day;
-    private int month;
-    private int year;
-    private int hour;
-    private int minute;
+    public int alarmId;
+    public String tripId;
+    public String title;
+    public String startPoint;
+    public String endPoint;
+    public String tripKind;
+    public double latitude, longitude;
+    public ArrayList<String> notes;
+    public Boolean round;
+    public String dateText;
+    public String timeText;
+    public int colorId;
+    public int day;
+    public int month;
+    public int year;
+    public int hour;
+    public int minute;
 
-
-    public Trip(String title, String startPoint, String endPoint, double latitude, double longitude, String dateText, String timeText, int day, int month, int year, int hour, int minute) {
+    public Trip(int alarmId,
+                String TripId,
+                String title,
+                String startPoint,
+                String endPoint,
+                String tripKind,
+                double latitude,
+                double longitude,
+                ArrayList<String> notes,
+                Boolean round,
+                String dateText,
+                String timeText,
+                int colorId,
+                int day,
+                int month,
+                int year,
+                int hour,
+                int minute) {
+        this.alarmId = alarmId;
+        this.tripId = TripId;
         this.title = title;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
+        this.tripKind = tripKind;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.dateText = dateText;
-        this.timeText = timeText;
-        this.day = day;
-        this.month = month;
-        this.year = year;
-        this.hour = hour;
-        this.minute = minute;
-    }
-
-    public Trip() {
-    }
-
-    public Trip (String Id, String title, String startPoint, String endPoint
-            , String dateText, String timeText , String trip_kind , String repeatation
-            ,int hour ,int minute , int day ,int month , int year) {
-        this.Id = Id;
-        this.title = title;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
-        this.dateText = dateText;
-        this.timeText = timeText;
-        this.trip_kind = trip_kind;
-        this.repeatation = repeatation;
-        this.day = day;
-        this.month = month;
-        this.year = year;
-        this.hour = hour;
-        this.minute = minute;
-    }
-
-    public Trip(ArrayList notes) {
         this.notes = notes;
-    }
-
-    public static String getId() {
-        return Id;
-    }
-
-    public static void setId(String id) {
-        Id = id;
-    }
-
-    public String getDateText() {
-        return dateText;
-    }
-
-    public void setDateText(String dateText) {
+        this.round = round;
         this.dateText = dateText;
-    }
-
-    public String getTimeText() {
-        return timeText;
-    }
-
-    public void setTimeText(String timeText) {
         this.timeText = timeText;
+        this.colorId = colorId;
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.hour = hour;
+        this.minute = minute;
     }
 
+
+    Trip() {
+
+    }
+
+
+
+    
+
+    public int getAlarmId() {
+        return alarmId;
+    }
+
+    public void setAlarmId(int alarmId) {
+        this.alarmId = alarmId;
+    }
+
+    public String getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(String tripId) {
+        this.tripId = tripId;
+    }
 
     public String getTitle() {
         return title;
@@ -97,31 +93,6 @@ public class Trip {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public static ArrayList getNotes() {
-        return notes;
-    }
-
-    public static void setNotes(ArrayList Notes) {
-        notes = Notes;
-    }
-
-    public Boolean getRound() {
-        return isRound;
-    }
-
-    public void setRound(Boolean round) {
-        isRound = round;
-    }
-
-
-    public int getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(int colorId) {
-        this.colorId = colorId;
     }
 
     public String getStartPoint() {
@@ -140,6 +111,14 @@ public class Trip {
         this.endPoint = endPoint;
     }
 
+    public String getTripKind() {
+        return tripKind;
+    }
+
+    public void setTripKind(String tripKind) {
+        this.tripKind = tripKind;
+    }
+
     public double getLatitude() {
         return latitude;
     }
@@ -155,12 +134,37 @@ public class Trip {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-    public int getTripId() {
-        return tripId;
+
+    public ArrayList<String> getNotes() {
+        return notes;
     }
 
-    public void setTripId(int tripId) {
-        this.tripId = tripId;
+    public void setNotes(ArrayList<String> notes) {
+        this.notes = notes;
+    }
+
+    public Boolean getRound() {
+        return round;
+    }
+
+    public void setRound(Boolean round) {
+        this.round = round;
+    }
+
+    public String getDateText() {
+        return dateText;
+    }
+
+    public void setDateText(String dateText) {
+        this.dateText = dateText;
+    }
+
+    public String getTimeText() {
+        return timeText;
+    }
+
+    public void setTimeText(String timeText) {
+        this.timeText = timeText;
     }
 
     public int getDay() {
@@ -202,8 +206,6 @@ public class Trip {
     public void setMinute(int minute) {
         this.minute = minute;
     }
-
-
 }
 
 

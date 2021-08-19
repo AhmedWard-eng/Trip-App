@@ -20,6 +20,7 @@ public class Alarm {
 
 
     private int alarmId;
+    private String tripId;
 
     private int hour, minute, day, month, year;
     private boolean started;
@@ -27,9 +28,12 @@ public class Alarm {
     private long created;
 
     private String title;
+    public static final String TRIP_ID = "FireBase Id";
+    public static final String TRIP_TITLE = "trip title";
 
-    public Alarm(int alarmId, int hour, int minute, int day, int month, int year,long created, boolean started, String title) {
+    public Alarm(String tripId,int alarmId, int hour, int minute, int day, int month, int year,long created, boolean started, String title) {
         this.alarmId = alarmId;
+        this.tripId = tripId;
         this.hour = hour;
         this.minute = minute;
         this.started = started;
@@ -68,6 +72,8 @@ public class Alarm {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(context, AlarmBroadCastReceiver.class);
+        intent.putExtra(TRIP_ID,tripId);
+        intent.putExtra(TRIP_TITLE,title);
 
 
         PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, alarmId, intent,
@@ -78,33 +84,21 @@ public class Alarm {
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-//        calendar.set(Calendar.DAY_OF_MONTH, day);
-//        calendar.set(Calendar.MONTH, month);
-//        calendar.set(Calendar.YEAR, year);
-//        long time = calendar.getTimeInMillis() - (calendar.getTimeInMillis() % 60000);
-//
-//        if(System.currentTimeMillis() > time){
-//            if(calendar.AM_PM == 0){
-//                time = time + (1000*60*60*12);
-//            } else{
-//                time = time + (1000*60*60*24);
-//            }
-//        }
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
 
-        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss aa yyyy-MM-dd ", Locale.US);
+
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm aa yy-MM-dd", Locale.US);
         String date;
         date = dateFormat.format(calendar.getTime());
         if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
-            Toast.makeText(context, "this date"+ date + "has passed choose coming date", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Wrong Date!!....this time"+ date + "is in past", Toast.LENGTH_LONG).show();
         } else {
             String toastText = null;
 
-            String string = "alarm set at: " + dateFormat.format(calendar.getTime());
-            try {
-//                toastText = String.format("One Time Alarm scheduled for at %02d:%02d", hour, minute,alarmId);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            String string = "your trip will start at: " + dateFormat.format(calendar.getTime());
+
             Toast.makeText(context, string, Toast.LENGTH_LONG).show();
 
             alarmManager.setExact(
@@ -125,9 +119,11 @@ public class Alarm {
         alarmManager.cancel(alarmPendingIntent);
         this.started = false;
 
-        String toastText = String.format("Alarm cancelled for %02d:%02d with id %d", hour, minute, alarmId);
-        Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
-        Log.i("cancel", toastText);
+        String dateCancelFormat;
+        dateCancelFormat ="you canceled the trip " + title;
+//        String toastText = String.format("Alarm cancelled for %02d:%02d with id %d", hour, minute, alarmId);
+        Toast.makeText(context, dateCancelFormat, Toast.LENGTH_SHORT).show();
+        Log.i("cancel", dateCancelFormat);
     }
 
 

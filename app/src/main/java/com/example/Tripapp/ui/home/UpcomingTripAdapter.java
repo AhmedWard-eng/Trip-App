@@ -26,12 +26,6 @@ import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
 import com.example.Tripapp.TripAppDataActivity;
 import com.example.Tripapp.services.FloatingWidgetService;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,9 +34,7 @@ import java.util.ArrayList;
 public class UpcomingTripAdapter extends ArrayAdapter {
     private Context context;
     private ArrayList<Trip> trips;
-    DatabaseReference reference = null;
-    FirebaseDatabase data = FirebaseDatabase.getInstance();
-    Trip trip = new Trip();
+
 
     public UpcomingTripAdapter(Context context, ArrayList<Trip> trips) {
         super(context, R.layout.upcoming_trip_design, trips);
@@ -85,10 +77,10 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                 if (intent.resolveActivity(context.getPackageManager()) != null) {
                     context.startActivity(intent);
                 } else {
-                    Toast.makeText(getContext(), "There's no app that can respond. Please, Install Google Maps", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "There's no app that can respond. Please, install Google Maps", Toast.LENGTH_SHORT).show();
                 }
 
-                if(MainActivity.drawOverAppsAllowed){
+                if(MainActivity.drawOverAppsAllowed && trips.get(position).getNotes() != null){
                     Intent serviceIntent = new Intent(context, FloatingWidgetService.class);
                     serviceIntent.putExtra("notes", trips.get(position).getNotes());
                     context.startService(serviceIntent);
@@ -113,9 +105,8 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                         deleteTrip(position);
                         return true;
                     } else if (itemId == R.id.item_edit) {
-                        EditTrip(trip.getTripId());
+                        EditTrip(position);
                         return true;
-
                     } else if (itemId == R.id.item_Notes) {
                        Intent intent = new Intent(context,Add_Notes.class);
                        context.startActivity(intent);
@@ -147,27 +138,24 @@ public class UpcomingTripAdapter extends ArrayAdapter {
 
     }
 
-    private void EditTrip(int position ) {
+    private void EditTrip(int position) {
         Intent intent = new Intent(context, TripAppDataActivity.class);
+        intent.putExtra(TripAppDataActivity.TRIP_ID, trips.get(position).getTripId());
+        intent.putExtra(TripAppDataActivity.ALARM_ID,trips.get(position).getAlarmId());
+        intent.putExtra(TripAppDataActivity.TRIP_TITLE,trips.get(position).getTitle());
+        intent.putExtra(TripAppDataActivity.TRIP_DATE,trips.get(position).getDateText());
+        intent.putExtra(TripAppDataActivity.TRIP_TIME,trips.get(position).getTimeText());
+        intent.putExtra(TripAppDataActivity.TRIP_START_POINT, trips.get(position).getStartPoint());
+        intent.putExtra(TripAppDataActivity.TRIP_END_POINT, trips.get(position).getEndPoint());
+        intent.putExtra(TripAppDataActivity.NOTES, trips.get(position).getNotes());
+        intent.putExtra(TripAppDataActivity.IS_ROUND, trips.get(position).getRound());
+        /////////////////////////////////////////////////////////////////////////////
+        intent.putExtra(TripAppDataActivity.MONTH, trips.get(position).getMonth());
+        intent.putExtra(TripAppDataActivity.DAY, trips.get(position).getDay());
+        intent.putExtra(TripAppDataActivity.YEAR, trips.get(position).getYear());
+        intent.putExtra(TripAppDataActivity.HOUR, trips.get(position).getHour());
+        intent.putExtra(TripAppDataActivity.MINUTE, trips.get(position).getMinute());
         context.startActivity(intent);
-        reference = data.getReference("Trip_Data");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-
-                for (DataSnapshot datasnapshot : snapshot.getChildren()) {
-                    Trip trip = datasnapshot.getValue(Trip.class);
-                    trips.add(trip);
-                }
-                
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-
     }
 
     private void cancelTrip(int position) {
@@ -178,7 +166,7 @@ public class UpcomingTripAdapter extends ArrayAdapter {
 
             public void onClick(DialogInterface dialog, int which) {
                 // continue with cancel
-                Alarm alarm = new Alarm(trips.get(position).getTripId(),
+                Alarm alarm = new Alarm(trips.get(position).getTripId(),trips.get(position).getAlarmId(),
                         trips.get(position).getHour(),
                         trips.get(position).getMinute(),
                         trips.get(position).getDay(),
@@ -188,7 +176,9 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                         false,
                         trips.get(position).getTitle());
                 alarm.cancelAlarm(context);
-                trips.remove(position);
+                trips.get(position).setTripKind("Canceled");
+                MainActivity.databaseRefHistory.child(trips.get(position).getTripId()).setValue(trips.get(position));
+                MainActivity.databaseRefUpcoming.child(trips.get(position).getTripId()).removeValue();
                 notifyDataSetChanged();
             }
         });
@@ -206,11 +196,11 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
         alert.setTitle("Delete Trip");
         alert.setMessage("Are you sure you want to delete this Trip?");
-        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
                 // continue with delete
-                Alarm alarm = new Alarm(trips.get(position).getTripId(),
+                Alarm alarm = new Alarm(trips.get(position).getTripId(),trips.get(position).getAlarmId(),
                         trips.get(position).getHour(),
                         trips.get(position).getMinute(),
                         trips.get(position).getDay(),
@@ -220,12 +210,14 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                         false,
                         trips.get(position).getTitle());
                 alarm.cancelAlarm(context);
-                trips.remove(position);
+                trips.get(position).setTripKind("Deleted");
+                MainActivity.databaseRefHistory.child(trips.get(position).getTripId()).setValue(trips.get(position));
+                MainActivity.databaseRefUpcoming.child(trips.get(position).getTripId()).removeValue();
                 notifyDataSetChanged();
             }
         });
 
-        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // close dialog
                 dialog.cancel();
