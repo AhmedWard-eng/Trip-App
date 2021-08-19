@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView text_signUp;
     Button btn_login;
     ImageView imageView;
-    GoogleSignInClient mGoogleSignInAcount;
+    GoogleSignInClient mGoogleSignInAccount;
     public static int RC_SIGN_IN = 100;
 
     @Override
@@ -61,11 +61,11 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        mGoogleSignInAcount = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInAccount = GoogleSignIn.getClient(this, gso);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signInIntent = mGoogleSignInAcount.getSignInIntent();
+                Intent signInIntent = mGoogleSignInAccount.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });

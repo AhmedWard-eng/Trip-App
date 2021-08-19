@@ -3,6 +3,7 @@ package com.example.Tripapp;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.Tripapp.Data.Alarm;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,7 +29,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class TripAppDataActivity extends AppCompatActivity {
-    private static int tripId = 0;
+    private static int tripId ;
     public static final String TRIP_ID = "Trip Id";
     public static final String TRIP_TITLE = "sending the object";
     public static final String TRIP_UNIQUE_ID = "UniqueId";
@@ -33,12 +37,20 @@ public class TripAppDataActivity extends AppCompatActivity {
     public static final String TRIP_TIME = "Trip time";
     public static final String TRIP_START_POINT = "Start Point";
     public static final String TRIP_END_POINT = "End Point";
+
+    public static final String TRIP_SET_TIME = "Trip Set Time";
+    public static DatabaseReference reference = null;
+
+    ArrayList<Trip> arrayList = null ;
+
     public static final String DAY = "day";
     public static final String MONTH = "month";
     public static final String YEAR = "year";
     public static final String HOUR = "hour";
     public static final String MINUTE = "minute";
 
+    SharedPreferences sh;
+    SharedPreferences.Editor editor;
 
     FloatingActionButton btn_add;
     TextView txt_date, txt_time;
@@ -55,7 +67,6 @@ public class TripAppDataActivity extends AppCompatActivity {
     int aMonth;
     int aDay;
 
-
     DatePickerDialog.OnDateSetListener onDateSetListener;
 
     @Override
@@ -63,41 +74,42 @@ public class TripAppDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_app_data);
 
+        sh = getSharedPreferences(TRIP_ID,MODE_PRIVATE);
 
+        editor = sh.edit();
         intiComponent();
 
         getEditData();
+
+        FirebaseDatabase data = FirebaseDatabase.getInstance();
+        reference = data.getReference("Trip_Data");
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
+                
                 Trip trip = saveData();
                 if (trip == null) {
 
                     Toast.makeText(TripAppDataActivity.this, "Please complete the all fields", Toast.LENGTH_SHORT).show();
                 } else {
-
+                    Intent intentToMainActivity = new Intent(TripAppDataActivity.this, MainActivity.class);
+                    TripAppDataActivity.this.startActivity(intentToMainActivity);
                     Alarm alarm = new Alarm(tripId, trip.getHour(), trip.getMinute(), trip.getDay(), trip.getMonth(), trip.getYear(), System.currentTimeMillis(), true, trip.getTitle());
                     alarm.schedule(getApplicationContext());
+                    String id = reference.push().getKey();
+                    Trip data_trip = trip;
 
-
-                    Intent intentToMainActivity = new Intent(TripAppDataActivity.this, MainActivity.class);
-
-                    intentToMainActivity.putExtra(TRIP_TITLE, trip.getTitle());
-                    intentToMainActivity.putExtra(TRIP_ID, trip.getTripId());
-                    intentToMainActivity.putExtra(TRIP_UNIQUE_ID, "from_TripDataActivity");
-                    intentToMainActivity.putExtra(TRIP_DATE, trip.getDateText());
-                    intentToMainActivity.putExtra(TRIP_TIME, trip.getTimeText());
-                    intentToMainActivity.putExtra(TRIP_START_POINT, trip.getStartPoint());
-                    intentToMainActivity.putExtra(TRIP_END_POINT, trip.getEndPoint());
-                    intentToMainActivity.putExtra(DAY, trip.getDay());
-                    intentToMainActivity.putExtra(MONTH, trip.getMonth());
-                    intentToMainActivity.putExtra(YEAR, trip.getYear());
-                    intentToMainActivity.putExtra(HOUR, trip.getHour());
-                    intentToMainActivity.putExtra(MINUTE, trip.getMinute());
-                    TripAppDataActivity.this.startActivity(intentToMainActivity);
+                    reference.child(id).setValue(data_trip);
+                    txt_title.setText("");
+                    txt_StartPoint.setText("");
+                    txt_endPoint.setText("");
+                    txt_date.setText("");
+                    txt_time.setText("");
+                    txt_kind.setSelection(0);
+                    txt_repeat.setSelection(0);
                 }
             }
         });
@@ -206,16 +218,7 @@ public class TripAppDataActivity extends AppCompatActivity {
             theSetTime.set(Calendar.MONTH, aMonth);
             theSetTime.set(Calendar.YEAR, aYear);
         }
-////        data.setTheSetTime(theSetTime);
-//
-//        int minute = theSetTime.get(Calendar.MINUTE);
-//        int hour = theSetTime.get(Calendar.HOUR_OF_DAY);
-//        int day = theSetTime.get(Calendar.DAY_OF_MONTH);
-//        ;
-//        int year = theSetTime.get(Calendar.YEAR);
-//        int month = theSetTime.get(Calendar.MONTH);
 
-//        theSetTime.get(Calendar.HOUR);
 
         if (txt_date.getText().toString().isEmpty()
                 || txt_title.getText().toString().isEmpty()
@@ -224,7 +227,10 @@ public class TripAppDataActivity extends AppCompatActivity {
                 || txt_endPoint.getText().toString().isEmpty()) {
             return null;
         } else {
-            tripId++;
+            
+            tripId =sh.getInt(TRIP_ID,0) + 1 ;
+            editor.putInt(TRIP_ID, tripId);
+            editor.commit();
             data.setMinute(aMinute);
             data.setHour(anHour);
             data.setYear(aYear);
@@ -239,7 +245,6 @@ public class TripAppDataActivity extends AppCompatActivity {
             data.setLatitude(29.924526);
             data.setLongitude(31.205753);
             data.setTripId(tripId);
-
             return data;
         }
     }

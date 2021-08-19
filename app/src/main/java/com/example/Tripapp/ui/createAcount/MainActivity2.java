@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +19,10 @@ public class MainActivity2 extends AppCompatActivity {
     TextView textLog;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
+    ScrollView scroll;
+
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         Intent a = new Intent(Intent.ACTION_MAIN);
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -30,22 +33,23 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        scroll= findViewById(R.id.scrollMain);
 
-auth=FirebaseAuth.getInstance();
-firebaseUser=auth.getCurrentUser();
-if (firebaseUser!=null){
-    Intent intent=new Intent(MainActivity2.this,MainActivity.class);
-    startActivity(intent);
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+        if (firebaseUser != null) {
+            Intent intent = new Intent(MainActivity2.this, MainActivity.class);
+            startActivity(intent);
+//            scroll.setVisibility(View.INVISIBLE);
+        }
 
-}
 
-
-        btn_start=findViewById(R.id.btn_start);
-        textLog=findViewById(R.id.text_log);
+        btn_start = findViewById(R.id.btn_start);
+        textLog = findViewById(R.id.text_log);
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity2.this,SignUpActivity.class);
+                Intent intent = new Intent(MainActivity2.this, SignUpActivity.class);
                 startActivity(intent);
 
             }
@@ -53,7 +57,7 @@ if (firebaseUser!=null){
         textLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity2.this,LoginActivity.class);
+                Intent intent = new Intent(MainActivity2.this, LoginActivity.class);
                 startActivity(intent);
 
 
