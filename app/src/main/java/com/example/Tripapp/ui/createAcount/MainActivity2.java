@@ -60,8 +60,8 @@ public class MainActivity2 extends AppCompatActivity {
 //        }
 
 
-        btn_start = findViewById(R.id.btn_start);
-        textLog = findViewById(R.id.text_log);
+        btn_start = findViewById(R.id.btn_getting_started);
+        textLog = findViewById(R.id.txt_login);
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

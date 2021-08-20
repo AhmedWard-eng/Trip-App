@@ -48,11 +48,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        edit_email = findViewById(R.id.edit_email_Login);
-        edit_pass = findViewById(R.id.edit_pass_login);
-        btn_login = findViewById(R.id.btn_login);
-        imageView = findViewById(R.id.image_google);
-        text_signUp = findViewById(R.id.text_signUp_activity_SignUp);
+        edit_email = findViewById(R.id.edt_login_email);
+        edit_pass = findViewById(R.id.edt_login_password);
+        btn_login = findViewById(R.id.btn_login_login);
+        imageView = findViewById(R.id.img_login_google);
+        text_signUp = findViewById(R.id.txt_login_signup);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
