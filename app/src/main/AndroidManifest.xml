@@ -27,7 +27,12 @@
         <receiver
             android:name=".BroadCast.bootReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+
+        </receiver>
 
         <activity android:name=".Notes.ShowAllNotes" />
         <activity android:name=".Notes.AddNotes" />

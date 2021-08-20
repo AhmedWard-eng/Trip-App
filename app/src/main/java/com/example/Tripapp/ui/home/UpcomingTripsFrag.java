@@ -90,6 +90,10 @@ public class UpcomingTripsFrag extends Fragment {
                 for (DataSnapshot datasnapshot : snapshot.getChildren()) {
                     Trip trip = datasnapshot.getValue(Trip.class);
                     trips.add(trip);
+//                    if (trip != null) {
+////                        Alarm alarm = new Alarm(trip.getTripId(), trip.getAlarmId(), trip.getHour(), trip.getMinute(), trip.getDay(), trip.getMonth(), trip.getYear(), 0, true, trip.getTitle());
+////                        alarm.schedule(getContext());
+//                    }
                 }
                 simpleArrayAdapter.notifyDataSetChanged();
             }

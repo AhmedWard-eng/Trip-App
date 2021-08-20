@@ -8,12 +8,12 @@ public class Trip {
     public String startPoint;
     public String endPoint;
     public String tripKind;
-    public double startLatitude;
-    public double startLongitude;
     public double endLatitude;
-
-
     public double endLongitude;
+    public double startLatitude;
+
+
+    public double startLongitude;
     public String notes;
     public Boolean round;
     public String dateText;
@@ -31,7 +31,7 @@ public class Trip {
                 String startPoint,
                 String endPoint,
                 String tripKind,
-                double StartLatitude,
+                double endLatitude,
                 double startLongitude,
                 String notes,
                 Boolean round,
@@ -49,8 +49,8 @@ public class Trip {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.tripKind = tripKind;
-        this.startLatitude = StartLatitude;
-        this.startLongitude = startLongitude;
+        this.endLatitude = endLatitude;
+        this.endLongitude = startLongitude;
         this.notes = notes;
         this.round = round;
         this.dateText = dateText;
@@ -67,19 +67,19 @@ public class Trip {
     public Trip() {
     }
 
-    public double getEndLatitude() {
+    public double getStartLatitude() {
         return endLatitude;
     }
 
-    public void setEndLatitude(double endLatitude) {
+    public void setStartLatitude(double endLatitude) {
         this.endLatitude = endLatitude;
     }
 
-    public double getEndLongitude() {
+    public double getStartLongitude() {
         return endLongitude;
     }
 
-    public void setEndLongitude(double endLongitude) {
+    public void setStartLongitude(double endLongitude) {
         this.endLongitude = endLongitude;
     }
 
@@ -131,20 +131,20 @@ public class Trip {
         this.tripKind = tripKind;
     }
 
-    public double getStartLatitude() {
-        return startLatitude;
+    public double getEndLatitude() {
+        return endLatitude;
     }
 
-    public void setStartLatitude(double startLatitude) {
-        this.startLatitude = startLatitude;
+    public void setEndLatitude(double endLatitude) {
+        this.endLatitude = endLatitude;
     }
 
-    public double getStartLongitude() {
-        return startLongitude;
+    public double getEndLongitude() {
+        return endLongitude;
     }
 
-    public void setStartLongitude(double startLongitude) {
-        this.startLongitude = startLongitude;
+    public void setEndLongitude(double endLongitude) {
+        this.endLongitude = endLongitude;
     }
 
     public String getNotes() {

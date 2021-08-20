@@ -1,4 +1,5 @@
 package com.example.Tripapp.trip_map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -13,8 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.Tripapp.MainActivity;
 import com.example.Tripapp.R;
+import com.example.Tripapp.Trip;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,13 +26,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.NotNull;
 
-public class MapsFragment extends Fragment
-{
+import java.util.ArrayList;
+
+public class MapsFragment extends Fragment {
     public static GoogleMap tripMap;
 
-    private OnMapReadyCallback callback = new OnMapReadyCallback()
-    {
+    private OnMapReadyCallback callback = new OnMapReadyCallback() {
         /**
          * Manipulates the map once available.
          * This callback is triggered when the map is ready to be used.
@@ -39,57 +48,45 @@ public class MapsFragment extends Fragment
          * user has installed Google Play services and returned to the app.
          */
         @Override
-        public void onMapReady(GoogleMap googleMap)
-        {
+        public void onMapReady(GoogleMap googleMap) {
+
+            ArrayList<Trip> trips = new ArrayList<>();
+            MainActivity.databaseRefHistory.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    for (DataSnapshot datasnapshot : snapshot.getChildren()) {
+                        Trip trip = datasnapshot.getValue(Trip.class);
+                        trips.add(trip);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                }
+            });
+
+
+
             tripMap = googleMap;
             tripMap.clear();
-//            tripMap.addMarker(TripMapActivity.place1);
-//            tripMap.addMarker(TripMapActivity.place2);
-            MapsFragment.tripMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(30.7255, 31.5710)));
-            MapsFragment.tripMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(30.7255, 31.5710), 2f));
 
-            /*googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-            googleMap.clear(); //clear old markers
-
-            CameraPosition googlePlex = CameraPosition.builder()
-                    .target(new LatLng(37.4219999,-122.0862462))
-                    .zoom(10)
-                    .bearing(0)
-                    .tilt(45)
-                    .build();
-
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
-
-            googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(37.4219999, -122.0862462))
-                    .title("Spider Man")
-                    .icon(bitmapDescriptorFromVector(getActivity(),R.drawable.ic_launcher_foreground)));
-
-            googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(37.4629101,-122.2449094))
-                    .title("Iron Man")
-                    .snippet("His Talent : Plenty of money"));
-
-            googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(37.3092293,-122.1136845))
-                    .title("Captain America"));*/
-            Log.d("mylog", "Added Markers");
         }
+
     };
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState)
-    {
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);

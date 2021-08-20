@@ -91,6 +91,8 @@ public class Alarm {
         calendar.set(Calendar.YEAR, year);
 //        String date;
 //        date = dateFormat.format(calendar.getTime());
+
+//        Toast.makeText(context,"alarm..... alarm.... ", Toast.LENGTH_LONG).show();
         if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
         } else {
 

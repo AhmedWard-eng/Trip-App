@@ -66,11 +66,11 @@ public class AddNotes extends AppCompatActivity {
             }
         }
 
-        if(string == null){
+        if (string == null) {
             notes.add("");
-        }else {
+        } else {
             arr = string.split("--");
-            if(arr.length <= 1){
+            if (arr.length <= 1) {
                 string = "";
                 notes.add("");
             }
@@ -91,18 +91,20 @@ public class AddNotes extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadNotes(notes);
+                Intent intent1 = new Intent(AddNotes.this,MainActivity.class);
+                startActivity(intent1);
             }
         });
     }
 
     public void uploadNotes(ArrayList<String> notes) {
-        Toast.makeText(this,String.valueOf(notes.size()),Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, String.valueOf(notes.size()), Toast.LENGTH_LONG).show();
 
         string = "";
-        for(int i = 0; i < notes.size(); i++){
-            string += notes.get(i)+"--";
+        for (int i = 0; i < notes.size(); i++) {
+            string += notes.get(i) + "--";
         }
-        Toast.makeText(this,string,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Notes saved", Toast.LENGTH_LONG).show();
 
         trip.setNotes(string);
 

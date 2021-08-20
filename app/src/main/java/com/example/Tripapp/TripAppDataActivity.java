@@ -270,12 +270,14 @@ public class TripAppDataActivity extends AppCompatActivity {
             data.setRound("Round".equals(String.valueOf(txt_repeat.getSelectedItem())));
             data.setStartPoint(String.valueOf(txt_StartPoint.getText()));
             data.setEndPoint(String.valueOf(txt_endPoint.getText()));
-            data.setStartLatitude(29.924526);
-            data.setStartLongitude(31.205753);
+            data.setEndLatitude(29.924526);
+            data.setEndLongitude(31.205753);
             data.setAlarmId(alarmId);
             data.setRound(isRound);
             data.setTripKind("created");
             data.setNotes(null);
+//            data.setStartLatitude(30.58768);
+//            data.setStartLongitude(31.502);
             return data;
         }
     }

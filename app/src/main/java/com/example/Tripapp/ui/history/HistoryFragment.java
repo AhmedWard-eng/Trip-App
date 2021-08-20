@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -68,8 +69,6 @@ public class HistoryFragment extends Fragment {
     }
 
 
-
-
     public void onStart() {
         super.onStart();
         MainActivity.databaseRefHistory.addValueEventListener(new ValueEventListener() {
@@ -88,23 +87,28 @@ public class HistoryFragment extends Fragment {
 
             }
         });
-        int c = 0;
-        for(Trip trip : trips){
-            c++;
-            if(c > 360) { c = 0; }
-
-            MarkerOptions startMarker = new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.defaultMarker(c))
-                    .position(new LatLng(trip.getStartLongitude(), trip.getStartLatitude()))
-                    .title(trip.getTitle() + " - " + trip.getStartPoint());
-            MapsFragment.tripMap.addMarker(startMarker);
-
-            MarkerOptions endMarker = new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.defaultMarker(c))
-                    .position(new LatLng(trip.getEndLongitude(), trip.getEndLatitude()))
-                    .title(trip.getTitle() + " - " + trip.getEndPoint());
-            MapsFragment.tripMap.addMarker(endMarker);
-        }
+//        int c = 0;
+//
+//        for (Trip trip : trips) {
+//            c = c + 50;
+//            if (c > 360) {
+//                c = 0;
+//            }
+//            MarkerOptions startMarker = new MarkerOptions()
+//                    .icon(BitmapDescriptorFactory.defaultMarker(c))
+//                    .position(new LatLng(trip.getEndLongitude(), trip.getEndLatitude()))
+//                    .title(trip.getTitle() + " - " + trip.getStartPoint());
+//            MapsFragment.tripMap.addMarker(startMarker);
+//
+//            MarkerOptions endMarker = new MarkerOptions()
+//                    .icon(BitmapDescriptorFactory.defaultMarker(c))
+//                    .position(new LatLng(trip.getEndLongitude(), trip.getEndLatitude()))
+//                    .title(trip.getTitle() + " - " + trip.getEndPoint());
+//            MapsFragment.tripMap.addMarker(endMarker);
+//        }
+//        if (trips.isEmpty()) {
+//            Toast.makeText(getContext(), "sdajkfjkls;adfl", Toast.LENGTH_LONG).show();
+//        }
     }
 }
 
