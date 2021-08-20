@@ -15,14 +15,14 @@ import com.example.Tripapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class shownoteAdapter extends ArrayAdapter<String> {
+public class ShowNoteAdapter extends ArrayAdapter<String> {
 
 
     private Context _context;
     private ArrayList<String> _note;
 
-    public shownoteAdapter(@NonNull Context context, ArrayList<String> note) {
-        super(context, R.layout.show_notes_list, R.id.show_note, (List<String>) (note));
+    public ShowNoteAdapter(@NonNull Context context, ArrayList<String> note) {
+        super(context, R.layout.show_notes_list, R.id.show_note, note);
         _context = context;
         _note = note;
     }

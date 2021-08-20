@@ -43,8 +43,8 @@ public class MapsFragment extends Fragment
         {
             tripMap = googleMap;
             tripMap.clear();
-            tripMap.addMarker(TripMapActivity.place1);
-            tripMap.addMarker(TripMapActivity.place2);
+//            tripMap.addMarker(TripMapActivity.place1);
+//            tripMap.addMarker(TripMapActivity.place2);
             MapsFragment.tripMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(30.7255, 31.5710)));
             MapsFragment.tripMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(30.7255, 31.5710), 2f));
 

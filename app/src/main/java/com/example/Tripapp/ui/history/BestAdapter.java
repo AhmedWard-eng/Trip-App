@@ -3,6 +3,7 @@ package com.example.Tripapp.ui.history;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 
+import com.example.Tripapp.MainActivity;
+import com.example.Tripapp.Notes.ShowAllNotes;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
+import com.example.Tripapp.TripAppDataActivity;
+import com.example.Tripapp.services.FloatingWidgetService;
 import com.example.Tripapp.trip_map.MapsFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -63,30 +67,32 @@ class BestAdapter extends ArrayAdapter<Trip> {
         }*/
 
 
-        SimpleDateFormat sdFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm", Locale.getDefault());
-//        String date = sdFormat.format(currentItem.getDate());
-
         viewHolder.getTxtTitle().setText(currentItem.getTitle());
         viewHolder.getTxtStart().setText(currentItem.getStartPoint());
         viewHolder.getTxtEnd().setText(currentItem.getEndPoint());
-//        viewHolder.getTxtDate().setText(date);
-//        viewHolder.getTxtStatus().setText(currentItem.getStatus());
+        viewHolder.getTxtDate().setText(currentItem.getDateText() + "   " + currentItem.getTimeText());
+        viewHolder.getTxtStatus().setText(currentItem.getTripKind());
 
-        final double longitude = currentItem.getLongitude();
-        final double latitude = currentItem.getLatitude();
+        final double longitude = (currentItem.getStartLongitude() + currentItem.getEndLongitude()) / 2;
+        final double latitude = (currentItem.getStartLatitude() + currentItem.getEndLatitude()) / 2;
 
         viewHolder.getCard().setOnClickListener(view -> {
             MapsFragment.tripMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(longitude, latitude)));
-            MapsFragment.tripMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitude, latitude), 8f));
-            /*Intent intent = new Intent(getContext(), TripMapActivity.class);
-            context.startActivity(intent);*/
+            MapsFragment.tripMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitude, latitude), 6f));
+            Intent intent = new Intent(context, FloatingWidgetService.class);
+            intent.putExtra(TripAppDataActivity.NOTES,currentItem.getNotes());
+            context.startService(intent);
         });
+
+
+
 
         viewHolder.getBtnDelete().setOnClickListener(view -> new AlertDialog.Builder(BestAdapter.super.getContext())
                 .setTitle(R.string.delete)
                 .setMessage(R.string.confirm_delete)
                 .setPositiveButton(R.string.delete, (dialogInterface, i) -> {
-                    // TODO delete trip
+                    MainActivity.databaseRefHistory.child(currentItem.getTripId()).removeValue();
+                    notifyDataSetChanged();
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
                     // TODO cancel dialog
@@ -97,7 +103,9 @@ class BestAdapter extends ArrayAdapter<Trip> {
                 .setTitle(R.string.reuse)
                 .setMessage(R.string.confirm_reuse)
                 .setPositiveButton(R.string.reuse, (dialogInterface, i) -> {
-                    // TODO resuse trip
+                    currentItem.setTripKind("Reused");
+                    MainActivity.databaseRefUpcoming.child(currentItem.getTripId()).setValue(currentItem);
+                    MainActivity.databaseRefHistory.child(currentItem.getTripId()).removeValue();
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
                     // TODO cancel dialog

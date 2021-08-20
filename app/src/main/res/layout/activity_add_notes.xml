@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
 
@@ -40,7 +40,7 @@
             <ListView
                 android:id="@+id/list_notes"
                 android:layout_width="match_parent"
-                android:layout_height="853dp"
+                android:layout_height="680dp"
                 android:layout_marginTop="50dp">
 
             </ListView>

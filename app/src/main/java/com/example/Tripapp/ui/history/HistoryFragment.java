@@ -25,21 +25,18 @@ import com.example.Tripapp.MainActivity;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
 import com.example.Tripapp.trip_map.MapsFragment;
-import com.example.Tripapp.trip_map.TripMapActivity;
 import com.example.Tripapp.ui.createAcount.MainActivity2;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+
 
 public class HistoryFragment extends Fragment {
     private ArrayList<Trip> trips;
@@ -61,7 +58,13 @@ public class HistoryFragment extends Fragment {
         bestAdapter = new BestAdapter(getActivity(), trips);
         lstView.setAdapter(bestAdapter);
 
-        
+//        MarkerOptions startMarker = new MarkerOptions()
+////                .icon(BitmapDescriptorFactory.defaultMarker(0))
+//                .position(new LatLng(29.924526, 31.205753))
+//                .title("trip.getTitle()" + " - " +" trip.getStartPoint()");
+//        MapsFragment.tripMap.addMarker(startMarker);
+
+
     }
 
 
@@ -85,6 +88,23 @@ public class HistoryFragment extends Fragment {
 
             }
         });
+        int c = 0;
+        for(Trip trip : trips){
+            c++;
+            if(c > 360) { c = 0; }
+
+            MarkerOptions startMarker = new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.defaultMarker(c))
+                    .position(new LatLng(trip.getStartLongitude(), trip.getStartLatitude()))
+                    .title(trip.getTitle() + " - " + trip.getStartPoint());
+            MapsFragment.tripMap.addMarker(startMarker);
+
+            MarkerOptions endMarker = new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.defaultMarker(c))
+                    .position(new LatLng(trip.getEndLongitude(), trip.getEndLatitude()))
+                    .title(trip.getTitle() + " - " + trip.getEndPoint());
+            MapsFragment.tripMap.addMarker(endMarker);
+        }
     }
 }
 

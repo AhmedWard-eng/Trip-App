@@ -2,6 +2,7 @@ package com.example.Tripapp.Notes;
 
 
 import android.content.Context;
+import android.location.Address;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class NoteAdapter extends ArrayAdapter<String> {
 
 
     public NoteAdapter(@NonNull Context context, ArrayList<String> note) {
-        super(context, R.layout.notes_list, R.id.note, (ArrayList<String>) note);
+        super(context, R.layout.notes_list, R.id.note, note);
         _context = context;
         _note = note;
     }
@@ -51,9 +52,7 @@ public class NoteAdapter extends ArrayAdapter<String> {
         viewHolder.getNew().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                if (_note.size() == 10) {
+                if (_note.size() >= 10) {
                     Toast.makeText(getContext(), "Notes Should be Ten Only", Toast.LENGTH_SHORT).show();
                 } else {
                     _note.add("");
@@ -79,7 +78,7 @@ public class NoteAdapter extends ArrayAdapter<String> {
         viewHolder.getSave().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddNotes.notes.set(position, viewHolder.getNote().getText().toString());
+                _note.set(position, viewHolder.getNote().getText().toString());
             }
         });
 
