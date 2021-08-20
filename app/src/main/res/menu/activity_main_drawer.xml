@@ -7,23 +7,36 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_baseline_home_24"
-            android:title="@string/up_coming" />
+            android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_history"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/history" />
+            android:icon="@drawable/ic_baseline_history_24"
+            android:title="@string/menu_history" />
     </group>
 
-    <item android:title="@string/account_setting">
+    <item android:title="@string/menu_account">
         <menu>
             <item
+                android:id="@+id/nav_sync"
                 android:icon="@drawable/ic_baseline_sync_24"
-                android:title="@string/sync"
-                android:id="@+id/sync"/>
+                android:title="@string/menu_sync" />
             <item
-                android:icon="@drawable/ic_baseline_exit_to_app_24"
-                android:title="@string/log_out"
-                android:id="@+id/log_out"/>
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/baseline_logout_24"
+                android:title="@string/menu_logout" />
+        </menu>
+    </item>
+
+    <item android:title="@string/menu_settings">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_baseline_settings_24"
+                android:title="@string/menu_settings" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_baseline_info_24"
+                android:title="@string/menu_about" />
         </menu>
     </item>
 </menu>

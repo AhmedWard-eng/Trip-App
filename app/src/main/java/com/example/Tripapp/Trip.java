@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Trip {
 
-
     public int alarmId;
     public String tripId;
     public String title;

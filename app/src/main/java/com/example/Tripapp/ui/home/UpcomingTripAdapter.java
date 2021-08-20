@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -266,9 +268,9 @@ class ViewHolder {
     TextView txtTime;
     TextView txtStartPoint;
     TextView txtEndPoint;
-    TextView buttonStart;
+    Button buttonStart;
     TextView buttonMenu;
-    TextView buttonNotes;
+    ImageButton buttonNotes;
 
     public TextView getTxtTripName() {
         if (txtTripName == null) {
@@ -316,8 +318,7 @@ class ViewHolder {
         return txtEndPoint;
     }
 
-
-    public TextView getButtonStart() {
+    public Button getButtonStart() {
         if (buttonStart == null) {
 
             buttonStart = convertView.findViewById(R.id.btn_start);
@@ -332,7 +333,7 @@ class ViewHolder {
         return buttonMenu;
     }
 
-    public TextView getButtonNotes() {
+    public ImageButton getButtonNotes() {
         if (buttonNotes == null) {
 
             buttonNotes = convertView.findViewById(R.id.btn_notes);

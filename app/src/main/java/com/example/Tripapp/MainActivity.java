@@ -34,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
     private AppBarConfiguration mAppBarConfiguration;
     Toolbar toolbar;
-    FloatingActionButton fabStartTripDataActivity;
+
+
+
 
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
@@ -82,13 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        fabStartTripDataActivity = findViewById(R.id.fab);
-        fabStartTripDataActivity.setOnClickListener(view -> {
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-            Intent intent = new Intent(MainActivity.this, TripAppDataActivity.class);
-            startActivity(intent);
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -102,11 +97,11 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        MenuItem logOutItem = navigationView.getMenu().findItem(R.id.log_out);
+        MenuItem logOutItem = navigationView.getMenu().findItem(R.id.nav_logout);
         logOutItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.log_out) {
+                if (item.getItemId() == R.id.nav_logout) {
                     FirebaseAuth auth = FirebaseAuth.getInstance();
                     auth.signOut();
                     Intent intent = new Intent(MainActivity.this, MainActivity2.class);

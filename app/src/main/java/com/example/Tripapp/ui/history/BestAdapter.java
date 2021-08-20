@@ -28,12 +28,10 @@ import java.util.Locale;
 
 class BestAdapter extends ArrayAdapter<Trip> {
     private Context context;
-    private int backgroundColor;
 
-    BestAdapter(Activity context, ArrayList<Trip> items, int backgroundColor) {
+    BestAdapter(Activity context, ArrayList<Trip> items) {
         super(context, 0, items);
         this.context = context;
-        this.backgroundColor = backgroundColor;
     }
 
     @SuppressLint("ResourceAsColor")
@@ -64,8 +62,6 @@ class BestAdapter extends ArrayAdapter<Trip> {
             txtStatus.setText(currentItem.getStatus());
         }*/
 
-        int color = ContextCompat.getColor(getContext(), backgroundColor);
-        parent.setBackgroundColor(color);
 
         SimpleDateFormat sdFormat = new SimpleDateFormat("dd-MMM-yyy HH:mm", Locale.getDefault());
 //        String date = sdFormat.format(currentItem.getDate());

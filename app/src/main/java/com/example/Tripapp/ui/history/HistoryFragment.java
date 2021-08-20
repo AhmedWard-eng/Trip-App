@@ -58,7 +58,7 @@ public class HistoryFragment extends Fragment {
 
         trips = new ArrayList<>();
         lstView = view.findViewById(R.id.best_list);
-        bestAdapter = new BestAdapter(getActivity(), trips, R.color.white);
+        bestAdapter = new BestAdapter(getActivity(), trips);
         lstView.setAdapter(bestAdapter);
 
         

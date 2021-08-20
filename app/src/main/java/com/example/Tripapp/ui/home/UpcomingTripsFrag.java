@@ -17,10 +17,15 @@ import com.example.Tripapp.Data.Alarm;
 import com.example.Tripapp.MainActivity;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
+
 import com.example.Tripapp.services.RescheduleAlarmsService;
+import com.example.Tripapp.TripAppDataActivity;
+
 import com.example.Tripapp.trip_map.TripMapActivity;
 import com.example.Tripapp.ui.createAcount.MainActivity2;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,12 +42,23 @@ import java.util.Locale;
 public class UpcomingTripsFrag extends Fragment  {
     private ListView upcomingListView;
     private ArrayList<Trip> trips = null;
+
+    UpcomingViewModel upcomingViewModel;
+    FloatingActionButton fabStartTripDataActivity;
+
     DatabaseReference reference = null;
     UpcomingTripAdapter simpleArrayAdapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        fabStartTripDataActivity = view.findViewById(R.id.fab);
+        fabStartTripDataActivity.setOnClickListener(mView -> {
+            Snackbar.make(mView, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            Intent intent = new Intent(getContext(), TripAppDataActivity.class);
+            startActivity(intent);
+        });
 
 
         trips = new ArrayList<Trip>();
