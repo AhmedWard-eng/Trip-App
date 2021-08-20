@@ -28,15 +28,23 @@
             android:layout_width="32dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="295dp"
+            android:layout_marginLeft="335dp"
             android:text="+" />
 
         <Button
             android:id="@+id/delete"
             android:layout_width="32dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="335dp"
+            android:layout_marginLeft="375dp"
             android:text="-" />
+        <ImageButton
+            android:id="@+id/save"
+            android:layout_width="32dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="295dp"
+            android:src="@drawable/ic_baseline_save_24"
+            android:text="s" />
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

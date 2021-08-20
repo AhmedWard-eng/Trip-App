@@ -1,7 +1,6 @@
 package com.example.Tripapp;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Trip {
 
@@ -12,7 +11,7 @@ public class Trip {
     public String endPoint;
     public String tripKind;
     public double latitude, longitude;
-    public ArrayList<String> notes;
+    public String  notes;
     public Boolean round;
     public String dateText;
     public String timeText;
@@ -31,7 +30,7 @@ public class Trip {
                 String tripKind,
                 double latitude,
                 double longitude,
-                ArrayList<String> notes,
+                String notes,
                 Boolean round,
                 String dateText,
                 String timeText,
@@ -62,13 +61,9 @@ public class Trip {
     }
 
 
-    Trip() {
-
+    public Trip() {
     }
 
-
-
-    
 
     public int getAlarmId() {
         return alarmId;
@@ -134,11 +129,11 @@ public class Trip {
         this.longitude = longitude;
     }
 
-    public ArrayList<String> getNotes() {
+    public String getNotes() {
         return notes;
     }
 
-    public void setNotes(ArrayList<String> notes) {
+    public void setNotes(String notes) {
         this.notes = notes;
     }
 

@@ -91,5 +91,6 @@
 
     <string name="round">Round</string>
     <string name="one_way">One Way</string>
+    <string name="go_to_the_app">Go to the app</string>
 
 </resources>

@@ -11,11 +11,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -24,9 +24,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
+        <receiver
+            android:name=".BroadCast.bootReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
 
         <activity android:name=".Notes.show_all_notes" />
-        <activity android:name=".Notes.Add_Notes" />
+        <activity android:name=".Notes.AddNotes" />
 
         <service
             android:name=".services.FloatingWidgetService"
@@ -46,8 +50,9 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".RingActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+        <activity
+            android:name=".RingActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -64,13 +69,11 @@
         <activity android:name=".TripAppDataActivity" />
         <activity android:name=".ui.createAcount.LoginActivity" />
         <activity android:name=".ui.createAcount.SignUpActivity" />
-        <activity android:name=".ui.createAcount.MainActivity2">
-
-        </activity>
+        <activity android:name=".ui.createAcount.MainActivity2"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MyApplication.NoActionBar" >
+            android:theme="@style/Theme.MyApplication.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -44,7 +44,7 @@
             android:layout_weight="1"
 
             android:text=""
-            tools:text="@string/cancel" />
+            tools:text="@string/go_to_the_app" />
 
         <Button
             android:id="@+id/activity_ring_snooze"
@@ -54,14 +54,14 @@
             android:layout_weight="1"
             android:text="@string/snooze" />
 
-        <Button
-            android:id="@+id/activity_ring_start"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+<!--        <Button-->
+<!--            android:id="@+id/activity_ring_start"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
 
-            android:layout_weight="1"
-            android:text=""
-            tools:text="@string/start" />
+<!--            android:layout_weight="1"-->
+<!--            android:text=""-->
+<!--            tools:text="@string/start" />-->
     </LinearLayout>
 
 

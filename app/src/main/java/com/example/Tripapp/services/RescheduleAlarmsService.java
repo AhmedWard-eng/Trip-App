@@ -6,6 +6,15 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+import com.example.Tripapp.Data.Alarm;
+import com.example.Tripapp.MainActivity;
+import com.example.Tripapp.Trip;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
+
 public class RescheduleAlarmsService extends Service {
     @Override
     public void onCreate() {
@@ -31,6 +40,21 @@ public class RescheduleAlarmsService extends Service {
 //                }
 //            }
 //        });
+        MainActivity.databaseRefUpcoming.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NotNull DataSnapshot snapshot) {
+                for ( DataSnapshot datasnapshot: snapshot.getChildren()) {
+                    Trip trip = datasnapshot.getValue(Trip.class);
+                    Alarm alarm = new Alarm(trip.getTripId(),trip.getAlarmId(),trip.getHour(),trip.getMinute(),trip.getDay(),trip.getMonth(),trip.getYear(),0,true,trip.getTitle());
+                    alarm.schedule(RescheduleAlarmsService.this);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NotNull DatabaseError error) {
+
+            }
+        });
 
         return START_STICKY;
     }

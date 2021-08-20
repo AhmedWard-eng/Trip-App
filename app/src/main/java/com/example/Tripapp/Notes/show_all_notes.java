@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
-import com.example.Tripapp.ui.home.UpcomingTripAdapter;
-import com.example.Tripapp.ui.home.UpcomingViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,9 +46,9 @@ public class show_all_notes extends AppCompatActivity {
                     Trip trip = datasnapshot.getValue(Trip.class);
                     trips.add(trip);
                 }
-                shownoteAdapter show = new shownoteAdapter(show_all_notes.this,Trip.getNotes());
-                showListView.setAdapter(show);
-                show.notifyDataSetChanged();
+//                shownoteAdapter show = new shownoteAdapter(show_all_notes.this,Trip);
+//                showListView.setAdapter(show);
+//                show.notifyDataSetChanged();
             }
 
             @Override
