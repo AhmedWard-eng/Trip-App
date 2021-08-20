@@ -67,8 +67,8 @@ public class UpcomingTripAdapter extends ArrayAdapter {
 
         viewHolder.getButtonStart().setOnClickListener(new View.OnClickListener() {
 
-            final double longitude = trips.get(position).getStartLongitude();
-            final double latitude = trips.get(position).getStartLatitude();
+            final double longitude = trips.get(position).getEndLongitude();
+            final double latitude = trips.get(position).getEndLatitude();
 
             @Override
             public void onClick(View v) {
@@ -86,6 +86,25 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                     serviceIntent.putExtra(TripAppDataActivity.NOTES, trips.get(position).getNotes());
                     context.startService(serviceIntent);
                 }
+                if(trips.get(position).getRound()){
+                    viewHolder.getButtonStart().setText("Return");
+                    trips.get(position).setRound(false);
+                    String string = trips.get(position).getEndPoint();
+                    double startLatitude = trips.get(position).getStartLatitude();
+                    double startLongitude = trips.get(position).getStartLongitude();
+                    trips.get(position).setEndPoint(trips.get(position).getStartPoint());
+                    trips.get(position).setStartPoint(string);
+                    trips.get(position).setEndLatitude(trips.get(position).getStartLatitude());
+                    trips.get(position).setEndLongitude(trips.get(position).getStartLongitude());
+                    MainActivity.databaseRefUpcoming.child(trips.get(position).getTripId()).setValue(trips.get(position));
+                    notifyDataSetChanged();
+
+                }else{
+                    trips.get(position).setTripKind("Finished");
+                    MainActivity.databaseRefHistory.child(trips.get(position).getTripId()).setValue(trips.get(position));
+                    MainActivity.databaseRefUpcoming.child(trips.get(position).getTripId()).removeValue();
+                    notifyDataSetChanged();
+                }
                 Alarm alarm = new Alarm(trips.get(position).getTripId(),trips.get(position).getAlarmId(),
                         trips.get(position).getHour(),
                         trips.get(position).getMinute(),
@@ -96,10 +115,6 @@ public class UpcomingTripAdapter extends ArrayAdapter {
                         false,
                         trips.get(position).getTitle());
                 alarm.cancelAlarm(context);
-                trips.get(position).setTripKind("Finished");
-                MainActivity.databaseRefHistory.child(trips.get(position).getTripId()).setValue(trips.get(position));
-                MainActivity.databaseRefUpcoming.child(trips.get(position).getTripId()).removeValue();
-                notifyDataSetChanged();
             }
         });
         //

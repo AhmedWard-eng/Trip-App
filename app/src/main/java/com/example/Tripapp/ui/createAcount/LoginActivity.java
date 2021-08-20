@@ -2,7 +2,6 @@ package com.example.Tripapp.ui.createAcount;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,8 +29,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import papaya.in.sendmail.SendMail;
-
-import static android.content.ContentValues.TAG;
 
 public class LoginActivity extends AppCompatActivity {
     EditText edit_email, edit_pass;
@@ -79,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signin();
+                signIn();
             }
         });
 
@@ -181,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(LoginActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LoginActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -207,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInAccount = GoogleSignIn.getClient(this, gso);
     }
 
-    private void signin(){
+    private void signIn(){
         Intent signInIntent = mGoogleSignInAccount.getSignInIntent();
         startActivityForResult(signInIntent,RC_SIGN_IN);
     }
@@ -225,7 +222,7 @@ public class LoginActivity extends AppCompatActivity {
         try {
             // Google Sign In was successful, authenticate with Firebase
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Toast.makeText(this,"firebaseAuthWithGoogle:" + account.getId(),Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this,"firebaseAuthWithGoogle:" + account.getId(),Toast.LENGTH_SHORT).show();
             firebaseAuthWithGoogle(account);
 
         } catch (ApiException e) {
@@ -243,9 +240,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(LoginActivity.this,MainActivity2.class);
+                            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                             startActivity(intent);
-                            Toast.makeText(LoginActivity.this,"signInWithCredential:success",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this,"signIn successful",Toast.LENGTH_SHORT).show();
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(LoginActivity.this,"signInWithCredential:failure" ,Toast.LENGTH_SHORT).show();

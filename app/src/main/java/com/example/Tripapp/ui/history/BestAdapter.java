@@ -80,11 +80,9 @@ class BestAdapter extends ArrayAdapter<Trip> {
             MapsFragment.tripMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(longitude, latitude)));
             MapsFragment.tripMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitude, latitude), 6f));
             Intent intent = new Intent(context, FloatingWidgetService.class);
-            intent.putExtra(TripAppDataActivity.NOTES,currentItem.getNotes());
+            intent.putExtra(TripAppDataActivity.NOTES, currentItem.getNotes());
             context.startService(intent);
         });
-
-
 
 
         viewHolder.getBtnDelete().setOnClickListener(view -> new AlertDialog.Builder(BestAdapter.super.getContext())
