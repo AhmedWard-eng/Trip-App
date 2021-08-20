@@ -133,7 +133,7 @@
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="300dp"
+            android:layout_marginTop="32dp"
             android:fontFamily="sans-serif-condensed-medium"
             android:text="@string/time"
             android:textColor="@android:color/white"

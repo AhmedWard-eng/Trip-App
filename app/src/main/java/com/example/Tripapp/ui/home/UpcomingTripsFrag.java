@@ -21,7 +21,7 @@ import com.example.Tripapp.Trip;
 import com.example.Tripapp.services.RescheduleAlarmsService;
 import com.example.Tripapp.TripAppDataActivity;
 
-import com.example.Tripapp.trip_map.TripMapActivity;
+
 import com.example.Tripapp.ui.createAcount.MainActivity2;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,11 +39,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class UpcomingTripsFrag extends Fragment  {
+public class UpcomingTripsFrag extends Fragment {
     private ListView upcomingListView;
     private ArrayList<Trip> trips = null;
 
-    UpcomingViewModel upcomingViewModel;
+
     FloatingActionButton fabStartTripDataActivity;
 
     DatabaseReference reference = null;
@@ -67,8 +67,6 @@ public class UpcomingTripsFrag extends Fragment  {
 //        reference = data.getReference("Trip_Data");
 
 
-
-
         upcomingListView = view.findViewById(R.id.upcomin_frag_listview);
 //        upcomingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -89,11 +87,9 @@ public class UpcomingTripsFrag extends Fragment  {
             @Override
             public void onDataChange(@NotNull DataSnapshot snapshot) {
                 trips.clear();
-                for ( DataSnapshot datasnapshot: snapshot.getChildren()) {
+                for (DataSnapshot datasnapshot : snapshot.getChildren()) {
                     Trip trip = datasnapshot.getValue(Trip.class);
                     trips.add(trip);
-                    Alarm alarm = new Alarm(trip.getTripId(),trip.getAlarmId(),trip.getHour(),trip.getMinute(),trip.getDay(),trip.getMonth(),trip.getYear(),0,true,trip.getTitle());
-                    alarm.schedule(getContext());
                 }
                 simpleArrayAdapter.notifyDataSetChanged();
             }
@@ -103,5 +99,9 @@ public class UpcomingTripsFrag extends Fragment  {
 
             }
         });
+        for (Trip trip : trips) {
+            Alarm alarm = new Alarm(trip.getTripId(), trip.getAlarmId(), trip.getHour(), trip.getMinute(), trip.getDay(), trip.getMonth(), trip.getYear(), 0, true, trip.getTitle());
+            alarm.schedule(getContext());
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.Tripapp.ui.home;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,6 +22,7 @@ import androidx.appcompat.widget.PopupMenu;
 import com.example.Tripapp.Data.Alarm;
 import com.example.Tripapp.MainActivity;
 import com.example.Tripapp.Notes.AddNotes;
+import com.example.Tripapp.Notes.ShowAllNotes;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
 import com.example.Tripapp.TripAppDataActivity;
@@ -68,8 +67,8 @@ public class UpcomingTripAdapter extends ArrayAdapter {
 
         viewHolder.getButtonStart().setOnClickListener(new View.OnClickListener() {
 
-            final double longitude = trips.get(position).getLongitude();
-            final double latitude = trips.get(position).getLatitude();
+            final double longitude = trips.get(position).getStartLongitude();
+            final double latitude = trips.get(position).getStartLatitude();
 
             @Override
             public void onClick(View v) {
@@ -84,7 +83,7 @@ public class UpcomingTripAdapter extends ArrayAdapter {
 
                 if(MainActivity.drawOverAppsAllowed && trips.get(position).getNotes() != null){
                     Intent serviceIntent = new Intent(context, FloatingWidgetService.class);
-                    serviceIntent.putExtra("notes", trips.get(position).getNotes());
+                    serviceIntent.putExtra(TripAppDataActivity.NOTES, trips.get(position).getNotes());
                     context.startService(serviceIntent);
                 }
                 Alarm alarm = new Alarm(trips.get(position).getTripId(),trips.get(position).getAlarmId(),
@@ -133,7 +132,10 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         viewHolder.getButtonNotes().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 showAlertDialog();
+                Intent intent = new Intent(context, ShowAllNotes.class);
+                intent.putExtra(TripAppDataActivity.NOTES, trips.get(position).getNotes());
+                context.startActivity(intent);
+//                showAlertDialog();
             }
         });
         return view;
@@ -159,18 +161,18 @@ public class UpcomingTripAdapter extends ArrayAdapter {
         context.startActivity(intent);
     }
 
-    private void showAlertDialog() {
-        Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.activity_show_all_notes);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.FIRST_SUB_WINDOW;
-        lp.height = WindowManager.LayoutParams.FIRST_SUB_WINDOW;
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-        dialog.getWindow().setAttributes(lp);
-
-    }
+//    private void showAlertDialog() {
+//        Dialog dialog = new Dialog(context);
+//        dialog.setContentView(R.layout.activity_show_all_notes);
+//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//        lp.copyFrom(dialog.getWindow().getAttributes());
+//        lp.width = WindowManager.LayoutParams.FIRST_SUB_WINDOW;
+//        lp.height = WindowManager.LayoutParams.FIRST_SUB_WINDOW;
+//        dialog.setCanceledOnTouchOutside(true);
+//        dialog.show();
+//        dialog.getWindow().setAttributes(lp);
+//
+//    }
 
     private void editTrip(int position) {
         Intent intent = new Intent(context, TripAppDataActivity.class);

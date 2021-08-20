@@ -1,7 +1,5 @@
 package com.example.Tripapp;
 
-import java.util.ArrayList;
-
 public class Trip {
 
     public int alarmId;
@@ -10,8 +8,13 @@ public class Trip {
     public String startPoint;
     public String endPoint;
     public String tripKind;
-    public double latitude, longitude;
-    public String  notes;
+    public double startLatitude;
+    public double startLongitude;
+    public double endLatitude;
+
+
+    public double endLongitude;
+    public String notes;
     public Boolean round;
     public String dateText;
     public String timeText;
@@ -28,8 +31,8 @@ public class Trip {
                 String startPoint,
                 String endPoint,
                 String tripKind,
-                double latitude,
-                double longitude,
+                double StartLatitude,
+                double startLongitude,
                 String notes,
                 Boolean round,
                 String dateText,
@@ -46,8 +49,8 @@ public class Trip {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.tripKind = tripKind;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.startLatitude = StartLatitude;
+        this.startLongitude = startLongitude;
         this.notes = notes;
         this.round = round;
         this.dateText = dateText;
@@ -64,6 +67,21 @@ public class Trip {
     public Trip() {
     }
 
+    public double getEndLatitude() {
+        return endLatitude;
+    }
+
+    public void setEndLatitude(double endLatitude) {
+        this.endLatitude = endLatitude;
+    }
+
+    public double getEndLongitude() {
+        return endLongitude;
+    }
+
+    public void setEndLongitude(double endLongitude) {
+        this.endLongitude = endLongitude;
+    }
 
     public int getAlarmId() {
         return alarmId;
@@ -113,20 +131,20 @@ public class Trip {
         this.tripKind = tripKind;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public double getStartLatitude() {
+        return startLatitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setStartLatitude(double startLatitude) {
+        this.startLatitude = startLatitude;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public double getStartLongitude() {
+        return startLongitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setStartLongitude(double startLongitude) {
+        this.startLongitude = startLongitude;
     }
 
     public String getNotes() {
