@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="335dp"
+            android:background="@color/colorPrimary"
             android:text="+" />
 
         <Button
@@ -37,13 +38,16 @@
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="375dp"
+            android:background="@color/colorPrimary"
             android:text="-" />
+
         <ImageButton
             android:id="@+id/save"
             android:layout_width="32dp"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="295dp"
+            android:background="@color/colorPrimary"
             android:src="@drawable/ic_baseline_save_24"
             android:text="s" />
     </androidx.cardview.widget.CardView>
