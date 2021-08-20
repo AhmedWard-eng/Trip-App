@@ -21,7 +21,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static com.example.Tripapp.TripAppDataActivity.TRIP_TITLE;
 
@@ -29,10 +32,10 @@ public class AddNotes extends AppCompatActivity {
     static ArrayList<String> notes;
     Button btnAddNotes;
     NoteAdapter noteAdapter;
-    public static DatabaseReference reference = null;
     ListView listView;
     Trip trip;
-    String id = null;
+    String[] arr = new String[10];
+    String string;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +54,7 @@ public class AddNotes extends AppCompatActivity {
                 trip.setTimeText(intent.getStringExtra(TripAppDataActivity.TRIP_TIME));
                 trip.setStartPoint(intent.getStringExtra(TripAppDataActivity.TRIP_START_POINT));
                 trip.setEndPoint(intent.getStringExtra(TripAppDataActivity.TRIP_END_POINT));
-                id = intent.getStringExtra(TripAppDataActivity.NOTES);
-//                trip.setNotes(note);
+                string = intent.getStringExtra(TripAppDataActivity.NOTES);
                 trip.setRound(intent.getBooleanExtra(TripAppDataActivity.IS_ROUND, false));
 
                 /////////////////////////////////////////////////////////////////////////////
@@ -64,11 +66,22 @@ public class AddNotes extends AppCompatActivity {
             }
         }
 
+        if(string == null){
+            notes.add("");
+        }else {
+            arr = string.split("--");
+            if(arr.length <= 1){
+                string = "";
+                notes.add("");
+            }
+            notes = new ArrayList<>(Arrays.asList(arr));
+        }
+
         btnAddNotes = findViewById(R.id.add_notes);
         listView = findViewById(R.id.list_notes);
 
-        FirebaseDatabase data = FirebaseDatabase.getInstance();
-        reference = data.getReference("Notes");
+//        FirebaseDatabase data = FirebaseDatabase.getInstance();
+//        reference = data.getReference("Notes");
 
         noteAdapter = new NoteAdapter(AddNotes.this, notes);
         listView.setAdapter(noteAdapter);
@@ -83,38 +96,23 @@ public class AddNotes extends AppCompatActivity {
     }
 
     public void uploadNotes(ArrayList<String> notes) {
-        if(id == null){
-            id = reference.push().getKey();
-            Toast.makeText(this,id,Toast.LENGTH_LONG).show();
-        }
+        Toast.makeText(this,String.valueOf(notes.size()),Toast.LENGTH_LONG).show();
 
-//        Toast.makeText(this,id,Toast.LENGTH_LONG).show();
-        reference.child(id).setValue(notes);
-        trip.setNotes(id);
+        string = "";
+        for(int i = 0; i < notes.size(); i++){
+            string += notes.get(i)+"--";
+        }
+        Toast.makeText(this,string,Toast.LENGTH_LONG).show();
+
+        trip.setNotes(string);
+
         MainActivity.databaseRefUpcoming.child(trip.getTripId()).setValue(trip);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        reference.child(id).child("").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NotNull DataSnapshot snapshot) {
-                for (DataSnapshot datasnapshot : snapshot.getChildren()) {
-                    String nota = (String) datasnapshot.getValue();
-                    notes.add(nota);
-                }
-                noteAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NotNull DatabaseError error) {
-
-            }
-        });
-        if (notes.isEmpty()) {
-            notes.add("");
-        }
     }
 }

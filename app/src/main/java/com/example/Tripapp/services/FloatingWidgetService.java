@@ -35,9 +35,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
+import com.example.Tripapp.MainActivity;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
-import com.example.Tripapp.trip_map.TripMapActivity;
+import com.example.Tripapp.TripAppDataActivity;
 import com.example.Tripapp.ui.home.UpcomingTripsFrag;
 
 import java.text.SimpleDateFormat;
@@ -101,7 +102,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                     WindowManager.LayoutParams.TYPE_PHONE,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
-        }else{
+        } else {
             paramRemove = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.WRAP_CONTENT,
@@ -136,7 +137,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                     WindowManager.LayoutParams.TYPE_PHONE,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
-        }else{
+        } else {
             params = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.WRAP_CONTENT,
@@ -355,7 +356,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 break;
             case R.id.open_activity_button:
                 //open the activity and stop service
-                Intent intent = new Intent(FloatingWidgetService.this, UpcomingTripsFrag.class);
+                Intent intent = new Intent(FloatingWidgetService.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 
@@ -503,9 +504,14 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
-    {
-        notes = (String[]) intent.getExtras().get("notes");
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        String string = intent.getStringExtra(TripAppDataActivity.NOTES);
+        if (string == null) {
+            string = "";
+
+        }
+        notes = string.split("--");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -517,7 +523,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
             //and expanded view will become visible.
             collapsedView.setVisibility(View.GONE);
             ArrayList<String> famList = new ArrayList<>(Arrays.asList(notes));
-            NotesAdapter notesAdapter = new NotesAdapter (this, famList);
+            NotesAdapter notesAdapter = new NotesAdapter(this, famList);
             ListView lstView = expandedView.findViewById(R.id.floating_list_view);
             lstView.setAdapter(notesAdapter);
             expandedView.setVisibility(View.VISIBLE);
@@ -541,7 +547,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class NotesAdapter extends ArrayAdapter<String>{
+class NotesAdapter extends ArrayAdapter<String> {
 
     NotesAdapter(FloatingWidgetService context, ArrayList<String> Words) {
         super(context, 0, Words);
@@ -549,10 +555,9 @@ class NotesAdapter extends ArrayAdapter<String>{
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
-    {
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItemView = convertView;
-        if(listItemView == null) {
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.item_service_floating_widget, parent, false);
         }

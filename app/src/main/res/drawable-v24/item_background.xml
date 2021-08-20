@@ -3,5 +3,5 @@
     <gradient
         android:endColor="#0091EA"
         android:startColor="#00BB64"
-        android:angle="@android:integer/config_mediumAnimTime"/>
+        android:angle="135"/>
 </shape>

@@ -22,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -111,6 +110,7 @@ public class TripAppDataActivity extends AppCompatActivity {
                     trip.setTripId(id);
                     Alarm alarm = new Alarm(id, alarmId, trip.getHour(), trip.getMinute(), trip.getDay(), trip.getMonth(), trip.getYear(), System.currentTimeMillis(), true, trip.getTitle());
                     alarm.schedule(getApplicationContext());
+                    alarm.acceptAlarm(getApplicationContext(),theSetTime);
                     databaseRefUsers.child(MainActivity.userId).child(MainActivity.upcomingId).child(id).setValue(trip);
 
                     txt_title.setText("");
@@ -270,8 +270,8 @@ public class TripAppDataActivity extends AppCompatActivity {
             data.setRound("Round".equals(String.valueOf(txt_repeat.getSelectedItem())));
             data.setStartPoint(String.valueOf(txt_StartPoint.getText()));
             data.setEndPoint(String.valueOf(txt_endPoint.getText()));
-            data.setLatitude(29.924526);
-            data.setLongitude(31.205753);
+            data.setStartLatitude(29.924526);
+            data.setStartLongitude(31.205753);
             data.setAlarmId(alarmId);
             data.setRound(isRound);
             data.setTripKind("created");

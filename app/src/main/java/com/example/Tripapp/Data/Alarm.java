@@ -68,6 +68,8 @@ public class Alarm {
         this.alarmId = alarmId;
     }
 
+
+
     public void schedule(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -87,19 +89,12 @@ public class Alarm {
         calendar.set(Calendar.DAY_OF_MONTH, day);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.YEAR, year);
-
-
-        DateFormat dateFormat = new SimpleDateFormat("hh:mm aa yy-MM-dd", Locale.US);
-        String date;
-        date = dateFormat.format(calendar.getTime());
+//        String date;
+//        date = dateFormat.format(calendar.getTime());
         if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
-            Toast.makeText(context, "Wrong Date!!....this time"+ date + "is in past", Toast.LENGTH_LONG).show();
         } else {
-            String toastText = null;
 
-            String string = "your trip will start at: " + dateFormat.format(calendar.getTime());
 
-            Toast.makeText(context, string, Toast.LENGTH_LONG).show();
 
             alarmManager.setExact(
                     AlarmManager.RTC_WAKEUP,
@@ -133,5 +128,11 @@ public class Alarm {
 
     public void setCreated(long created) {
         this.created = created;
+    }
+    public void acceptAlarm(Context context, Calendar calendar){
+
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm aa yy-MM-dd", Locale.US);
+        String string = "your trip will start at: " + dateFormat.format(calendar.getTime());
+        Toast.makeText(context, string, Toast.LENGTH_LONG).show();
     }
 }
