@@ -55,7 +55,7 @@ public class RingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ring);
 
         initComponent();
-        trip = getTrip();
+//        trip = getTrip();
 
         Intent intent = getIntent();
         title = intent.getStringExtra(Alarm.TRIP_TITLE);
@@ -76,11 +76,9 @@ public class RingActivity extends AppCompatActivity {
                 finish();
                 NotificationManagerCompat mNotificationManager = NotificationManagerCompat.from(RingActivity.this);
                 mNotificationManager.cancelAll();
+                Intent intentToMainActivity = new Intent(RingActivity.this,MainActivity.class);
+                startActivity(intentToMainActivity);
 
-
-                trip.setTripKind("Canceled");
-                MainActivity.databaseRefHistory.child(trip.getTripId()).setValue(trip);
-                MainActivity.databaseRefUpcoming.child(trip.getTripId()).removeValue();
             }
         });
 
@@ -132,30 +130,30 @@ public class RingActivity extends AppCompatActivity {
             }
         });
 
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final double longitude = trip.getLongitude();
-                final double latitude = trip.getLatitude();
-
-                Uri intentUri = Uri.parse("google.navigation:q=" + longitude + "," + latitude);
-                Intent intent = new Intent(Intent.ACTION_VIEW, intentUri);
-                intent.setPackage("com.google.android.apps.maps");
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(RingActivity.this, "There's no app that can respond. Please, Install Google Maps", Toast.LENGTH_SHORT).show();
-                }
-
-                if (MainActivity.drawOverAppsAllowed) {
-                    Intent serviceIntent = new Intent(RingActivity.this, FloatingWidgetService.class);
-                    serviceIntent.putExtra("notes", trip.getNotes());
-                    startService(serviceIntent);
-                }
-
-
-            }
-        });
+//        start.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final double longitude = trip.getLongitude();
+//                final double latitude = trip.getLatitude();
+//
+//                Uri intentUri = Uri.parse("google.navigation:q=" + longitude + "," + latitude);
+//                Intent intent = new Intent(Intent.ACTION_VIEW, intentUri);
+//                intent.setPackage("com.google.android.apps.maps");
+//                if (intent.resolveActivity(getPackageManager()) != null) {
+//                    startActivity(intent);
+//                } else {
+//                    Toast.makeText(RingActivity.this, "There's no app that can respond. Please, Install Google Maps", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                if (MainActivity.drawOverAppsAllowed) {
+//                    Intent serviceIntent = new Intent(RingActivity.this, FloatingWidgetService.class);
+//                    serviceIntent.putExtra("notes", trip.getNotes());
+//                    startService(serviceIntent);
+//                }
+//
+//
+//            }
+//        });
         mediaPlayer.start();
 
         long[] pattern = {0, 100, 1000};
@@ -164,34 +162,35 @@ public class RingActivity extends AppCompatActivity {
         animateClock();
     }
 
-    private Trip getTrip() {
-        ArrayList<Trip> trips = new ArrayList<>();
-        Toast.makeText(RingActivity.this,"Alarm......... Alarm .....",Toast.LENGTH_LONG).show();
-        MainActivity.databaseRefUpcoming.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NotNull DataSnapshot snapshot) {
-                for (DataSnapshot datasnapshot : snapshot.getChildren()) {
-                    Trip checkedTrip = datasnapshot.getValue(Trip.class);
-                    trips.add(checkedTrip);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NotNull DatabaseError error) {
-            }
-        });
-        for(Trip n:trips){
-            if(n.getTripId() == id){
-                return n;
-            }
-        }
-        return null;
-    }
+//    private Trip getTrip() {
+//        ArrayList<Trip> trips = new ArrayList<>();
+////        Toast.makeText(RingActivity.this,"Alarm......... Alarm .....",Toast.LENGTH_LONG).show();
+//        MainActivity.databaseRefUpcoming.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NotNull DataSnapshot snapshot) {
+//                for (DataSnapshot datasnapshot : snapshot.getChildren()) {
+//                    Trip checkedTrip = datasnapshot.getValue(Trip.class);
+//                    Toast.makeText(RingActivity.this,checkedTrip.getAlarmId(),Toast.LENGTH_LONG).show();
+//                    trips.add(checkedTrip);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NotNull DatabaseError error) {
+//            }
+//        });
+//        for(Trip n:trips){
+//            if(n.getTripId() == id){
+//                return n;
+//            }
+//        }
+//        return null;
+//    }
 
     private void initComponent() {
         cancel = findViewById(R.id.activity_ring_dismiss);
         snooze = findViewById(R.id.activity_ring_snooze);
-        start = findViewById(R.id.activity_ring_start);
+//        start = findViewById(R.id.activity_ring_start);
         clock = findViewById(R.id.activity_ring_clock);
         textTitle = findViewById(R.id.text_title);
 

@@ -13,9 +13,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.Tripapp.Data.Alarm;
 import com.example.Tripapp.MainActivity;
 import com.example.Tripapp.R;
 import com.example.Tripapp.Trip;
+import com.example.Tripapp.services.RescheduleAlarmsService;
 import com.example.Tripapp.trip_map.TripMapActivity;
 import com.example.Tripapp.ui.createAcount.MainActivity2;
 import com.google.android.gms.maps.model.LatLng;
@@ -35,7 +37,6 @@ import java.util.Locale;
 public class UpcomingTripsFrag extends Fragment  {
     private ListView upcomingListView;
     private ArrayList<Trip> trips = null;
-    UpcomingViewModel upcomingViewModel;
     DatabaseReference reference = null;
     UpcomingTripAdapter simpleArrayAdapter;
 
@@ -50,18 +51,7 @@ public class UpcomingTripsFrag extends Fragment  {
 //        reference = data.getReference("Trip_Data");
 
 
-        upcomingViewModel = new ViewModelProvider(getActivity()).get(UpcomingViewModel.class);
 
-
-        upcomingViewModel =
-                new ViewModelProvider(getActivity()).get(UpcomingViewModel.class);
-
-        upcomingViewModel.getTrip().observe(getViewLifecycleOwner(), new Observer<Trip>() {
-            @Override
-            public void onChanged(Trip trip) {
-                trips.add(0, trip);
-            }
-        });
 
         upcomingListView = view.findViewById(R.id.upcomin_frag_listview);
 //        upcomingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,6 +76,8 @@ public class UpcomingTripsFrag extends Fragment  {
                 for ( DataSnapshot datasnapshot: snapshot.getChildren()) {
                     Trip trip = datasnapshot.getValue(Trip.class);
                     trips.add(trip);
+                    Alarm alarm = new Alarm(trip.getTripId(),trip.getAlarmId(),trip.getHour(),trip.getMinute(),trip.getDay(),trip.getMonth(),trip.getYear(),0,true,trip.getTitle());
+                    alarm.schedule(getContext());
                 }
                 simpleArrayAdapter.notifyDataSetChanged();
             }

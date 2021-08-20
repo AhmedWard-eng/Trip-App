@@ -22,7 +22,6 @@ public class AlarmBroadCastReceiver extends BroadcastReceiver {
         } else {
             startAlarmService(context, intent);
         }
-        Toast.makeText(context, "alarm alarm", Toast.LENGTH_LONG).show();
     }
 
     private void startAlarmService(Context context, Intent intent) {

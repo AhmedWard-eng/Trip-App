@@ -29,7 +29,7 @@ import java.util.Locale;
 import static com.example.Tripapp.MainActivity.databaseRefUsers;
 
 public class TripAppDataActivity extends AppCompatActivity {
-    private static int alarmId;
+    private static int alarmId = -1;
     public static final String TRIP_ID = "Trip Id";
     public static final String ALARM_ID = "Alarm id";
     public static final String TRIP_TITLE = "sending the object";
@@ -275,7 +275,7 @@ public class TripAppDataActivity extends AppCompatActivity {
             data.setAlarmId(alarmId);
             data.setRound(isRound);
             data.setTripKind("created");
-            data.setNotes(new ArrayList<>());
+            data.setNotes(null);
             return data;
         }
     }

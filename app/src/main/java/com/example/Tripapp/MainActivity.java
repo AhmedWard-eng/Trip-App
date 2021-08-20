@@ -5,15 +5,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import com.example.Tripapp.services.FloatingWidgetService;
 import com.example.Tripapp.ui.createAcount.MainActivity2;
-import com.example.Tripapp.ui.home.UpcomingViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -23,7 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -40,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     Toolbar toolbar;
     FloatingActionButton fabStartTripDataActivity;
-    UpcomingViewModel upcomingViewModel;
 
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
@@ -49,18 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String upcomingId = "UpComing_Trips", historyId = "History_Trips";
 
-//    FirebaseAuth auth;
-//    FirebaseUser firebaseUser;
-//    public static DatabaseReference databaseRefUsers, USER_ID, databaseRefUpcoming, databaseRefHistory;
-////    public static String userId;
-//    public static final String upcomingId = "UpComing_Trips", historyId = "History_Trips";
 
 
-//    private IntentFilter intentFilter;
-//    RingReceiver receiver;
-
-
-    Trip trip;
 
     @Override
     public void onBackPressed() {
@@ -85,34 +69,16 @@ public class MainActivity extends AppCompatActivity {
             finish();
         } else {
             userId = firebaseUser.getUid();
+            databaseRefUsers = FirebaseDatabase.getInstance().getReference("Clients");
+            USER_ID = databaseRefUsers.child(userId);
+            databaseRefUsers.keepSynced(true);
+            databaseRefUpcoming = USER_ID.child(upcomingId);
+            databaseRefHistory = USER_ID.child(historyId);
         }
-        databaseRefUsers = FirebaseDatabase.getInstance().getReference("Clients");
-        USER_ID = databaseRefUsers.child(userId);
-        databaseRefUsers.keepSynced(true);
-        databaseRefUpcoming = USER_ID.child(upcomingId);
-        databaseRefHistory = USER_ID.child(historyId);
-//        intentFilter = new IntentFilter("com.example.SendReceiver");
-//        receiver = new RingReceiver();
-
-//        auth = FirebaseAuth.getInstance();
-//        firebaseUser = auth.getCurrentUser();
-//        userId = firebaseUser.getUid();
-//        databaseRefUsers = FirebaseDatabase.getInstance().getReference("Clients");
-//        USER_ID = databaseRefUsers.child(userId);
-//        databaseRefUsers.keepSynced(true);
-//        databaseRefUpcoming = USER_ID.child(upcomingId);
-//        databaseRefHistory = USER_ID.child(historyId);
-
-//        MainActivity2.databaseRefUsers = FirebaseDatabase.getInstance().getReference("Clients");
-//        MainActivity2.USER_ID = MainActivity2.databaseRefUsers.child(MainActivity2.userId);
-//        MainActivity2.databaseRefUsers.keepSynced(true);
-//        MainActivity2.databaseRefUpcoming = MainActivity2.USER_ID.child(MainActivity2.upcomingId);
-//        MainActivity2.databaseRefHistory = MainActivity2.USER_ID.child(MainActivity2.historyId);
 
 
-//        Toast.makeText(getApplicationContext(), firebaseUser.getUid(), Toast.LENGTH_LONG).show();
 
-        Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -201,10 +167,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void addTrip(Trip trip) {
-        upcomingViewModel = new ViewModelProvider(this).get(UpcomingViewModel.class);
-        upcomingViewModel.addTrip(trip);
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

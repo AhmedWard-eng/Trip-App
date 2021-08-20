@@ -119,11 +119,11 @@ public class Alarm {
         alarmManager.cancel(alarmPendingIntent);
         this.started = false;
 
-        String dateCancelFormat;
-        dateCancelFormat ="you canceled the trip " + title;
+//        String dateCancelFormat;
+//        dateCancelFormat ="you canceled the trip " + title;
 //        String toastText = String.format("Alarm cancelled for %02d:%02d with id %d", hour, minute, alarmId);
-        Toast.makeText(context, dateCancelFormat, Toast.LENGTH_SHORT).show();
-        Log.i("cancel", dateCancelFormat);
+//        Toast.makeText(context, dateCancelFormat, Toast.LENGTH_SHORT).show();
+//        Log.i("cancel", dateCancelFormat);
     }
 
 
