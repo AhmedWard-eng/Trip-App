@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight">
 
     <TextView
         android:id="@+id/text_title"
@@ -44,6 +45,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
 
+            android:background="@color/colorPrimary"
             android:text=""
             tools:text="@string/go_to_the_app" />
 
@@ -53,12 +55,10 @@
             android:layout_height="match_parent"
 
             android:layout_weight="1"
+            android:background="@color/colorPrimary"
             android:text="@string/snooze" />
 
     </LinearLayout>
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
